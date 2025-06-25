@@ -1,0 +1,120 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import dotenv from 'dotenv'
+import express, { Express, Router } from 'express'
+import Routing from '../libs/Routing'
+import terminator from '../terminator'
+import addMiddleware, { getPort, onClose, production, serverCertificateOptions } from './createSecureServer'
+import { BASE_PATH, isProductionEnvironment } from '../common'
+import RepoHooks from '../RepoHooks'
+import { paystackCallback, validatePaystackHook } from '../libs/Paystack'
+import CronDefinition from '../cronjobs/config/CronDefinition'
+import Logger from '../libs/Logger'
+import { resolve } from 'path'
+import sequelize from '../config/database' // Import the new database configuration
+import * as https from 'https'
+import * as http from 'http'
+import { startServerTerminatorListener } from './serverTerminatorEvent'
+
+export default async () => {
+  const app: Express = express()
+  dotenv.config()
+  process.on('uncaughtException', (reason: any) => {
+    if (!reason.sendSignal || !reason.next) {
+      return Logger.log('error', reason)
+    }
+
+    reason.req.next({ sendSignal: reason.sendSignal }, reason.req, reason.res, reason.next)
+  })
+
+  process.on('unhandledRejection', (reason: any) => {
+    if (!reason.sendSignal || !reason.next) {
+      return Logger.log('error', reason)
+    }
+
+    reason.req.next({ sendSignal: reason.sendSignal }, reason.req, reason.res, reason.next)
+  })
+
+  const serverName = 'MainServer'
+  const options = serverCertificateOptions()
+  const server = production ? https.createServer(options, app) : http.createServer(app)
+
+  startServerTerminatorListener(serverName, () => {
+    server.close()
+    console.log('Server has been closed')
+    process.exit()
+  })
+
+  const REPO_HOOK_SERVER_SCHEME = process.env.REPO_HOOK_SERVER_SCHEME || ''
+  const repoHooksRouter = Router()
+  await addMiddleware({
+    router: repoHooksRouter,
+  })
+  await RepoHooks.instance(repoHooksRouter)
+  app.use(`/${REPO_HOOK_SERVER_SCHEME}`, repoHooksRouter)
+
+  const SCHEDULING_SERVER_SCHEME = process.env.SCHEDULING_SERVER_SCHEME || ''
+  const PAYSTACK_HOOK_ENDPOINT = process.env.PAYSTACK_HOOK_ENDPOINT || ''
+  const PAYSTACK_CALLBACK_ENDPOINT = process.env.PAYSTACK_CALLBACK_ENDPOINT || ''
+  const schedulingRouter = Router()
+  await addMiddleware({
+    router: schedulingRouter,
+  })
+  // Paystack hook event
+  schedulingRouter.get(PAYSTACK_HOOK_ENDPOINT, validatePaystackHook)
+  schedulingRouter.get(PAYSTACK_CALLBACK_ENDPOINT, paystackCallback)
+  app.use(`/${SCHEDULING_SERVER_SCHEME}`, schedulingRouter)
+
+  const MAIN_SERVER_SCHEME = process.env.MAIN_SERVER_SCHEME || ''
+  const mainRouter = Router()
+  await addMiddleware({
+    router: mainRouter,
+  })
+  const routing = new Routing(mainRouter)
+  routing.allRoutes()
+  app.use(`/${MAIN_SERVER_SCHEME}`, mainRouter)
+
+  const CDN_SCHEME = process.env.CDN_SCHEME
+  const cdnRouter = Router()
+  await addMiddleware({
+    router: cdnRouter,
+  })
+  const cdnDir = resolve(BASE_PATH, 'cdn')
+  cdnRouter.use(
+    express.static(cdnDir, {
+      maxAge: '1d',
+      setHeaders: (res) => {
+        res.setHeader('Cache-Control', 'public, max-age=86400')
+        res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+      },
+    }),
+  )
+  app.use(`/${CDN_SCHEME}`, cdnRouter)
+
+  app.use(terminator)
+
+  try {
+    await sequelize.authenticate() // Use Sequelize to authenticate the database connection
+    console.log('Database connection has been established successfully.')
+
+    // Synchronize Sequelize models with the database
+    await sequelize.sync({ alter: true }) // Use `alter: true` to update the schema without dropping tables
+    console.log('Database synchronized successfully.')
+
+    server.listen(() => {
+      const port = getPort(server)
+      console.log(serverName, `listening on port ${port} `)
+      new CronDefinition().start().catch((error) => {
+        Logger.log('error', error)
+      })
+    })
+
+    onClose(server, async () => {
+      await sequelize.close() // Close the Sequelize connection on server shutdown
+    })
+  } catch (error) {
+    console.error('Unable to connect to the database:', error)
+    process.exit(1) // Exit the process if the database connection fails
+  }
+
+  return app
+}

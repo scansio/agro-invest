@@ -1,0 +1,10 @@
+{
+  "web": {
+    "client_id": "3453453453566-3werwr233243wwew.apps.googleusercontent.com",
+    "project_id": "dev-lambda-35354364-s1",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "IOUOIO_IUIUH90098_KJASKHA89_6766tuytu"
+  }
+}

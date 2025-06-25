@@ -1,0 +1,14 @@
+{
+  "name": "masssee",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run npm \"run build\"",
+    "npm": "scripts/npm.sh",
+    "mongo-up": "scripts/mongo-up.sh",
+    "mongo-down": "podman-compose down"
+  },
+  "author": "Emmanuel Elom <scansioquielom@gmail.com>",
+  "private": true,
+  "license": "MIT",
+  "description": "Advertising project"
+}

@@ -1,0 +1,81 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the current repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.19.0'
+
+      # Install dependencies and build each package
+      - name: Install and Build Backend
+        working-directory: packages/backend
+        run: |
+          npm install -f
+          npm run build
+
+      - name: Install and Build Admin
+        working-directory: packages/admin
+        run: |
+          npm install -f
+          touch .env  # Create the file if it doesn't exist
+          sed -i '/^REBLEND_APP_ENVIRONMENT=/d' .env
+          echo "REBLEND_APP_ENVIRONMENT=production" >> .env
+          CI='' npm run build
+
+      - name: Install and Build Frontend
+        working-directory: packages/frontend
+        run: |
+          npm install -f
+          touch .env  # Create the file if it doesn't exist
+          sed -i '/^REBLEND_APP_ENVIRONMENT=/d' .env
+          echo "REBLEND_APP_ENVIRONMENT=production" >> .env
+          CI='' npm run build
+          rm -f .gitignore
+          rm -f .htaccess
+
+      # Clone the production repository
+      - name: Checkout Production Repository
+        uses: actions/checkout@v3
+        with:
+          repository: elomscansio/masssee-production
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: production-repo
+          ref: main
+
+
+      # Copy built artifacts to the production repository
+      - name: Copy Built Artifacts
+        run: |
+          cp production-repo/README.md packages/backend
+          cp production-repo/.env packages/backend
+          rm -rf production-repo/*
+          cp -r packages/backend/. production-repo
+
+      # Commit and push changes to the production repository
+      - name: Commit and Push Changes
+        run: |
+          cd production-repo
+          # Set all directories to 755
+          find . -type d -exec chmod 755 {} +
+          # Set all files to 644
+          find . -type f -exec chmod 644 {} +
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Deploy built artifacts from main branch"
+          git push

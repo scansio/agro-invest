@@ -1,0 +1,1 @@
+RewriteRule ^(.*)$ [PROTOCOL]://[IP]:[PORT]/$1 [P]
