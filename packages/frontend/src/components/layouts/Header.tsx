@@ -4,7 +4,7 @@ import { routes } from "../../lib/routes";
 
 export const Header: FC = () => {
   return (
-    <header class="flex flex-row items-center justify-between px-6 py-3 mb-4 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700 shadow-sm w-full sticky top-0 z-30 transition-colors duration-300">
+    <header class="flex flex-row items-center justify-between px-6 py-3 mb-4 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700 shadow-sm w-full z-30">
       {/* Brand Logo */}
       <div class="flex items-center gap-2">
         <img

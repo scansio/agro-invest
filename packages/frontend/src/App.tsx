@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Main />
-      <style>{`* {transition: all 350ms 100ms} `}</style>
+      <style>{`* {transition: all 350ms ease} `}</style>
     </>
   );
 }

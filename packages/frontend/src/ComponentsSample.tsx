@@ -1,6 +1,6 @@
-import Reblend, { FC, useState, useRef } from "reblendjs";
+import Reblend, { FC, useState, useRef, useEffectAfter, useEffect } from "reblendjs";
 import { Button } from "./components/basics/Button";
-import { Alert } from "./components/basics/Alert";
+import { Alert, AlertContainer, message } from "./components/basics/Alert";
 import { Card } from "./components/basics/Card";
 import { Tab } from "./components/basics/Tab";
 import { Panel } from "./components/basics/Panel";
@@ -25,14 +25,23 @@ export const ComponentsSample: FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState("support");
 
+  useEffectAfter(() => {
+    message("Welcome to the Components Sample! 1", "info");
+    message("Welcome to the Components Sample!", "warning");
+    message("Welcome to the Components Sample!", "danger");
+    message("Welcome to the Components Sample!", "success");
+    message("Welcome to the Components Sample!", "neutral");
+  }, []);
+
   return (
     <div class="container mx-auto p-6">
+      <AlertContainer />
       <h1 class="text-3xl font-bold mb-4">Component Sample</h1>
 
       <hr class="py-10 " />
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Buttons State</h2>
-        <div className="flex flex-row gap-4 items-center">
+        <div className="flex flex-row flex-wrap gap-4 items-center">
           {buttons.map((button) => (
             <div key={button}>
               <label className="text-lg font-bold mb-2 block">
@@ -52,7 +61,7 @@ export const ComponentsSample: FC = () => {
       <hr class="py-10 " />
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Alerts</h2>
-        <div className="flex flex-row gap-4 items-center">
+        <div className="flex flex-row flex-wrap gap-4 items-center">
           {alerts.map((alert) => (
             <div key={alert}>
               <label className="text-lg font-bold mb-2 block">
@@ -239,11 +248,7 @@ const PopperAlertSample = () => {
   return (
     <div className="flex flex-col items-center gap-2">
       <label className="text-lg font-bold mb-2 block">AlertPopper</label>
-      <Button
-        ref={btnRef}
-        variant="danger"
-        onClick={() => setOpen((v) => !v)}
-      >
+      <Button ref={btnRef} variant="danger" onClick={() => setOpen((v) => !v)}>
         Toggle AlertPopper
       </Button>
       <AlertPopper

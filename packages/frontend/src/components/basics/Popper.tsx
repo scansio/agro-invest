@@ -1,10 +1,4 @@
-import Reblend, {
-  FC,
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-} from "reblendjs";
+import Reblend, { FC, useRef, useCallback, useEffectAfter } from "reblendjs";
 import { createPopper, Instance, Placement } from "@popperjs/core";
 
 export type PopperProps = {
@@ -29,7 +23,7 @@ export const Popper: FC<PopperProps> = ({
   const popperRef = useRef<HTMLDivElement>(null!);
   const popperInstance = useRef<Instance | null>(null);
 
-  useEffect(() => {
+  useEffectAfter(() => {
     if (open && reference && popperRef.current) {
       popperInstance.current = createPopper(reference, popperRef.current, {
         placement,
@@ -59,7 +53,7 @@ export const Popper: FC<PopperProps> = ({
   });
 
   // Close on click outside
-  useEffect(() => {
+  useEffectAfter(() => {
     if (!open) return;
 
     document.addEventListener("mousedown", handle);
@@ -70,13 +64,12 @@ export const Popper: FC<PopperProps> = ({
     <div
       ref={popperRef}
       className={
-        "z-50 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded shadow-lg p-2 transition-all " +
+        "z-50 dark:bg-neutral-900 dark:border-neutral-700 rounded p-2 " +
         className
       }
-      style={{ position: "absolute" }}
       role="tooltip"
     >
-      Overlay
+      {children}
     </div>
   );
 };

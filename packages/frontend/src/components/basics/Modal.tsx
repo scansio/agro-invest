@@ -1,4 +1,5 @@
-import Reblend, { FC } from "reblendjs";
+import Reblend, { FC, Portal } from "reblendjs";
+import { Card } from "./Card";
 
 export const Modal: FC<{
   open: boolean;
@@ -27,30 +28,35 @@ export const Modal: FC<{
   };
 
   return open ? (
-    <div
-      class={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 transition-all duration-200${
-        fullScreen ? " w-full h-full" : ""
-      }`}
-      onClick={handleBackdropClick}
-      style={fullScreen ? { width: "100vw", height: "100vh" } : {}}
-    >
+    <Portal portal={document.body}>
       <div
-        class={`bg-white rounded shadow-lg p-8 relative ${className || ""} ${
-          fullScreen ? "w-full h-full flex flex-col justify-center" : ""
-        }`}
-        onClick={(e) => e.stopPropagation()}
-        style={fullScreen ? { maxWidth: "100vw", maxHeight: "100vh" } : {}}
+        class={`fixed inset-0 z-50 flex flex-col sm:items-center justify-between bg-black bg-opacity-40 `}
+        onClick={handleBackdropClick}
+        style={fullScreen ? { width: "100vw", height: "100vh" } : {}}
       >
-        {noCloseButton ? null : (
-          <button
-            class="absolute top-1 right-2 text-neutral-400 text-xl font-extrabold hover:text-neutral-900"
-            onClick={onClose}
+        <div></div>
+        <div class="relative m-4">
+          <Card
+            class={`relative overscroll-none ${className || ""} ${
+              fullScreen ? "w-full h-full flex flex-col justify-center" : ""
+            }`}
+            onClick={(e) => e.stopPropagation()}
+            style={fullScreen ? { maxWidth: "100vw", maxHeight: "100vh" } : {}}
           >
-            &times;
-          </button>
-        )}
-        {children}
+            {children}
+          </Card>
+
+          {noCloseButton ? null : (
+            <button
+              class="absolute top-0 right-0 text-neutral-400 text-xl font-extrabold hover:text-neutral-900 bg-white px-2 rounded-full border"
+              onClick={onClose}
+            >
+              &times;
+            </button>
+          )}
+        </div>
+        <div class="py-6 sm:py-0"></div>
       </div>
-    </div>
+    </Portal>
   ) : null;
 };

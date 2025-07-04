@@ -1,6 +1,7 @@
 import Reblend, { FC, useMemo } from "reblendjs";
 import { routes } from "../../lib/routes";
 import { Link, useLocation } from "reblend-router";
+import { Tooltip } from "../basics/Tooltip";
 
 export const Docker: FC = () => {
   const location = useLocation();
@@ -14,22 +15,29 @@ export const Docker: FC = () => {
       .filter((route) => route.showOnDocker)
       .map((route) => (
         <Link
-          to={route.redirectUri}
-          className={
-            "flex flex-col items-center justify-center px-2 py-1 mx-1 rounded-lg transition hover:bg-brand-50 dark:hover:bg-brand-900 group min-w-[64px] " +
-            (isActive(route.redirectUri)
-              ? "bg-brand-100 dark:bg-brand-800"
-              : "bg-transparent")
-          }
-          aria-label={route.tag}
-          key={route.path}
-        >
-          <div class="flex items-center justify-center w-5 h-5 text-brand-600 dark:text-brand-300 group-hover:text-brand-800 dark:group-hover:text-brand-100 transition">
-            {route.icon}
-          </div>
-          <div class="text-xs font-medium text-neutral-700 dark:text-neutral-200 group-hover:text-brand-700 dark:group-hover:text-brand-100 truncate w-full text-center">
-            {route.tag}
-          </div>
+        className={
+              "flex flex-col items-center justify-center py-2 rounded-lg transition hover:bg-brand-50 dark:hover:bg-brand-900 group min-w-[64px] " +
+              (isActive(route.redirectUri)
+                ? "bg-brand-100 dark:bg-brand-800"
+                : "bg-transparent")
+            }
+        to={route.redirectUri} aria-label={route.tag} key={route.path}>
+          <Tooltip
+            className={
+              "flex flex-col items-center justify-center px-2 py-1 rounded-lg transition hover:bg-brand-50 dark:hover:bg-brand-900 group min-w-[64px] " +
+              (isActive(route.redirectUri)
+                ? "bg-brand-100 dark:bg-brand-800"
+                : "bg-transparent")
+            }
+            content={route.tag}
+          >
+            <div class="flex items-center justify-center w-5 h-5 text-brand-600 dark:text-brand-300 group-hover:text-brand-800 dark:group-hover:text-brand-100 transition">
+              {route.icon}
+            </div>
+            <div class="text-xs font-medium text-neutral-700 dark:text-neutral-200 group-hover:text-brand-700 dark:group-hover:text-brand-100 truncate w-full text-center">
+              {route.tag}
+            </div>
+          </Tooltip>
         </Link>
       ));
   }, location?.path);

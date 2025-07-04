@@ -7,9 +7,12 @@ export type NavProps = {
 };
 
 export const Nav: FC<NavProps> = ({ items, className = "" }) => (
-  <nav class={`flex gap-4 items-center ${className}`}>
+  <nav
+    class={`flex gap-4 items-center overflow-x-auto scrollbar-hide ${className}`}
+    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+  >
     {items.map((item) => (
-      <Link href={item.href} class="text-brand font-semibold hover:underline">
+      <Link href={item.href} class="font-normal text-base hover:underline">
         {item.label}
       </Link>
     ))}

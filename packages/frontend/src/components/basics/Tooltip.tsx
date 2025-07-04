@@ -7,6 +7,7 @@ export type TooltipProps = {
   placement?: Placement;
   children: any;
   className?: string;
+  popperClassName?: string;
 };
 
 export const Tooltip: FC<TooltipProps> = ({
@@ -14,6 +15,7 @@ export const Tooltip: FC<TooltipProps> = ({
   placement = "top",
   children,
   className = "",
+  popperClassName = "",
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null!);
@@ -26,11 +28,11 @@ export const Tooltip: FC<TooltipProps> = ({
         placement={placement}
         className={
           "text-xs px-2 py-1 bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-900 " +
-          className
+          popperClassName
         }
         onClose={() => setOpen(false)}
       >
-        {"Guy place"}
+        {content}
       </Popper>
       <div
         ref={ref}
@@ -40,6 +42,7 @@ export const Tooltip: FC<TooltipProps> = ({
         onBlur={() => setOpen(false)}
         tabIndex={0}
         aria-describedby={open ? "tooltip" : undefined}
+        className={className}
       >
         {children}
       </div>
