@@ -4,6 +4,7 @@ import SocialModel from '../social/SocialModel'
 import { ISocialAdvert } from './ISocialAdvert'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../../common'
 
 class SocialAdvertModel extends Model<ISocialAdvert, CreateType<ISocialAdvert>> {}
 
@@ -34,10 +35,9 @@ TimestampsPlugin(
         key: '_id',
       },
     },
-    duration: {
-      type: DataTypes.JSON,
+    duration: JsonField({
       allowNull: false,
-    },
+    }),
     callToAction: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -46,14 +46,12 @@ TimestampsPlugin(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    targetAudience: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    targetAudience: JsonField({
       allowNull: false,
-    },
-    contentFormat: {
-      type: DataTypes.JSON,
+    }),
+    contentFormat: JsonField({
       allowNull: false,
-    },
+    }),
     amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -66,14 +64,12 @@ TimestampsPlugin(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    assets: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    assets: JsonField({
       allowNull: false,
-    },
-    validationUrls: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    }),
+    validationUrls: JsonField({
       allowNull: true,
-    },
+    }),
     campaignStartDate: {
       type: DataTypes.DATE,
       allowNull: false,

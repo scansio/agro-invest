@@ -3,6 +3,7 @@ import UserModel from '../../user/UserModel'
 import { IBusiness } from './IBusiness'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../../common'
 
 class BusinessModel extends Model<IBusiness, CreateType<IBusiness>> {}
 
@@ -37,22 +38,18 @@ TimestampsPlugin(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    openingHours: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    openingHours: JsonField({
       allowNull: false,
-    },
-    estimatedFootTraffic: {
-      type: DataTypes.JSON,
+    }),
+    estimatedFootTraffic: JsonField({
       allowNull: false,
-    },
-    targetAudience: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    }),
+    targetAudience: JsonField({
       allowNull: false,
-    },
-    media: {
-      type: DataTypes.JSON,
+    }),
+    media: JsonField({
       allowNull: false,
-    },
+    }),
     pricePerDay: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -60,14 +57,12 @@ TimestampsPlugin(
         min: 1,
       },
     },
-    durations: {
-      type: DataTypes.JSON,
+    durations: JsonField({
       allowNull: false,
-    },
-    assets: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    }),
+    assets: JsonField({
       allowNull: false,
-    },
+    }),
     ownershipType: {
       type: DataTypes.STRING,
       allowNull: false,

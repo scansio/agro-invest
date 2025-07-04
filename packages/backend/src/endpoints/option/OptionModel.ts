@@ -2,6 +2,7 @@ import { DataTypes, Model } from 'sequelize'
 import IOption from './IOption'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../common'
 
 class OptionModel extends Model<IOption, CreateType<IOption>> {}
 
@@ -13,9 +14,7 @@ TimestampsPlugin(
       allowNull: false,
       unique: true,
     },
-    value: {
-      type: DataTypes.JSON,
-    },
+    value: JsonField(),
     description: {
       type: DataTypes.STRING,
     },

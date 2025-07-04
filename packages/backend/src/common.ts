@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request } from 'express'
+import e, { Request } from 'express'
 import { DAY } from './configs/constants'
-
-import createDOMPurify from 'dompurify'
+import { DataTypes, ModelAttributeColumnOptions } from 'sequelize'
 import SharedConfig from './libs/SharedConfig'
 import path, { join, resolve } from 'path'
 import { writeFile, readdir, stat } from 'fs/promises'
@@ -502,13 +501,13 @@ export const isProductionEnvironment = () => String(process.env.ENVIRONMENT).toL
 export const BASE_PATH = resolve(__dirname, '..')
 
 export function getApplicationDateFormat(date?: Date | string | IDate): IDate {
-  let tDate: Date = new Date();
+  let tDate: Date = new Date()
   if (date instanceof Date) {
-    tDate = date;
+    tDate = date
   } else if (typeof date === 'string') {
-    tDate = new Date(date);
+    tDate = new Date(date)
   } else if (typeof date === 'object' && 'timeString' in date) {
-    tDate = new Date(date.date);
+    tDate = new Date(date.date)
   }
 
   const formatter = new Intl.DateTimeFormat('en-NG', {
@@ -516,15 +515,26 @@ export function getApplicationDateFormat(date?: Date | string | IDate): IDate {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-  });
+  })
 
-  const timeString = formatter.format(tDate);
-  const dateString = tDate.toLocaleDateString('en-NG', { timeZone: 'Africa/Lagos' });
+  const timeString = formatter.format(tDate)
+  const dateString = tDate.toLocaleDateString('en-NG', { timeZone: 'Africa/Lagos' })
 
   return {
     timeString,
     dateString,
     time: tDate.getTime(),
     date: tDate,
-  };
+  }
+}
+
+export function JsonField(extend?: IAny): ModelAttributeColumnOptions {
+  return {
+    type: DataTypes.JSON,
+    get(fieldName: string) {
+      const rawValue = this.getDataValue(fieldName)
+      return typeof rawValue === 'string' ? JSON.parse(rawValue) : rawValue
+    },
+    ...(extend || {}),
+  } as any
 }

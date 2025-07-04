@@ -9,7 +9,7 @@ import {
 } from 'sequelize'
 import { ACTIVE } from '../../configs/constants'
 import sequelize from '../../configs/database'
-import { getApplicationDateFormat } from '../../common'
+import { getApplicationDateFormat, JsonField } from '../../common'
 
 const TimestampsPlugin = <T extends Model<any, any>>(
   option: { [model: string]: ModelStatic<T> },
@@ -66,19 +66,16 @@ const TimestampsPlugin = <T extends Model<any, any>>(
         type: DataTypes.INTEGER,
         defaultValue: ACTIVE,
       },
-      createdAt: {
-        type: DataTypes.JSON,
+      createdAt: JsonField({
         defaultValue: () => getApplicationDateFormat(),
-      },
-      updatedAt: {
-        type: DataTypes.JSON,
-      },
+      }),
+      updatedAt: JsonField({}),
       ...modelAttributes,
     },
     {
       sequelize: sequelize,
       modelName: modelName?.split('Model')[0] || modelName,
-      //timestamps: true, // Enable Sequelize's built-in timestamps
+      timestamps: true, // Enable Sequelize's built-in timestamps
     },
   )
 

@@ -36,8 +36,8 @@ import SocialRoutes from './custom/social/SocialRoutes'
 const API: IAPI = [
   {
     info: {
-      title: 'MASSSEE APP API',
-      description: 'API for the MASSSEE platform',
+      title: 'AGROINVEST APP API',
+      description: 'API for the AGROINVEST platform',
       version: 'v1',
       servers: ['/main'],
       status: APIVersionStatus.ENABLED,

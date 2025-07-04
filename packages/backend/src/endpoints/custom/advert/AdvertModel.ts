@@ -4,6 +4,7 @@ import BusinessModel from '../business/BusinessModel'
 import { IAdvert } from './IAdvert'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../../common'
 
 class AdvertModel extends Model<IAdvert, CreateType<IAdvert>> {}
 
@@ -34,14 +35,12 @@ TimestampsPlugin(
         key: '_id',
       },
     },
-    duration: {
-      type: DataTypes.JSON,
+    duration: JsonField({
       allowNull: false,
-    },
-    contentFormat: {
-      type: DataTypes.JSON,
+    }),
+    contentFormat: JsonField({
       allowNull: false,
-    },
+    }),
     amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -54,14 +53,12 @@ TimestampsPlugin(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    assets: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    assets: JsonField({
       allowNull: false,
-    },
-    validationAssets: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    }),
+    validationAssets: JsonField({
       allowNull: true,
-    },
+    }),
     campaignStartDate: {
       type: DataTypes.DATE,
       allowNull: false,

@@ -3,6 +3,7 @@ import UserModel from '../../user/UserModel'
 import { ISocial } from './ISocial'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../../common'
 
 class SocialModel extends Model<ISocial, CreateType<ISocial>> {}
 
@@ -21,10 +22,9 @@ TimestampsPlugin(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    contentFormat: {
-      type: DataTypes.JSON,
+    contentFormat: JsonField({
       allowNull: false,
-    },
+    }),
     pricePerDay: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -32,18 +32,15 @@ TimestampsPlugin(
         min: 1,
       },
     },
-    durations: {
-      type: DataTypes.JSON,
+    durations: JsonField({
       allowNull: false,
-    },
-    estimatedTraffic: {
-      type: DataTypes.JSON,
+    }),
+    estimatedTraffic: JsonField({
       allowNull: false,
-    },
-    assets: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+    }),
+    assets: JsonField({
       allowNull: false,
-    },
+    }),
     platform: {
       type: DataTypes.STRING,
       allowNull: false,

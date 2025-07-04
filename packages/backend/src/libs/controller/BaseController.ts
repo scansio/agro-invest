@@ -52,8 +52,8 @@ class BaseController extends Sender {
     SharedConfig.set(process.env)
 
     const options = await OptionModel.findAll()
-    for (const {dataValues: option} of options) {
-      SharedConfig.set(option.name, option.value)
+    for (const option of options) {
+      SharedConfig.set((option as any).name, (option as any).value)
     }
     if (this.isPrivateRoute) {
       switch (this.isPrivateRoute) {

@@ -13,9 +13,8 @@ if (!dbConnectionString) {
 }
 
 const sequelize = new Sequelize(dbConnectionString, {
-  dialect: 'postgres', // Change this to your database dialect (e.g., 'mysql', 'sqlite', 'mssql', 'postgres', etc.)
+  dialect: 'mysql',
   logging: false, // Set to true to enable SQL query logging
-  dialectModulePath: 'pg',  
 })
 
 export default sequelize

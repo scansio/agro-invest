@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
+import { JsonField } from '../../common'
 
 class UserEmailNotificationModel extends Model {}
 
@@ -30,12 +31,8 @@ TimestampsPlugin(
     headers: {
       type: DataTypes.STRING,
     },
-    recipients: {
-      type: DataTypes.JSON,
-    },
-    attachments: {
-      type: DataTypes.JSON,
-    },
+    recipients: JsonField(),
+    attachments: JsonField(),
     call2Action: {
       type: DataTypes.STRING,
     },

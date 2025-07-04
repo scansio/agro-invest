@@ -23,7 +23,7 @@ export default function AssetSwitch({
   const currentSrc = useMemo(() => {
     return Array.isArray(assets) && assets[currentAssetIndex]
       ? IMAGE_BASE + assets[currentAssetIndex]
-      : "/masssee_icon.png";
+      : "/agroinvest_icon.png";
   }, [currentAssetIndex]);
 
   const prevAsset = () =>

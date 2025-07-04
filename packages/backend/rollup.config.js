@@ -1,8 +1,8 @@
-import replace from '@rollup/plugin-replace';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import { builtinModules, SourceMap } from 'module'; // For externalizing Node.js built-in modules
+import replace from '@rollup/plugin-replace'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
+import { builtinModules, SourceMap } from 'module' // For externalizing Node.js built-in modules
 
 export default {
   input: 'dist/index.js', // Entry file
@@ -26,5 +26,5 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'), // Replace environment variables
     }),
   ],
-  external: (id) => id.startsWith('node:'),
-};
+  external: ['pg-hstore'],
+}

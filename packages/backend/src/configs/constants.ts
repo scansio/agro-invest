@@ -76,7 +76,7 @@ export const WITHDRAWAL_DAY_DEFAULT = 'Monday'
 export const LOCATION_RANGE_KEY = 'LOCATION_RANGE'
 export const LOCATION_RANGE = 1000
 
-export const EXPORT_DIRNAME = 'masssee-data-export'
+export const EXPORT_DIRNAME = 'agroinvest-data-export'
 export const MIGRATE_DATA_URL = '/v1/migration'
 export const SERVER_UPDATE_DATA_URL = '/v1/migration/all'
 

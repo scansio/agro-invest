@@ -27,7 +27,7 @@ class RepoHooks {
   res?: Response
   next?: NextFunction
   commandTimeout!: number | undefined
-  MASSSEE_DEPLOYMENT_KEY: string
+  AGROINVEST_DEPLOYMENT_KEY: string
   GIT_ORIGIN: string
 
   private constructor(
@@ -35,8 +35,8 @@ class RepoHooks {
     private credential?: { username: string; password: string },
   ) {
     dotenv.config()
-    this.MASSSEE_DEPLOYMENT_KEY = `${process.env.MASSSEE_DEPLOYMENT_KEY}`
-    this.GIT_ORIGIN = `https://${this.MASSSEE_DEPLOYMENT_KEY}@github.com/${process.env.GITHUB_USERNAME}`
+    this.AGROINVEST_DEPLOYMENT_KEY = `${process.env.AGROINVEST_DEPLOYMENT_KEY}`
+    this.GIT_ORIGIN = `https://${this.AGROINVEST_DEPLOYMENT_KEY}@github.com/${process.env.GITHUB_USERNAME}`
   }
 
   static async instance(app?: Router, credential?: { username: string; password: string }) {
@@ -164,7 +164,7 @@ class RepoHooks {
       "npm stop",
       "sleep 30",
       "npm start"
-      /* 'sudo systemctl restart massseeMainServer' */,
+      /* 'sudo systemctl restart agroinvestMainServer' */,
     )
   }
 

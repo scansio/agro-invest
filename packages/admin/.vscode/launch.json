@@ -15,7 +15,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Open index.html",
-      "file": "/home/s/Desktop/projects/masssee/packages/admin/public/index.html"
+      "file": "/home/s/Desktop/projects/agroinvest/packages/admin/public/index.html"
     }
   ]
 }

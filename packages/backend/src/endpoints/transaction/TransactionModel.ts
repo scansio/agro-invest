@@ -3,6 +3,7 @@ import ITransaction from './ITransaction'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from '../user/UserModel'
+import { JsonField } from '../../common'
 
 class TransactionModel extends Model<ITransaction, CreateType<ITransaction>> {}
 
@@ -39,9 +40,7 @@ TimestampsPlugin(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    rawJSONData: {
-      type: DataTypes.JSON,
-    },
+    rawJSONData: JsonField(),
     reference: {
       type: DataTypes.STRING,
       allowNull: false,
