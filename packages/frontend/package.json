@@ -3,24 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@popperjs/core": "^2.11.8",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/typography": "^0.5.16",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
-    "axios": "^1.10.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "reblend-scripts": "^8.0.2",
-    "typescript": "^5.8.3",
-    "web-vitals": "^2.1.4"
+    "@tailwindcss/typography": "^0.5.16"
   },
   "scripts": {
     "start": "reblend-scripts start",
@@ -41,7 +29,5 @@
     ]
   },
   "devDependencies": {
-    "reblend-router": "^4.0.10",
-    "reblendjs": "^12.5.1"
   }
 }

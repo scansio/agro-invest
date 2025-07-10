@@ -3,6 +3,8 @@ import { IFAQ } from './IFAQ'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 
+interface FAQModel extends IFAQ {}
+
 class FAQModel extends Model<IFAQ, CreateType<IFAQ>> {}
 
 TimestampsPlugin(

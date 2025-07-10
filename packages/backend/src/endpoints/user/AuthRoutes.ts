@@ -9,7 +9,7 @@ const AuthRoutes: IControllerRoute = {
   controller: User,
   routes: [
     {
-      path: '/auth/google',
+      path: '/google',
       controllerMemberFunctionIdentifier: User.prototype.googleOauth2,
       method: RequestMethods.GET,
       metadata: {
@@ -17,7 +17,7 @@ const AuthRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/auth/verify',
+      path: '/verify',
       controllerMemberFunctionIdentifier: User.prototype.verifyGoogleOauth2,
       method: RequestMethods.GET,
       metadata: {

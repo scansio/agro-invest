@@ -5,6 +5,8 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from '../user/UserModel'
 
+interface TeamModel extends ITeam {}
+
 class TeamModel extends Model<ITeam, CreateType<ITeam>> {}
 
 TimestampsPlugin(

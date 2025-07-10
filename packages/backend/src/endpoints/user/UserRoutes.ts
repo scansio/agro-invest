@@ -7,7 +7,7 @@ const UserRoutes: IControllerRoute = {
   baseUrl: '/user',
   routes: [
     {
-      path: '/user/send-verification-mail/:email',
+      path: '/send-verification-mail/:email',
       controllerMemberFunctionIdentifier: User.prototype.sendVerificationMail,
       method: RequestMethods.GET,
       metadata: {
@@ -23,7 +23,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/send-forget-password-mail/:email',
+      path: '/send-forget-password-mail/:email',
       controllerMemberFunctionIdentifier: User.prototype.sendForgetPasswordMail,
       method: RequestMethods.GET,
       metadata: {
@@ -39,7 +39,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/send-otp-mail/:email',
+      path: '/send-otp-mail/:email',
       controllerMemberFunctionIdentifier: User.prototype.sendOtpMail,
       method: RequestMethods.GET,
       metadata: {
@@ -55,7 +55,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/logged',
+      path: '/logged',
       controllerMemberFunctionIdentifier: User.prototype.logged,
       method: RequestMethods.GET,
       metadata: {
@@ -65,7 +65,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: User.prototype.all,
@@ -89,7 +89,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/:uid([0-9]{10})',
+      path: '/:uid([0-9]{10})',
       validation: {
         param: {
           uid: {
@@ -124,7 +124,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/detail/:uid([0-9]{10})?',
+      path: '/detail/:uid([0-9]{10})?',
       validation: {
         param: {
           uid: {},
@@ -139,7 +139,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/login',
+      path: '/login',
       controllerMemberFunctionIdentifier: User.prototype.login,
       method: RequestMethods.POST,
       metadata: {
@@ -151,7 +151,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/verify-mail',
+      path: '/verify-mail',
       controllerMemberFunctionIdentifier: User.prototype.verifyEmail,
       method: RequestMethods.POST,
       metadata: {
@@ -160,7 +160,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/verify-forget-password',
+      path: '/verify-forget-password',
       controllerMemberFunctionIdentifier: User.prototype.verifyForgetPassword,
       method: RequestMethods.POST,
       metadata: {
@@ -176,7 +176,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/change-password',
+      path: '/change-password',
       controllerMemberFunctionIdentifier: User.prototype.changePassword as any,
       method: RequestMethods.POST,
       metadata: {
@@ -192,7 +192,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/change-pin',
+      path: '/change-pin',
       controllerMemberFunctionIdentifier: User.prototype.changePin as any,
       method: RequestMethods.POST,
       metadata: {
@@ -202,7 +202,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/create-pin',
+      path: '/create-pin',
       controllerMemberFunctionIdentifier: User.prototype.createPin,
       method: RequestMethods.POST,
       metadata: {
@@ -221,7 +221,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create user',
@@ -229,7 +229,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update user',
@@ -247,7 +247,7 @@ const UserRoutes: IControllerRoute = {
     },
 
     {
-      path: '/user/:uid([0-9]{10})',
+      path: '/:uid([0-9]{10})',
       validation: {
         param: {
           uid: {

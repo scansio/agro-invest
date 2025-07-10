@@ -1,8 +1,12 @@
 import { DataTypes, Model } from 'sequelize'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import { JsonField } from '../../common'
+import IUserEmailNotification from './IUserEmailNotification'
+import { CreateType } from '../../libs/types/ITimestamp'
 
-class UserEmailNotificationModel extends Model {}
+interface UserEmailNotificationModel extends IUserEmailNotification {}
+
+class UserEmailNotificationModel extends Model<IUserEmailNotification, CreateType<IUserEmailNotification>> {}
 
 TimestampsPlugin(
   { UserEmailNotificationModel },

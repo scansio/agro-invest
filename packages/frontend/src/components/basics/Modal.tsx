@@ -38,10 +38,10 @@ export const Modal: FC<{
         <div class="relative m-4">
           <Card
             class={`relative overscroll-none ${className || ""} ${
-              fullScreen ? "w-full h-full flex flex-col justify-center" : ""
+              fullScreen ? "w-full h-full max-h-screen max-w-screen" : ""
             }`}
             onClick={(e) => e.stopPropagation()}
-            style={fullScreen ? { maxWidth: "100vw", maxHeight: "100vh" } : {}}
+            style={fullScreen ? { width: "100vw", height: "100vh" } : {}}
           >
             {children}
           </Card>

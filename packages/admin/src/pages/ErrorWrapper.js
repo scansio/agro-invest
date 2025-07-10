@@ -8,45 +8,23 @@ import { Container } from "react-bootstrap";
 
 export default class ErrorWrapper extends Reblend {
   static ELEMENT_NAME = "ErrorWrapper";
-  constructor() {
-    super();
-  }
+
   _constructor() {
     super._constructor();
-    this.state = { hasError: false, error: "An error just occured" };
-  }
-
-  componentDidMount() {
-    /* fetcher.fetch(PUBLIC_OPTIONS).then((res) => {
-      if (res?.data?.options) {
-        for (const option of res?.data?.options) {
-          SharedConfig.setSessionData(option.name, option.value);
-        }
-        document.title =
-          (SharedConfig.getSessionData("SITE_TITLE") || SITE_TITLE) +
-          (SharedConfig.getSessionData("SITE_TAGLINE")
-            ? ` - ${SharedConfig.getSessionData("SITE_TAGLINE")}`
-            : "");
-
-        if (SharedConfig.getSessionData("SITE_DESCRIPTION")) {
-          const metaDescription = document.createElement("meta");
-          metaDescription.name = "description";
-          metaDescription.content =
-            SharedConfig.getSessionData("SITE_DESCRIPTION");
-
-          const charsetMeta = document.querySelector('meta[charset="utf-8"]');
-          if (charsetMeta) {
-            charsetMeta.insertAdjacentElement("afterend", metaDescription);
-          }
-        }
-      }
-    }); */
+    this.state = {
+      hasError: false,
+      error: "",
+    };
   }
 
   renderingErrorHandler(error) {
     if (error) {
-      this.setState({ hasError: true, error: error.message });
+      this.setState({
+        hasError: true,
+        error: error.message,
+      });
       console.error(error);
+      setTimeout(() => (this.state.hasError = false), 100);
     }
   }
 

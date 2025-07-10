@@ -5,6 +5,8 @@ import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from '../user/UserModel'
 import { JsonField } from '../../common'
 
+interface TransactionModel extends ITransaction {}
+
 class TransactionModel extends Model<ITransaction, CreateType<ITransaction>> {}
 
 TimestampsPlugin(

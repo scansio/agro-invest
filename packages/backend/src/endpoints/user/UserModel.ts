@@ -6,6 +6,8 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import { randomInt } from 'crypto'
 
+interface UserModel extends IUser {}
+
 class UserModel extends Model<IUser, CreateType<IUser>> {}
 
 TimestampsPlugin({ UserModel } as any, {

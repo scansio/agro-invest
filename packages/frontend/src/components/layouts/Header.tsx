@@ -1,6 +1,8 @@
 import Reblend, { FC } from "reblendjs";
 import { Nav } from "../basics/Nav";
 import { routes } from "../../lib/routes";
+import { Link } from "reblend-router";
+import { IMAGE_BASE } from "../../lib/RestEndpoints";
 
 export const Header: FC = () => {
   return (
@@ -28,13 +30,13 @@ export const Header: FC = () => {
         className="mx-8"
       />
       {/* User Avatar */}
-      <div class="flex items-center gap-2">
+      <Link to={routes.profile.redirectUri} class="flex items-center gap-2">
         <img
-          src="https://ui-avatars.com/api/?name=User&background=brand&color=fff"
-          alt="User"
-          class="h-9 w-9 rounded-full border-2 border-brand-300 dark:border-brand-600 shadow"
+          src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+          alt="Avatar"
+          class="inline-flex items-center justify-center bg-neutral-100 rounded-full h-10 w-10 object-cover"
         />
-      </div>
+      </Link>
     </header>
   );
 };

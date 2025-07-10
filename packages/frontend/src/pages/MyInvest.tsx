@@ -1,11 +1,12 @@
 import Reblend, { FC, useState } from "reblendjs";
 import { Tab } from "../components/basics/Tab";
+import { IMAGE_BASE } from "../lib/RestEndpoints";
 
 const myInvestments = [
   {
     id: 1,
     title: "Luxe Residence",
-    image: "/images/luxe-residence.jpg",
+    image: "/static/img/profile_picture.jpg",
     shares: 10,
     value: 50000,
     returns: "9.0% p.a.",
@@ -14,7 +15,7 @@ const myInvestments = [
   {
     id: 2,
     title: "Creek Holiday Bungalow",
-    image: "/images/creek-holiday.jpg",
+    image: "/static/img/profile_picture.jpg",
     shares: 5,
     value: 25000,
     returns: "9.0% p.a.",
@@ -44,14 +45,14 @@ export const MyInvest: FC = () => {
           Track your active and completed investments
         </div>
         <Tab active={tab} tabs={tabs} onTab={setTab} />
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4">
           {myInvestments.map((inv) => (
             <div
               key={inv.id}
               class="relative rounded-2xl overflow-hidden shadow bg-white flex flex-row items-center gap-4 p-4"
             >
               <img
-                src={inv.image}
+                src={IMAGE_BASE + inv.image}
                 alt={inv.title}
                 class="w-20 h-20 object-cover rounded-xl"
               />

@@ -70,7 +70,7 @@ class Testimonial extends BaseController {
       personAvatar,
       status,
     })
-    const { dataValues: prev } = (await TestimonialModel.findByPk(_id)) || { dataValues: null }
+    const prev = (await TestimonialModel.findByPk(_id))
 
     const [updatedCount, updatedRows] = await TestimonialModel.update(definedValues, {
       where: { _id },
@@ -90,7 +90,7 @@ class Testimonial extends BaseController {
   }
 
   async delete({ _id }: any) {
-    const { dataValues: deleted } = (await TestimonialModel.findOne({ where: { _id } })) || { dataValues: null }
+    const deleted = (await TestimonialModel.findOne({ where: { _id } }))
     if (!deleted) {
       this.status(false).statusCode(BAD_REQUEST).message('Testimonial failed to be deleted due to error').send()
     } else {

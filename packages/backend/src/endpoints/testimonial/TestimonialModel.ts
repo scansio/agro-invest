@@ -3,6 +3,8 @@ import { ITestimonial } from './ITestimonial'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 
+interface TestimonialModel extends ITestimonial {}
+
 class TestimonialModel extends Model<ITestimonial, CreateType<ITestimonial>> {}
 
 TimestampsPlugin(

@@ -22,11 +22,13 @@ type IParamSetOption = { param: string; ident: string; value: any };
 
 function ActionPane({
   tag,
+  baseUrl,
   authToken,
   route,
 }: {
   authToken: string;
   tag: string;
+  baseUrl: string;
   route: IRoute | undefined;
 }) {
   const [tryItOut, setTryItOut] = useReducer((pre: boolean) => !pre, false);
@@ -81,7 +83,7 @@ function ActionPane({
       BASE?.split(currentServer)?.shift()?.trim() || ""
     }${currentServer}${
       !currentServer || currentServer.endsWith("/") ? "" : "/"
-    }${currentApiVersion}${p
+    }${currentApiVersion}${baseUrl}${p
       .filter((pPath) => !pPath?.startsWith(":"))
       .join("/")}${q && q.length > 0 ? "?" + q.join("&") : ""}`;
     setUrl(u);

@@ -9,7 +9,7 @@ const PaystackEventLogRoutes: IControllerRoute = {
   baseUrl: '/paystack-event-log',
   routes: [
     {
-      path: '/paystack-event-log/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: PaystackEventLog.prototype.all,
@@ -20,7 +20,7 @@ const PaystackEventLogRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/paystack-event-log/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -35,7 +35,7 @@ const PaystackEventLogRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/paystack-event-log',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create paystack-event-log',
@@ -43,7 +43,7 @@ const PaystackEventLogRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/paystack-event-log',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update paystack-event-log',
@@ -51,7 +51,7 @@ const PaystackEventLogRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/paystack-event-log/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

@@ -2,6 +2,7 @@ import Reblend, { FC } from "reblendjs";
 import { Button } from "../components/basics/Button";
 import { Link } from "reblend-router";
 import { routes } from "../lib/routes";
+import { IMAGE_BASE } from "../lib/RestEndpoints";
 
 export const Home: FC = () => {
   const investments = () =>
@@ -12,9 +13,11 @@ export const Home: FC = () => {
       {/* Greeting and Add Cash */}
       <div class="flex flex-row items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="inline-flex items-center justify-center bg-neutral-100 rounded-full h-10 w-10">
-            <i class="fas fa-user text-neutral-400 text-xl" />
-          </span>
+          <img
+            src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+            alt="Avatar"
+            class="inline-flex items-center justify-center bg-neutral-100 rounded-full h-10 w-10 object-cover"
+          />
           <div>
             <div class="font-bold text-lg text-neutral-900">Hi, Emmanuel</div>
             <div class="text-neutral-400 text-sm">How are you doing today?</div>

@@ -9,7 +9,7 @@ const BankDetailRoutes: IControllerRoute = {
   baseUrl: '/bank-detail',
   routes: [
     {
-      path: '/bank-detail/all',
+      path: '/all',
       validation: { query: { q: {} } },
       controllerMemberFunctionIdentifier: BankDetail.prototype.all,
       method: RequestMethods.GET,
@@ -19,7 +19,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/bank-detail/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -34,7 +34,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/bank-detail/:uid([0-9]{8})',
+      path: '/:uid([0-9]{8})',
       controllerMemberFunctionIdentifier: BankDetail.prototype.getBankDetailByUid,
       validation: {
         param: {
@@ -50,7 +50,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/bank-detail',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create bank detail',
@@ -58,7 +58,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/bank-detail',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update bank detail',
@@ -66,7 +66,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/bank-detail/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

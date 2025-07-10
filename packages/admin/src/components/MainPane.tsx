@@ -13,7 +13,7 @@ const MainPane = ({
   return [
     controllerRoutes?.find((controllerRoute) => {
       const tag = `${controllerRoute?.tag}`;
-      const hashTag = `#${tag}-tag`;
+      const hashTag = encodeURI(`#${tag}-tag`);
       return hash === hashTag || hash?.split("#")[1] === tag;
     }),
   ].map((controllerRoute) => {

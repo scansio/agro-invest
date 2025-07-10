@@ -85,11 +85,15 @@ class User extends BaseController {
           .send()
       }
     } else {
-      if (isAdmin || user.dataValues.status === ACTIVE) {
+      if (isAdmin || user.status === ACTIVE) {
         const authenticate = new Authenticate(this.req)
         const token = authenticate.generateToken({
-          ...(user as any).dataValues,
-          uid: user.dataValues._id,
+          ...user.dataValues,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          uid: user._id,
+          pin: user.pin ? '****' : '',
+          password: '****',
         })
         const message = 'Logged in'
         if (this.oauth2) {
@@ -97,9 +101,9 @@ class User extends BaseController {
             SCHEME + SIGNIN + encodeURIComponent(token) + '/' + ACTIVE + '/' + encodeURIComponent(message),
           )
         } else {
-          return await this.status(true).message(message).setData(token).uid(user.dataValues._id).send()
+          return await this.status(true).message(message).setData(token).uid(user._id).send()
         }
-      } else if (user.dataValues.status === HOTLISTED) {
+      } else if (user.status === HOTLISTED) {
         const message = 'Account suspended for policy violation'
         if (this.oauth2) {
           return this.res.redirect(
@@ -144,18 +148,17 @@ class User extends BaseController {
       return this.status(false).statusCode(NOT_FOUND).message('User not found').send()
     }
     const userProfile = await UserProfileModel.findOne({ where: { uid } })
-    const country =
-      userProfile?.dataValues?.country &&
-      (await CountrieModel.findAll({ where: { _id: userProfile.dataValues.country } }))
-    const state =
-      userProfile?.dataValues?.state && (await StateModel.findAll({ where: { _id: userProfile.dataValues.state } }))
+    const country = userProfile?.country && (await CountrieModel.findAll({ where: { _id: userProfile.country } }))
+    const state = userProfile?.state && (await StateModel.findAll({ where: { _id: userProfile.state } }))
     const details = {
-      ...(userProfile as any)?.dataValues,
-      ...(user as any)?.dataValues,
-      uid: user.dataValues._id,
+      ...userProfile?.dataValues,
+      ...user?.dataValues,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      uid: user._id,
       state,
       country,
-      pin: user.dataValues.pin ? '****' : '',
+      pin: user.pin ? '****' : '',
       password: '****',
     }
     this.status(true)
@@ -207,19 +210,19 @@ class User extends BaseController {
         status: INACTIVE,
       })
     }
-    await UserProfileModel.create({ uid: user.dataValues._id })
-    await WalletModel.create({ uid: user.dataValues._id })
+    await UserProfileModel.create({ uid: user._id })
+    await WalletModel.create({ uid: user._id })
 
     new Mailer()
       .setSubject('Welcome')
-      .addRecipient({ name: user.dataValues.firstname, address: user.dataValues.email })
+      .addRecipient({ name: user.firstname, address: user.email })
       .setBody(SharedConfig.get('WELCOME_TEMPLATE'), SharedConfig.get('SITE_URL'), 'Learn more')
       .send()
 
     if (!this.oauth2) {
       new Mailer()
         .setSubject('Email Verification')
-        .addRecipient({ name: user.dataValues.firstname, address: user.dataValues.email })
+        .addRecipient({ name: user.firstname, address: user.email })
         .setBody(
           `
     <h2>Confirmation Code</h2>
@@ -231,13 +234,13 @@ class User extends BaseController {
     } else {
       new Mailer()
         .setSubject('Login credential')
-        .addRecipient({ name: user.dataValues.firstname, address: user.dataValues.email })
+        .addRecipient({ name: user.firstname, address: user.email })
         .setBody(
           `
     <h2>Account Creation with Google</h2>
     <p>Here is your login credential kindly change your password.</p>
     <p>
-      <b>Username/Email</b>: ${user.dataValues.email}<br/> 
+      <b>Username/Email</b>: ${user.email}<br/> 
       <b>Password</b>: ${password} <br />
     </p>
     `,
@@ -252,7 +255,7 @@ class User extends BaseController {
 
     return await this.statusCode(POST_SUCCESS)
       .success('Account Created. Check your mailbox for confirmation code')
-      .uid(user.dataValues._id)
+      .uid(user._id)
       .send()
   }
 
@@ -274,7 +277,7 @@ class User extends BaseController {
       : {}
     const { uid, firstname, lastname, email, expoToken, role, bio, country, state, phone, type, status }: any =
       this.req.body
-    const { dataValues: theUser } = (await this.isValidUser(uid)) as UserModel
+    const theUser = await this.isValidUser(uid)
     await this.ownerAndAdminAccess(uid)
     const definedValues = getDefinedValuesFrom({
       firstname,
@@ -337,9 +340,7 @@ class User extends BaseController {
 
     const userInfoUpdate = await UserModel.update(definedValues, {
       where:
-        (this.directRequest && !oldPassword) || !user?.dataValues?.password
-          ? { _id: uid }
-          : { _id: uid, password: oldPassword },
+        (this.directRequest && !oldPassword) || !user?.password ? { _id: uid } : { _id: uid, password: oldPassword },
       returning: true,
     })
 
@@ -352,7 +353,7 @@ class User extends BaseController {
     } else {
       return await this.statusCode(POST_SUCCESS)
         .success('Password changed')
-        .uid(userInfoUpdate[1][0].dataValues._id)
+        .uid(userInfoUpdate[1][0]._id)
         .setData(userInfoUpdate[1][0])
         .send()
     }
@@ -371,7 +372,7 @@ class User extends BaseController {
       return await this.statusCode(BAD_REQUEST).errorCode(INVALID_CONFIRMATION_CODE).error('Invalid OTP').send()
     }
 
-    const exDuration = Date.now() - auth.dataValues.duration
+    const exDuration = Date.now() - auth.duration
 
     if (exDuration > MIN * 10) {
       auth.destroy()
@@ -418,20 +419,20 @@ class User extends BaseController {
     } else {
       const code = randomInt(123456, 987654)
       const auth = {
-        uid: user.dataValues._id,
+        uid: user._id,
         code,
         email,
         duration: Date.now(),
       }
 
       const [record, created] = await UserEmailAuthenticationModel.findOrCreate({
-        where: { uid: user.dataValues._id },
+        where: { uid: user._id },
         defaults: auth,
       })
 
       if (!created) {
         await UserEmailAuthenticationModel.update(auth, {
-          where: { uid: user.dataValues._id },
+          where: { uid: user._id },
         })
       }
 
@@ -440,7 +441,7 @@ class User extends BaseController {
       const mailer = new Mailer()
       const sent = await mailer
         .setSubject('Forgot Password Verification')
-        .addRecipient({ name: user.dataValues.firstname, address: email })
+        .addRecipient({ name: user.firstname, address: email })
         .setBody(
           `
         <h2>Forgot Password Verification Code</h2>
@@ -472,7 +473,7 @@ class User extends BaseController {
         .error('Wrong Email or Confirmation Code')
         .send()
     } else {
-      const exDuration = Date.now() - result?.dataValues?.duration
+      const exDuration = Date.now() - result?.duration
       if (exDuration > MIN * 10) {
         result.destroy()
         return await this.statusCode(BAD_REQUEST)
@@ -484,7 +485,7 @@ class User extends BaseController {
         const user = await UserModel.findOne({ where: { email } })
         this.directRequest = true
         const changed = await this.changePassword({
-          uid: user?.dataValues._id,
+          uid: user?._id,
           newPassword,
         })
         this.directRequest = false
@@ -501,25 +502,25 @@ class User extends BaseController {
     const user = await UserModel.findOne({ where: { email } })
     if (!user) {
       return await this.statusCode(NOT_FOUND).errorCode(USER_NOTFOUND).message('User Not Found').send()
-    } else if (user.dataValues.status === ACTIVE) {
+    } else if (user.status === ACTIVE) {
       return await this.statusCode(BAD_REQUEST).errorCode(ALREADY_VERIFIED).error('User Already verified').send()
     } else {
       const code = randomInt(123456, 987654)
       const auth = {
-        uid: user.dataValues._id,
+        uid: user._id,
         code,
         email,
         duration: Date.now(),
       }
       try {
         const [record, created] = await UserEmailAuthenticationModel.findOrCreate({
-          where: { uid: user.dataValues._id },
+          where: { uid: user._id },
           defaults: auth,
         })
 
         if (!created) {
           await UserEmailAuthenticationModel.update(auth, {
-            where: { uid: user.dataValues._id },
+            where: { uid: user._id },
           })
         }
       } catch (error) {
@@ -528,7 +529,7 @@ class User extends BaseController {
       const mailer = new Mailer()
       const sent = await mailer
         .setSubject('Email Verification')
-        .addRecipient({ name: user.dataValues.firstname, address: email })
+        .addRecipient({ name: user.firstname, address: email })
         .setBody(
           `
         <h2>Email Verification Code</h2>
@@ -556,20 +557,20 @@ class User extends BaseController {
     } else {
       const code = randomInt(123456, 987654)
       const auth = {
-        uid: user.dataValues._id,
+        uid: user._id,
         code,
         email,
         duration: Date.now(),
       }
       try {
         const [record, created] = await UserEmailAuthenticationModel.findOrCreate({
-          where: { uid: user.dataValues._id },
+          where: { uid: user._id },
           defaults: auth,
         })
 
         if (!created) {
           await UserEmailAuthenticationModel.update(auth, {
-            where: { uid: user.dataValues._id },
+            where: { uid: user._id },
           })
         }
       } catch (error) {
@@ -578,7 +579,7 @@ class User extends BaseController {
       const mailer = new Mailer()
       const sent = await mailer
         .setSubject('OTP Request')
-        .addRecipient({ name: user.dataValues.firstname, address: email })
+        .addRecipient({ name: user.firstname, address: email })
         .setBody(
           `
         <h2>Authentication token</h2>
@@ -613,7 +614,7 @@ class User extends BaseController {
         .error('Wrong Email or Confirmation Code')
         .send()
     } else {
-      const exDuration = Date.now() - result.dataValues.duration
+      const exDuration = Date.now() - result.duration
       if (exDuration > MIN * 10) {
         return await this.statusCode(BAD_REQUEST)
           .errorCode(EXPIRED_CONFIRMATION_CODE)
@@ -632,14 +633,14 @@ class User extends BaseController {
         const user = updatedUser[1][0]
         const authenticate = new Authenticate(this.req)
         const token = authenticate.generateToken({
-          ...(user as any).dataValues,
+          ...(user as any),
           pin: '****',
           password: '****',
-          uid: user.dataValues._id,
+          uid: user._id,
         })
         return await this.statusCode(GET_SUCCESS)
-          .success(`${user.dataValues.firstname || uid} verified`)
-          .uid(user.dataValues._id)
+          .success(`${user.firstname || uid} verified`)
+          .uid(user._id)
           .setData(token)
           .send()
       }

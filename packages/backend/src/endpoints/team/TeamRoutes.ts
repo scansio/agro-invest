@@ -9,7 +9,7 @@ const TeamRoutes: IControllerRoute = {
   baseUrl: '/team',
   routes: [
     {
-      path: '/team/all',
+      path: '/all',
       validation: { query: { q: {} } },
       controllerMemberFunctionIdentifier: Team.prototype.all,
       method: RequestMethods.GET,
@@ -18,7 +18,7 @@ const TeamRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/team/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -32,7 +32,7 @@ const TeamRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/team/preview/:firstname-:lastname',
+      path: '/preview/:firstname-:lastname',
       controllerMemberFunctionIdentifier: Team.prototype.getTeamMemberByName,
       method: RequestMethods.GET,
       metadata: {
@@ -46,7 +46,7 @@ const TeamRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/team',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create team',
@@ -60,7 +60,7 @@ const TeamRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/team',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update team',
@@ -75,7 +75,7 @@ const TeamRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/team/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

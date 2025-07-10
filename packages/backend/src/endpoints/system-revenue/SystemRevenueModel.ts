@@ -4,6 +4,8 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from '../user/UserModel'
 
+interface SystemRevenueModel extends ISystemRevenue {}
+
 class SystemRevenueModel extends Model<ISystemRevenue, CreateType<ISystemRevenue>> {}
 
 TimestampsPlugin(

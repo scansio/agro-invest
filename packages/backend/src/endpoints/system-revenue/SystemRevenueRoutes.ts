@@ -7,7 +7,7 @@ const SystemRevenueRoutes: IControllerRoute = {
   baseUrl: '/system-revenue',
   routes: [
     {
-      path: '/system-revenue/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: SystemRevenue.prototype.all,
@@ -18,7 +18,7 @@ const SystemRevenueRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/system-revenue/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -33,7 +33,7 @@ const SystemRevenueRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/system-revenue',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create system revenue',
@@ -41,7 +41,7 @@ const SystemRevenueRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/system-revenue',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update system revenue',
@@ -49,7 +49,7 @@ const SystemRevenueRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/system-revenue/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

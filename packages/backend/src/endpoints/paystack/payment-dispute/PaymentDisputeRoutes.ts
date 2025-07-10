@@ -9,7 +9,7 @@ const PaymentDisputeRoutes: IControllerRoute = {
   baseUrl: '/payment-dispute',
   routes: [
     {
-      path: '/payment-dispute/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: PaymentDispute.prototype.all,
@@ -20,7 +20,7 @@ const PaymentDisputeRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/payment-dispute/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -35,7 +35,7 @@ const PaymentDisputeRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/payment-dispute',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create payment-dispute',
@@ -43,7 +43,7 @@ const PaymentDisputeRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/payment-dispute',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update payment-dispute',
@@ -51,7 +51,7 @@ const PaymentDisputeRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/payment-dispute/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

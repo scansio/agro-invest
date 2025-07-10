@@ -7,7 +7,7 @@ const TransactionRoutes: IControllerRoute = {
   baseUrl: '/transaction',
   routes: [
     {
-      path: '/transaction/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: Transaction.prototype.all,
@@ -18,7 +18,7 @@ const TransactionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/transaction/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -33,7 +33,7 @@ const TransactionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/transaction',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create transaction',
@@ -41,7 +41,7 @@ const TransactionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/transaction',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update transaction',
@@ -49,7 +49,7 @@ const TransactionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/transaction/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

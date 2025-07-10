@@ -7,7 +7,7 @@ const DepositRoutes: IControllerRoute = {
   baseUrl: '/deposit',
   routes: [
     {
-      path: '/deposit',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create deposit',

@@ -20,23 +20,26 @@ const SideBarItems = ({
   }, []);
 
   return (
-    controllerRoutes?.map((controllerRoute) => {
-      const tag = `${controllerRoute?.tag}`;
-      const hashTag = `#${tag}-tag`;
-      return (
-        <Link
-          id={`${tag}-tag`}
-          href={`${(window as any).REBLEND_BASE_PATHNAME}/${hashTag}`}
-          className={`text-ellipsis ${
-            hash === hashTag || hash?.split("#")[1] === tag
-              ? "active-sidebutton"
-              : ""
-          }`}
-        >
-          {tag}
-        </Link>
-      );
-    }) || null
+    controllerRoutes
+      ?.sort((a, b) => (a.tag || "").localeCompare(b.tag || ""))
+      .map((controllerRoute) => {
+        const tag = `${controllerRoute?.tag}`;
+        const hashTag = `#${tag}-tag`;
+        return (
+          <Link
+            key={`${tag}-tag`}
+            id={`${tag}-tag`}
+            href={`${(window as any).REBLEND_BASE_PATHNAME}/${hashTag}`}
+            className={`text-ellipsis ${
+              hash === hashTag || hash?.split("#")[1] === tag
+                ? "active-sidebutton"
+                : ""
+            }`}
+          >
+            {tag}
+          </Link>
+        );
+      }) || null
   );
 };
 

@@ -37,8 +37,7 @@ function InfoContainer({
           <div
             style={{
               display: "flex",
-              alignContent: "flex-end",
-              justifyContent: "space-around",
+              flexDirection: "row",
               alignItems: "center",
               flexWrap: "wrap",
             }}
@@ -70,7 +69,7 @@ function InfoContainer({
                 </div>
               </div>
             </div>
-            <h1 class="text-center">{tag}</h1>
+            <h1 class="text-center">{decodeURIComponent(tag)}</h1>
           </div>
         </section>
       </Wrapper>

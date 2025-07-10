@@ -12,6 +12,7 @@ import {
   faConciergeBell,
   faInfo,
   faExchangeAlt,
+  faUserCog,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -165,10 +166,28 @@ export const routes: Routes = {
     Component: () => import("../pages/About").then((m) => m.About),
   },
 
+  team: {
+    tag: "Team",
+    path: "/team",
+    redirectUri: "/team",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () => import("../pages/Team").then((m) => m.Team),
+  },
+
+  teamPreview: {
+    tag: "Team Preview",
+    path: "/team-preview",
+    redirectUri: "/team-preview",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () => import("../pages/TeamPreview").then((m) => m.TeamPreview),
+  },
+
   policy: {
     tag: "Policy",
-    path: "/Policy",
-    redirectUri: "/Policy",
+    path: "/policy",
+    redirectUri: "/policy",
     icon: <FontAwesomeIcon icon={faConciergeBell} />,
     showOnMore: true,
     showOnNav: true,

@@ -12,30 +12,69 @@ import RequestValidation from './RequestValidation'
 import { APIVersionStatus, RequestMethodsMap } from '../configs/constants'
 //import Logger from './Logger'
 
+/**
+ * Handles dynamic registration of all API routes, authentication, and file serving for the application.
+ * Integrates validation, authentication, and controller invocation for each route.
+ */
 class Routing {
+  /**
+   * Public access level constant.
+   */
   public PUBLIC: number = 0
+  /**
+   * Private access level constant.
+   */
   public PRIVATE: number = 1
+  /**
+   * All access level constant.
+   */
   public ALL: number = 2
+  /**
+   * Express Router instance used for route registration.
+   */
   public app!: Router
+  /**
+   * Express Response object for the current request.
+   */
   public res!: Response
+  /**
+   * Express Request object for the current request.
+   */
   public req!: Request
+  /**
+   * Express NextFunction for the current request.
+   */
   public next!: NextFunction
 
+  /**
+   * Initializes the Routing instance with the provided Express Router.
+   * @param app - Express Router instance
+   */
   constructor(app: Router) {
     this.app = app
   }
 
+  /**
+   * Wraps an async route handler to catch errors and pass them to next().
+   * @param fn - The async route handler function
+   * @returns Wrapped handler function
+   */
   private asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) {
     return (req: Request, res: Response, next: NextFunction) => Promise.resolve(fn(req, res, next)).catch(next)
   }
 
+  /**
+   * Dynamically registers all API routes, including validation and authentication, from the API definition.
+   */
   private __getRoutes() {
     for (const api of API) {
       if (api.status === APIVersionStatus.ENABLED) {
         for (const controllerRoute of api.controllerRoutes) {
           const controller = controllerRoute.controller
           for (const route of controllerRoute.routes) {
-            const endpoint = `/${api.info.version}${route.path.startsWith('/') ? '' : '/'}${route.path}`
+            const endpoint = `/${api.info.version}${controllerRoute.baseUrl}${route.path.startsWith('/') ? '' : '/'}${
+              route.path
+            }`
 
             const createRoute = async (req: Request, res: Response, next: NextFunction) => {
               this.req = req
@@ -101,6 +140,12 @@ class Routing {
     }
   }
 
+  /**
+   * Authenticates a route and returns the user if authentication is successful.
+   * @param req - Express Request object
+   * @returns The authenticated user or null
+   * @throws AllError if authentication fails
+   */
   public async authRoute(req: Request): Promise<IUser | null> {
     const authenticate = new Authenticate(req)
     if (!(await authenticate.verify())) {
@@ -112,10 +157,16 @@ class Routing {
     }
   }
 
+  /**
+   * Placeholder for implementing request sanitization logic.
+   */
   sanitize() {
     //TODO Implement sanitization
   }
 
+  /**
+   * Registers public file serving routes for the application.
+   */
   publicFileRoutes() {
     this.app?.use('/v*/puf/*', async (req: Request, res: Response, next) => {
       const p = `${req.originalUrl}`
@@ -138,6 +189,9 @@ class Routing {
     })
   }
 
+  /**
+   * Registers private file serving routes for the application, requiring authentication.
+   */
   privateFileRoutes() {
     this.app?.use('/v*/prf/*', async (req: Request, res: Response, next) => {
       this.req = req
@@ -182,6 +236,9 @@ class Routing {
     })
   }
 
+  /**
+   * Registers all routes, including public, private, and API routes.
+   */
   allRoutes() {
     this.publicFileRoutes()
     this.privateFileRoutes()

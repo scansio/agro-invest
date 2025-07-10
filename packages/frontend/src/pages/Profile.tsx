@@ -3,6 +3,7 @@ import { Button } from "../components/basics/Button";
 import { Input } from "../components/basics/Input";
 import { Label } from "../components/basics/Label";
 import { Select } from "../components/basics/Select";
+import { IMAGE_BASE } from "../lib/RestEndpoints";
 
 export const Profile: FC = () => {
   // Example state (replace with real data/fetch as needed)
@@ -19,9 +20,11 @@ export const Profile: FC = () => {
       <div class="text-2xl font-bold text-neutral-900 mb-2">Edit Profile</div>
       {/* Avatar */}
       <div class="flex flex-col items-center mt-2 mb-4">
-        <span class="inline-flex items-center justify-center bg-neutral-100 rounded-2xl h-20 w-20 mb-2">
-          <i class="fas fa-user text-brand-800 text-5xl" />
-        </span>
+        <img
+          src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+          alt="Avatar"
+          class="inline-flex items-center justify-center bg-neutral-100 rounded-2xl h-20 w-20 mb-2 object-cover"
+        />
         <div class="text-xl font-bold text-neutral-900 text-center">
           {firstName} {lastName}
         </div>

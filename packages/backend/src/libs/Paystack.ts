@@ -150,7 +150,7 @@ async function processTransfers(event: PaystackHookEvent, data: IAny) {
   }
 
   if (transaction) {
-    transaction.set('rawJSONData', [...(transaction.dataValues.rawJSONData || []), JSON.stringify(data)])
+    transaction.set('rawJSONData', [...(transaction.rawJSONData || []), JSON.stringify(data)])
     await transaction.save()
   }
 }
@@ -162,7 +162,7 @@ async function processTransaction(event: PaystackHookEvent, data: IAny) {
 
   if (event === PaystackHookEvent.TRANSACTION_SUCCESS && transaction) {
     transaction.set('mode', TransactionMode.SUCCESS)
-    transaction.set('rawJSONData', [...(transaction.dataValues.rawJSONData || []), JSON.stringify(data)])
+    transaction.set('rawJSONData', [...(transaction.rawJSONData || []), JSON.stringify(data)])
     await transaction.save()
   }
 }
@@ -199,7 +199,7 @@ async function processDispute(event: PaystackHookEvent, data: IAny) {
 
     case PaystackHookEvent.CHARGE_DISPUTE_REMIND:
       if (dispute) {
-        dispute.set('reminded', (dispute.dataValues.reminded || 0) + 1)
+        dispute.set('reminded', (dispute.reminded || 0) + 1)
         await dispute.save()
       }
       break

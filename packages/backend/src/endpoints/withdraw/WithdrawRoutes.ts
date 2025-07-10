@@ -7,7 +7,7 @@ const WithdrawRoutes: IControllerRoute = {
   baseUrl: '/withdraw',
   routes: [
     {
-      path: '/withdraw',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create withdrawal',

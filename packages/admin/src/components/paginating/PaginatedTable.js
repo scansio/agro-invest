@@ -441,33 +441,32 @@ async function PaginatedTable(props) {
                       )}
                     </Form.Select>
                     <InputGroup.Text>
-                      <OverlayTrigger
-                        overlay={await Reblend.wrapChildrenToReact(
-                          sortTip()
-                        )}
-                        placement="auto"
-                        trigger={"manual"}
-                        show={showSortTip}
-                        flip
-                      >
-                        <i
-                          className="fas fa-sort c-pointer"
-                          onClick={() => setShowSortTip(!showSortTip)}
-                          style={
-                            showSortTip
-                              ? {
-                                  backgroundColor: "blue",
-                                  borderRadius: "10px",
-                                  padding: "4px",
-                                }
-                              : {
-                                  backgroundColor: "initial",
-                                  borderRadius: "initial",
-                                  padding: "initial",
-                                }
-                          }
-                        ></i>
-                      </OverlayTrigger>
+                      {Reblend.reactCompact(OverlayTrigger, {
+                        overlay: await Reblend.wrapChildrenToReact(sortTip()),
+                        placement: "auto",
+                        trigger: "manual",
+                        show: showSortTip,
+                        flip: true,
+                        children: [
+                          <i
+                            className="fas fa-sort c-pointer"
+                            onClick={() => setShowSortTip(!showSortTip)}
+                            style={
+                              showSortTip
+                                ? {
+                                    backgroundColor: "blue",
+                                    borderRadius: "10px",
+                                    padding: "4px",
+                                  }
+                                : {
+                                    backgroundColor: "initial",
+                                    borderRadius: "initial",
+                                    padding: "initial",
+                                  }
+                            }
+                          ></i>,
+                        ],
+                      })}
                       <style>
                         {`
                       .tooltip-inner {

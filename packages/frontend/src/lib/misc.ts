@@ -1,3 +1,4 @@
+import { AlertConfig, AlertType, message } from "../components/basics/Alert";
 import { Fetcher } from "./Fetcher";
 import fetcher from "./SharedFetcher";
 
@@ -161,11 +162,13 @@ export const mongooseModelQueryObjectForDateRange = (
   return query;
 };
 
-export const alert = (message: string, title: string, type: string) => {
-  //@ts-expect-error Undefined variable
-  Swal.fire(title, message, type);
+export const alert = (
+  msg: string,
+  type?: AlertType,
+  config?: AlertConfig
+): ReturnType<typeof message> => {
+  return message(msg, type, config);
 };
-export const alertError = (message: string) => alert(message, "Error", "error");
-export const alertSuccess = (message: string) =>
-  alert(message, "Ok", "success");
-export const alertInfo = (message: string) => alert(message, "Info", "info");
+export const alertError = (message: string) => alert(message, "danger");
+export const alertSuccess = (message: string) => alert(message, "success");
+export const alertInfo = (message: string) => alert(message, "info");

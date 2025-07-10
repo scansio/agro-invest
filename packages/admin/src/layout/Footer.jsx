@@ -2,8 +2,6 @@
 import { SITE_TITLE } from "../scripts/config/contants";
 import Reblend, { useContext } from "reblendjs";
 import { Helpers } from "../assets/vendor/js/helpers";
-import { $ } from "../assets/vendor/libs/jquery/jquery";
-import Docker from "./layout_components/Docker";
 import SharedConfig from "../scripts/SharedConfig";
 import { ThemeContext } from "../components/context/theme";
 
@@ -12,29 +10,8 @@ class Footer extends Reblend {
   styles;
   _constructor(props) {
     super._constructor(props);
-    this.state = { smallScreen: false };
-    this.toggle.bind(this);
-    this.resizeListener.bind(this);
     const [styles] = useContext.bind(this)(ThemeContext, "style");
     this.styles = styles;
-  }
-
-  toggle(e) {
-    e.preventDefault();
-    Helpers.toggleCollapsed();
-  }
-
-  resizeListener() {
-    const isMobile = Helpers.isMobileScreen();
-    this.setState({ smallScreen: isMobile });
-    if (isMobile & !Helpers.isCollapsed()) {
-      Helpers.toggleCollapsed();
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ smallScreen: Helpers.isMobileScreen() });
-    $(window).resize(() => this.resizeListener());
   }
 
   html() {

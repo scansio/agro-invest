@@ -5,6 +5,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { redirectTo } from "reblend-router";
 import { routes } from "../lib/routes";
 import { Input } from "../components/basics/Input";
+import { IMAGE_BASE } from "../lib/RestEndpoints";
 
 const coBuildDeals = [
   {
@@ -110,7 +111,7 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
                   class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
                 >
                   <img
-                    src={deal.image}
+                    src={IMAGE_BASE + deal.image}
                     alt={deal.title}
                     class="w-full h-32 object-cover"
                   />
@@ -145,7 +146,7 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
                   class="relative min-w-[220px] max-w-[260px] rounded-2xl overflow-hidden shadow bg-white"
                 >
                   <img
-                    src={share.image}
+                    src={IMAGE_BASE + share.image}
                     alt={share.title}
                     class="w-full h-32 object-cover"
                   />

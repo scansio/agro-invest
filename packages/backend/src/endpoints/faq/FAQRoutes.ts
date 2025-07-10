@@ -9,7 +9,7 @@ const FAQRoutes: IControllerRoute = {
   baseUrl: '/faq',
   routes: [
     {
-      path: '/FAQ/all',
+      path: '/all',
       validation: { query: { q: {} } },
       controllerMemberFunctionIdentifier: FAQ.prototype.all,
       method: RequestMethods.GET,
@@ -18,7 +18,7 @@ const FAQRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/FAQ/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -32,7 +32,7 @@ const FAQRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/FAQ',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create FAQ',
@@ -40,7 +40,7 @@ const FAQRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/FAQ',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update FAQ',
@@ -48,7 +48,7 @@ const FAQRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/FAQ/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

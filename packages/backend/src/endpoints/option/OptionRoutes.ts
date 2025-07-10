@@ -9,7 +9,7 @@ const OptionRoutes: IControllerRoute = {
   baseUrl: '/option',
   routes: [
     {
-      path: '/option/publics',
+      path: '/publics',
 
       controllerMemberFunctionIdentifier: Option.prototype.publics,
       method: RequestMethods.GET,
@@ -18,7 +18,7 @@ const OptionRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/option/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: Option.prototype.all,
@@ -29,7 +29,7 @@ const OptionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/option/:name',
+      path: '/:name',
       validation: {
         param: {
           name: {},
@@ -41,7 +41,7 @@ const OptionRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/option',
+      path: '',
 
       method: RequestMethods.POST,
       metadata: {
@@ -50,7 +50,7 @@ const OptionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/option',
+      path: '',
 
       method: RequestMethods.PATCH,
       metadata: {
@@ -59,7 +59,7 @@ const OptionRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/option/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

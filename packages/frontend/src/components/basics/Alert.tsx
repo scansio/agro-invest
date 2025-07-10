@@ -17,7 +17,7 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
-type AlertConfig = {
+export type AlertConfig = {
   autoHide?: boolean;
   autoHideDuration?: number;
   placement?: Placement;
@@ -33,7 +33,7 @@ type AlertContext = {
 
 const alertContext = createContext<AlertContext>({});
 
-type AlertType = "info" | "warning" | "danger" | "success";
+export type AlertType = "info" | "warning" | "danger" | "success";
 
 export const Alert: FC<{
   type?: AlertType;

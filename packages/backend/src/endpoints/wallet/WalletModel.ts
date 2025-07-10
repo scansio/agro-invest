@@ -6,16 +6,18 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from '../user/UserModel'
 
+interface WalletModel extends IWallet {}
+
 class WalletModel extends Model<IWallet, CreateType<IWallet>> {
   async getBalance() {
     let credit = 0
     let debit = 0
 
     const activeTransactions = await TransactionModel.findAll({
-      where: { uid: this.dataValues.uid },
+      where: { uid: this.uid },
     })
 
-    activeTransactions.forEach(({ dataValues: transaction }) => {
+    activeTransactions.forEach((transaction) => {
       if (transaction.status !== ACTIVE) return
 
       switch (transaction.type) {

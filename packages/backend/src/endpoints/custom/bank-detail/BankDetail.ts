@@ -23,7 +23,7 @@ class BankDetail extends BaseController {
     if (!found) {
       this.status(false).statusCode(NOT_FOUND).message('Bank detail not found').send();
     } else {
-      await this.ownerAndAdminAccess(found.dataValues?.uid!);
+      await this.ownerAndAdminAccess(found?.uid!);
       this.status(true).statusCode(GET_SUCCESS).setData(found).send();
     }
   }
@@ -73,7 +73,7 @@ class BankDetail extends BaseController {
       this.status(false).statusCode(NOT_FOUND).message('Bank detail not found').send();
       return;
     }
-    await this.ownerAndAdminAccess(beforeUpdate.dataValues?.uid!);
+    await this.ownerAndAdminAccess(beforeUpdate?.uid!);
 
     const [updatedCount, updatedRows] = await BankDetailModel.update(definedValues, {
       where: { _id },

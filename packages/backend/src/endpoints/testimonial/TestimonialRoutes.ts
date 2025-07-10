@@ -9,7 +9,7 @@ const TestimonialRoutes: IControllerRoute = {
   baseUrl: '/testimonial',
   routes: [
     {
-      path: '/testimonial/all',
+      path: '/all',
       validation: { query: { q: {} } },
       controllerMemberFunctionIdentifier: Testimonial.prototype.all,
       method: RequestMethods.GET,
@@ -18,7 +18,7 @@ const TestimonialRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/testimonial/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -32,7 +32,7 @@ const TestimonialRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/testimonial',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create Testimonial',
@@ -40,7 +40,7 @@ const TestimonialRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/testimonial',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update Testimonial',
@@ -48,7 +48,7 @@ const TestimonialRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/testimonial/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

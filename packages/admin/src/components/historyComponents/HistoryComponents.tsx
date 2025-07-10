@@ -88,7 +88,7 @@ async function HistoryComponents({
     );
   };
 
-  const createUserButton = () => {
+  const createButton = () => {
     return (
       <>
         <Button
@@ -137,7 +137,7 @@ async function HistoryComponents({
       hideFromSearch: true,
     };
     fields["action"] = {
-      name: createUserButton,
+      name: createButton,
       type: String,
       virtual: true,
       transform: { out },

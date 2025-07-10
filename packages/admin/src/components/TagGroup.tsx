@@ -4,7 +4,15 @@ import ActionPane from "./ActionPane";
 import { authTokenContext } from "../context";
 import AuthButton from "./AuthButton";
 
-function TagGroup({ route, tag }: { route: IRoute; tag: string }) {
+function TagGroup({
+  route,
+  tag,
+  baseUrl,
+}: {
+  route: IRoute;
+  tag: string;
+  baseUrl: string;
+}) {
   const [showAction, setShowAction] = useReducer((prev) => !prev, false);
   const [authToken] = useContext(authTokenContext);
 
@@ -22,7 +30,7 @@ function TagGroup({ route, tag }: { route: IRoute; tag: string }) {
               onclick={setShowAction}
             >
               <span class="nostyle">
-                <span>{route.path}</span>
+                <span>{baseUrl + route.path}</span>
               </span>
             </span>
             <div class="opblock-summary-description" onclick={setShowAction}>
@@ -32,7 +40,12 @@ function TagGroup({ route, tag }: { route: IRoute; tag: string }) {
           </div>
           <noscript></noscript>
           {showAction ? (
-            <ActionPane authToken={authToken} tag={tag} route={route} />
+            <ActionPane
+              authToken={authToken}
+              tag={tag}
+              route={route}
+              baseUrl={baseUrl}
+            />
           ) : null}
         </div>
       </span>

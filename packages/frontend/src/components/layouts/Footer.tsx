@@ -1,5 +1,6 @@
 import Reblend, { FC } from "reblendjs";
 import { Docker } from "./Docker";
+import { IMAGE_BASE } from "../../lib/RestEndpoints";
 
 export type FooterProps = {
   isMobile?: boolean;
@@ -13,7 +14,7 @@ export const Footer: FC<FooterProps> = ({ isMobile }) => {
       {/* Left: Brand/Logo */}
       <div class="flex items-center gap-2">
         <img
-          src="/logo192.png"
+          src={"/logo192.png"}
           alt="Brand Logo"
           class="h-8 w-8 rounded-full shadow"
         />

@@ -21,6 +21,9 @@ export enum View {
 }
 
 export const viewContext = createContext<View>(View.HISTORY, {
-  type: CacheType.LOCAL,
-  key: "viewContext",
+  cache: {
+    type: CacheType.LOCAL,
+    key: "viewContext",
+  },
+  reducer: (_, curr) => curr,
 });

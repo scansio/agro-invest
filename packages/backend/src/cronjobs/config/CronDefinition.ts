@@ -87,7 +87,7 @@ class CronDefinition {
 
     const options = await OptionModel.findAll()
     for (const option of options) {
-      SharedConfig.set(option.dataValues.name, option.dataValues.value)
+      SharedConfig.set(option.name, option.value)
     }
 
     this.loadOneTimeJobs()

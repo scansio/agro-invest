@@ -9,7 +9,7 @@ const CountrieRoutes: IControllerRoute = {
   baseUrl: '/countrie',
   routes: [
     {
-      path: '/countrie/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: Countrie.prototype.all,
@@ -19,7 +19,7 @@ const CountrieRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/countrie/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -33,7 +33,7 @@ const CountrieRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/countrie',
+      path: '/',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create country',
@@ -41,7 +41,7 @@ const CountrieRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/countrie',
+      path: '/',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update country',
@@ -49,7 +49,7 @@ const CountrieRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/countrie/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

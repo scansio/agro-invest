@@ -84,7 +84,7 @@ async function HistoryComponentsForm({
     }
   }, [updates]);
 
-  const createUser = (e: FormEvent<HTMLFormElement>) => {
+  const create = (e: FormEvent<HTMLFormElement>) => {
     setSubmitting(true);
     e.preventDefault();
 
@@ -160,7 +160,7 @@ async function HistoryComponentsForm({
 
   return (
     data && (
-      <Form onSubmit={(e) => (isUpdate ? updateUser(e) : createUser(e))}>
+      <Form onSubmit={(e) => (isUpdate ? updateUser(e) : create(e))}>
         <Row>
           {keys?.map(({ key, type }) => {
             return key === "status" ? (

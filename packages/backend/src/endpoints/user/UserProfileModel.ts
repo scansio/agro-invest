@@ -4,6 +4,8 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import UserModel from './UserModel'
 
+interface UserProfileModel extends IUserProfile {}
+
 class UserProfileModel extends Model<IUserProfile, CreateType<IUserProfile>> {}
 
 TimestampsPlugin(

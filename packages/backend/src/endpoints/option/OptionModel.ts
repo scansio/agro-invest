@@ -4,6 +4,8 @@ import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 import { JsonField } from '../../common'
 
+interface OptionModel extends IOption {}
+
 class OptionModel extends Model<IOption, CreateType<IOption>> {}
 
 TimestampsPlugin(

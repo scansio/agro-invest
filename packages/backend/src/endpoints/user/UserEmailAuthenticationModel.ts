@@ -1,8 +1,12 @@
 import { DataTypes, Model } from 'sequelize'
 import UserModel from './UserModel'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
+import IUserEmailAuthentication from './IUserEmailAuthentication'
+import { CreateType } from '../../libs/types/ITimestamp'
 
-class UserEmailAuthenticationModel extends Model {}
+interface UserEmailAuthenticationModel extends IUserEmailAuthentication {}
+
+class UserEmailAuthenticationModel extends Model<IUserEmailAuthentication, CreateType<IUserEmailAuthentication>> {}
 
 TimestampsPlugin(
   { UserEmailAuthenticationModel },

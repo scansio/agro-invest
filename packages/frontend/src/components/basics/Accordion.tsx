@@ -1,4 +1,5 @@
 import Reblend, {  CSSProperties, ReblendElement, useEffect, useState } from "reblendjs";
+import { IMAGE_BASE } from "../../lib/RestEndpoints";
 
 export default function Accordion({
   children,
@@ -51,7 +52,7 @@ export default function Accordion({
           <img
             width={15}
             height={15}
-            src="/static/img/accordion.jpeg"
+            src={"/static/img/accordion.jpeg"}
             alt="accordion-icon"
             class="rounded-full"
             style={{

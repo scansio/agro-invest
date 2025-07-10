@@ -4,6 +4,8 @@ import IBankDetail from './IBankDetail'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
 
+interface BankDetailModel extends IBankDetail {}
+
 class BankDetailModel extends Model<IBankDetail, CreateType<IBankDetail>> {}
 
 TimestampsPlugin(

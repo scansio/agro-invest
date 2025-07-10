@@ -213,9 +213,9 @@ class Mailer {
   public async sendConfirmationCode() {
     const code = rand(123456, 987654)
     const email = this.recipients[0].address
-    const { dataValues: user } = (await UserModel.findOne({
+    const user = (await UserModel.findOne({
       where: { email },
-    })) || { dataValues: null }
+    }))
     if (!user) {
       return
     }

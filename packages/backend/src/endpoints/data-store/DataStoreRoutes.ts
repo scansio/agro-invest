@@ -8,7 +8,7 @@ const DataStoreRoutes: IControllerRoute = {
   baseUrl: '/data-store',
   routes: [
     {
-      path: '/data-store/count/:store',
+      path: '/count/:store',
       controllerMemberFunctionIdentifier: DataStore.prototype.count,
       method: RequestMethods.GET,
       metadata: {
@@ -24,7 +24,7 @@ const DataStoreRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/data-store/sum/:field/:store',
+      path: '/sum/:field/:store',
       controllerMemberFunctionIdentifier: DataStore.prototype.sum,
       method: RequestMethods.GET,
       metadata: {

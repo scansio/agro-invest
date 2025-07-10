@@ -11,6 +11,7 @@ import { addModel, View, viewContext } from "../context";
 import { CustomComponents } from "../CustomComponents";
 import HistoryComponentsForm from "./historyComponents/HistoryComponents";
 import { Container } from "react-bootstrap";
+import ErrorWrapper from "../pages/ErrorWrapper";
 
 function OperationBlock({
   controllerRoute,
@@ -35,98 +36,111 @@ function OperationBlock({
     }
   }, [controllerRoute]);
 
-  return (() => {
-    if (!customComponent) {
-      return (
-        <Container fluid>
-          <div className="items-center justify-center">Loading ...</div>
-        </Container>
-      );
-    }
+  return (
+    <ErrorWrapper>
+      {(() => {
+        if (!customComponent) {
+          return (
+            <Container fluid>
+              <div className="items-center justify-center">Loading ...</div>
+            </Container>
+          );
+        }
 
-    switch (view) {
-      case View.HISTORY:
-        return customComponent.tag ? (
-          Reblend.construct(customComponent.tag, {}, ...[])
-        ) : (
-          <Container fluid>
-            <HistoryComponentsForm controllerRoute={controllerRoute} />
-          </Container>
-        );
-        break;
+        switch (view) {
+          case View.HISTORY:
+            return customComponent.tag ? (
+              Reblend.construct(customComponent.tag, {}, ...[])
+            ) : (
+              <Container fluid>
+                <HistoryComponentsForm controllerRoute={controllerRoute} />
+              </Container>
+            );
+            break;
 
-      case View.REST:
-        return (
-          <Wrapper style={{ width: "100%" }}>
-            <span>
-              <div class="opblock-tag-section">
-                <h4
-                  class="opblock-tag no-desc"
-                  id={`${controllerRoute?.tag}-tag`}
-                  data-tag={`${controllerRoute?.tag}`}
-                  data-is-open="false"
-                >
-                  <span class="nostyle" onclick={setShowAction}>
-                    <span>{controllerRoute?.tag}</span>
-                  </span>
+          case View.REST:
+            return (
+              <Wrapper style={{ width: "100%" }}>
+                <span>
+                  <div class="opblock-tag-section">
+                    <h4
+                      class="opblock-tag no-desc"
+                      id={`${controllerRoute?.tag}-tag`}
+                      data-tag={`${controllerRoute?.tag}`}
+                      data-is-open="false"
+                    >
+                      <span class="nostyle" onclick={setShowAction as any}>
+                        <span>{controllerRoute?.tag}</span>
+                      </span>
 
-                  <small>
-                    <div class="markdown">
+                      <small>
+                        <div class="markdown">
+                          <a
+                            class="nostyle"
+                            href={`/#${controllerRoute?.tag}-tag`}
+                            onclick={setShowAction}
+                          >
+                            <p>{controllerRoute?.description}</p>
+                          </a>
+                        </div>
+                      </small>
+                      <div class="info__externaldocs">
+                        <small>
+                          {controllerRoute?.externalDocs ? (
+                            <a
+                              href={controllerRoute?.externalDocs.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="link"
+                            >
+                              {controllerRoute?.externalDocs.description}
+                            </a>
+                          ) : null}
+                        </small>
+                      </div>
                       <a
                         class="nostyle"
                         href={`/#${controllerRoute?.tag}-tag`}
-                        onclick={setShowAction}
+                        onclick={setShowAction as any}
                       >
-                        <p>{controllerRoute?.description}</p>
-                      </a>
-                    </div>
-                  </small>
-                  <div class="info__externaldocs">
-                    <small>
-                      {controllerRoute?.externalDocs ? (
-                        <a
-                          href={controllerRoute?.externalDocs.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="link"
+                        <button
+                          class="expand-operation"
+                          title="Expand operation"
                         >
-                          {controllerRoute?.externalDocs.description}
-                        </a>
-                      ) : null}
-                    </small>
+                          <svg class="arrow" width="20" height="20">
+                            <use
+                              href={`#large-arrow${showAction ? "-down" : ""}`}
+                              xlinkHref={`#large-arrow${
+                                showAction ? "-down" : ""
+                              }`}
+                            ></use>
+                          </svg>
+                        </button>
+                      </a>
+                    </h4>
+                    <noscript></noscript>
+                    {showAction
+                      ? controllerRoute?.routes?.map((route) => (
+                          <TagGroup
+                            route={route}
+                            tag={controllerRoute?.tag}
+                            baseUrl={controllerRoute.baseUrl}
+                          />
+                        ))
+                      : null}
                   </div>
-                  <a
-                    class="nostyle"
-                    href={`/#${controllerRoute?.tag}-tag`}
-                    onclick={setShowAction}
-                  >
-                    <button class="expand-operation" title="Expand operation">
-                      <svg class="arrow" width="20" height="20">
-                        <use
-                          href={`#large-arrow${showAction ? "-down" : ""}`}
-                          xlinkHref={`#large-arrow${showAction ? "-down" : ""}`}
-                        ></use>
-                      </svg>
-                    </button>
-                  </a>
-                </h4>
-                <noscript></noscript>
-                {showAction
-                  ? controllerRoute?.routes?.map((route) => (
-                      <TagGroup route={route} tag={controllerRoute?.tag} />
-                    ))
-                  : null}
-              </div>
-            </span>
-          </Wrapper>
-        );
-        break;
+                </span>
+              </Wrapper>
+            );
+            break;
 
-      default:
-        return null;
-        break;
-    }
-  })();
+          default:
+            return null;
+            break;
+        }
+      })()}
+    </ErrorWrapper>
+  );
 }
 
 export default OperationBlock;

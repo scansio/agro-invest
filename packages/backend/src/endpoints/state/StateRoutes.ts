@@ -7,7 +7,7 @@ const StateRoutes: IControllerRoute = {
   baseUrl: '/state',
   routes: [
     {
-      path: '/state/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: State.prototype.all,
@@ -17,7 +17,7 @@ const StateRoutes: IControllerRoute = {
       },
     },
     {
-      path: '/state/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {
@@ -32,7 +32,7 @@ const StateRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/state',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create state',
@@ -40,7 +40,7 @@ const StateRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/state',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update state',
@@ -48,7 +48,7 @@ const StateRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/state/:_id',
+      path: '/:_id',
       validation: {
         param: {
           _id: {

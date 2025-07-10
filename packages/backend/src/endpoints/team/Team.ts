@@ -34,9 +34,9 @@ class Team extends BaseController {
   }
 
   async getTeamMemberByName({ firstname, lastname }: any) {
-    const { dataValues: user } = (await UserModel.findOne({
+    const user = await UserModel.findOne({
       where: { firstname, lastname },
-    })) || { dataValues: null }
+    })
     const found = await TeamModel.findOne({
       where: { uid: `${user?._id}`, status: ACTIVE },
       include: [
@@ -61,7 +61,7 @@ class Team extends BaseController {
       .exec()
     if (!teams) this.status(false).statusCode(NOT_FOUND).message('No Teams').send()
     else {
-      ;(teams as any).results = (teams as IPaginating<ITeam>).results?.map(({ dataValues: team }) => {
+      ;(teams as any).results = (teams as IPaginating<ITeam>).results?.map((team) => {
         delete ((team as any).uidPopulated as any).password
         delete ((team as any).uidPopulated as any).pin
         return team
@@ -76,7 +76,7 @@ class Team extends BaseController {
       include: [{ model: UserModel, as: 'uidPopulated' }],
     })
     if (!profile) return this.status(false).statusCode(BAD_REQUEST).message('User profile not found').send()
-    const created = await TeamModel.create({ uid, profileId: profile?.dataValues?._id, title })
+    const created = await TeamModel.create({ uid, profileId: profile?._id, title })
     if (!created) this.status(false).statusCode(BAD_REQUEST).message('Error creating Team').send()
     else this.status(true).statusCode(POST_SUCCESS).message('Team created').setData(created).send()
   }

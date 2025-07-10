@@ -68,7 +68,7 @@ export default function AssetSwitch({
             "align-items-center justify-center w-full border rounded-lg object-cover " +
             imageClass
           }
-          src={currentSrc}
+          src={IMAGE_BASE + currentSrc}
           alt="Loading ..."
         />
         <div
@@ -128,11 +128,13 @@ export default function AssetSwitch({
         </div>
       </div>
       <Modal open={showFull} fullScreen onClose={() => setShowFull(false)}>
-        <img
-          src={currentSrc}
-          style={showFull ? { width: "90vw" } : {}}
-          alt="Loading ..."
-        />
+        <div class="w-full flex justify-center">
+          <img
+            src={IMAGE_BASE + currentSrc}
+            style={showFull ? { width: "90vw" } : {}}
+            alt="Loading ..."
+          />
+        </div>
       </Modal>
     </>
   );

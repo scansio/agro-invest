@@ -3,6 +3,8 @@ import ICountrie from './ICountrie'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 
+interface CountrieModel extends ICountrie {}
+
 class CountrieModel extends Model<ICountrie, CreateType<ICountrie>> {}
 
 TimestampsPlugin(

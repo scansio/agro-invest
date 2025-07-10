@@ -108,90 +108,84 @@ function App() {
   );
 
   return (
-    <ErrorWrapper>
-      <div className="swagger-ui" style={styles}>
-        <ToastContainer
-          newestOnTop={true}
-          toastStyle={{ borderRadius: 20, padding: 5 }}
-        />
-        <Router>
-          {refresh ? <Navigate to="/refresh" /> : null}
-          <Route path="*" element={<></>} />
-          <Route path="/refresh" Component={Refresh} />
-        </Router>
-        <SVGDefinition />
-        <InfoContainer versions={versions} info={currentApi?.info} />
+    <div className="swagger-ui" style={styles}>
+      {Reblend.reactCompact(ToastContainer, {
+        newestOnTop: true,
+        toastStyle: { borderRadius: 20, padding: 5 },
+      })}
+      <Router />
+      <Route path="*" element={<></>} />
+      <Route path="/refresh" Component={Refresh} />
+      {refresh ? <Navigate to="/refresh" /> : null}
+      <SVGDefinition />
+      <InfoContainer versions={versions} info={currentApi?.info} />
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "nowrap",
+          alignItems: "flex-start",
+        }}
+      >
         <div
+          id="sidebar"
+          class="sidebar"
           style={{
-            display: "flex",
-            flexWrap: "nowrap",
-            alignItems: "flex-start",
+            width: sidebarOpen ? "250px" : "1px",
           }}
         >
-          <div
-            id="sidebar"
-            class="sidebar"
-            style={{
-              width: sidebarOpen ? "250px" : "1px",
-            }}
-          >
-            {currentApi && currentApi?.controllerRoutes && (
-              <SideBarItems controllerRoutes={currentApi?.controllerRoutes} />
-            )}
-          </div>
-
-          <div>
-            <button
-              class="open-btn"
-              onclick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? "X" : "☰"}
-            </button>
-
-            <button
-              class="open-btn"
-              style={{
-                backgroundColor: view === View.HISTORY ? "gray" : "black",
-                fontSize: "10px",
-                fontWeight: "bold",
-                padding: "6px",
-              }}
-              onclick={() => viewContext.update(View.HISTORY)}
-            >
-              History
-            </button>
-
-            <button
-              class="open-btn"
-              style={{
-                backgroundColor: view === View.REST ? "gray" : "black",
-                fontSize: "10px",
-                fontWeight: "bold",
-                padding: "6px",
-              }}
-              onclick={() => viewContext.update(View.REST)}
-            >
-              Rest
-            </button>
-          </div>
-
-          <div class="sidebar-main-pane">
-            {currentApi && currentApi?.controllerRoutes && (
-              <MainPane controllerRoutes={currentApi?.controllerRoutes} />
-            )}
-          </div>
+          {currentApi && currentApi?.controllerRoutes && (
+            <SideBarItems controllerRoutes={currentApi?.controllerRoutes} />
+          )}
         </div>
-        <SchemaBlock />
-        <Footer>
-          <ThemeToggler
-            toggleTheme={() => {
-              toggleTheme();
+
+        <div>
+          <button class="open-btn" onclick={() => setSidebarOpen(!sidebarOpen)}>
+            {sidebarOpen ? "X" : "☰"}
+          </button>
+
+          <button
+            class="open-btn"
+            style={{
+              backgroundColor: view === View.HISTORY ? "gray" : "black",
+              fontSize: "10px",
+              fontWeight: "bold",
+              padding: "6px",
             }}
-          />
-        </Footer>
-        <div className="content-backdrop fade"></div>
+            onclick={() => viewContext.update(View.HISTORY)}
+          >
+            History
+          </button>
+
+          <button
+            class="open-btn"
+            style={{
+              backgroundColor: view === View.REST ? "gray" : "black",
+              fontSize: "10px",
+              fontWeight: "bold",
+              padding: "6px",
+            }}
+            onclick={() => viewContext.update(View.REST)}
+          >
+            Rest
+          </button>
+        </div>
+
+        <div class="sidebar-main-pane">
+          {currentApi && currentApi?.controllerRoutes && (
+            <MainPane controllerRoutes={currentApi?.controllerRoutes} />
+          )}
+        </div>
       </div>
-    </ErrorWrapper>
+      <SchemaBlock />
+      <Footer>
+        <ThemeToggler
+          toggleTheme={() => {
+            toggleTheme();
+          }}
+        />
+      </Footer>
+      <div className="content-backdrop fade"></div>
+    </div>
   );
 }
 

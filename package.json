@@ -3,12 +3,25 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npm run npm \"run build\"",
-    "npm": "scripts/npm.sh",
-    "mongo-up": "scripts/mongo-up.sh",
-    "mongo-down": "podman-compose down"
+    "npm": "scripts/npm.sh"
   },
   "author": "Emmanuel Elom <scansioquielom@gmail.com>",
   "private": true,
   "license": "MIT",
-  "description": "Advertising project"
+  "description": "Advertising project",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.10.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "reblend-router": "^4.0.10",
+    "reblend-scripts": "^8.0.3",
+    "reblendjs": "^12.6.2",
+    "typescript": "^5.8.3",
+    "web-vitals": "^2.1.4"
+  }
 }

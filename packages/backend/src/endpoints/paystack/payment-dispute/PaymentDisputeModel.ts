@@ -3,6 +3,8 @@ import IPaymentDispute from './IPaymentDispute'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
 
+interface PaymentDisputeModel extends IPaymentDispute {}
+
 class PaymentDisputeModel extends Model<IPaymentDispute, CreateType<IPaymentDispute, 'resolved' | 'reminded'>> {}
 
 TimestampsPlugin(

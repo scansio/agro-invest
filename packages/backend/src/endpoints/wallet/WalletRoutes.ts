@@ -7,7 +7,7 @@ const WalletRoutes: IControllerRoute = {
   baseUrl: '/wallet',
   routes: [
     {
-      path: '/wallet/confirm-user/:_id',
+      path: '/confirm-user/:_id',
       controllerMemberFunctionIdentifier: Wallet.prototype.confirmUser,
       method: RequestMethods.GET,
       metadata: {
@@ -24,7 +24,7 @@ const WalletRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/wallet/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: Wallet.prototype.all,
@@ -35,7 +35,7 @@ const WalletRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/wallet/balance/:uid',
+      path: '/balance/:uid',
       method: RequestMethods.GET,
       controllerMemberFunctionIdentifier: Wallet.prototype.balance,
       metadata: {
@@ -56,7 +56,7 @@ const WalletRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
-      path: '/wallet/withdrawable/:uid([0-9]{8})?',
+      path: '/withdrawable/:uid([0-9]{8})?',
       controllerMemberFunctionIdentifier: Wallet.prototype.withdrawableBalance,
       method: RequestMethods.GET,
       metadata: {

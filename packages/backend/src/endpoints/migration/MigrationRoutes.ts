@@ -8,7 +8,7 @@ const MigrationRoutes: IControllerRoute = {
   baseUrl: '/migration',
   routes: [
     {
-      path: '/migration/all',
+      path: '/all',
       validation: { query: { q: {} } },
 
       controllerMemberFunctionIdentifier: Migration.prototype.all,
@@ -19,7 +19,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/migration/names',
+      path: '/names',
       controllerMemberFunctionIdentifier: Migration.prototype.names,
       method: RequestMethods.GET,
       metadata: {
@@ -28,7 +28,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/migration/backup',
+      path: '/backup',
       controllerMemberFunctionIdentifier: Migration.prototype.backup,
       method: RequestMethods.GET,
       metadata: {
@@ -37,7 +37,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/migration/:modelName',
+      path: '/:modelName',
       controllerMemberFunctionIdentifier: Migration.prototype.get,
       validation: {
         param: {
@@ -53,7 +53,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/migration',
+      path: '',
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create migration',
@@ -61,7 +61,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/migration',
+      path: '',
       method: RequestMethods.PATCH,
       metadata: {
         summary: 'Update migration',
@@ -69,7 +69,7 @@ const MigrationRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.DEVELOPER,
     },
     {
-      path: '/migration',
+      path: '',
       method: RequestMethods.DELETE,
       metadata: {
         summary: 'Delete migration',

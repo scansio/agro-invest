@@ -11,7 +11,7 @@ import {
   UserType,
 } from '../configs/constants'
 import CountrieRoutes from './countrie/CountrieRoutes'
-import AdvertRoutes from './custom/advert/AdvertRoutes'
+import AdvertRoutes from './custom/investment/InvestmentRoutes'
 import WithdrawRoutes from './withdraw/WithdrawRoutes'
 import WalletRoutes from './wallet/WalletRoutes'
 import UserRoutes from './user/UserRoutes'
@@ -20,7 +20,6 @@ import TransactionRoutes from './transaction/TransactionRoutes'
 import TestimonialRoutes from './testimonial/TestimonialRoutes'
 import TeamRoutes from './team/TeamRoutes'
 import BankDetailRoutes from './custom/bank-detail/BankDetailRoutes'
-import BusinessRoutes from './custom/business/BusinessRoutes'
 import DataStoreRoutes from './data-store/DataStoreRoutes'
 import DepositRoutes from './deposit/DepositRoutes'
 import FAQRoutes from './faq/FAQRoutes'
@@ -30,8 +29,11 @@ import PaymentDisputeRoutes from './paystack/payment-dispute/PaymentDisputeRoute
 import PaystackEventLogRoutes from './paystack/paystack-event/PaystackEventLogRoutes'
 import StateRoutes from './state/StateRoutes'
 import SystemRevenueRoutes from './system-revenue/SystemRevenueRoutes'
-import SocialAdvertRoutes from './custom/social-advert/SocialAdvertRoutes'
-import SocialRoutes from './custom/social/SocialRoutes'
+import AnimalInvestmentRoutes from './custom/animal-investment/AnimalInvestmentRoutes'
+import ChickenInvestmentRoutes from './custom/chicken-investment/ChickenInvestmentRoutes'
+import CropInvestmentRoutes from './custom/crop-investment/CropInvestmentRoutes'
+import FarmInvestmentRoutes from './custom/farm-investment/FarmInvestmentRoutes'
+import LandInvestmentRoutes from './custom/land-investment/LandInvestmentRoutes'
 
 const API: IAPI = [
   {
@@ -52,10 +54,7 @@ const API: IAPI = [
     controllerRoutes: [
       CountrieRoutes,
       AdvertRoutes,
-      SocialAdvertRoutes,
-      SocialRoutes,
       BankDetailRoutes,
-      BusinessRoutes,
       DataStoreRoutes,
       DepositRoutes,
       FAQRoutes,
@@ -72,6 +71,12 @@ const API: IAPI = [
       UserRoutes,
       WalletRoutes,
       WithdrawRoutes,
+
+      AnimalInvestmentRoutes,
+      ChickenInvestmentRoutes,
+      CropInvestmentRoutes,
+      FarmInvestmentRoutes,
+      LandInvestmentRoutes,
     ],
     status: APIVersionStatus.ENABLED,
   },

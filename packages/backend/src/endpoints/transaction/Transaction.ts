@@ -54,7 +54,7 @@ class Transaction extends BaseController {
     uid = !uid ? this.user._id : uid
     this.checkMinMaxDepositAmount(amount)
     this.isValidTransactionType(type)
-    const { dataValues: user } = (await this.isValidUser(uid)) as UserModel
+    const user = (await this.isValidUser(uid)) as UserModel
     const reference = `${user?.firstname[0].toUpperCase()}${randomInt(
       123456789,
       987654321,

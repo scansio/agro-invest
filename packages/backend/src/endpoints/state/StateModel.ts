@@ -3,6 +3,8 @@ import IState from './IState'
 import { CreateType } from '../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../libs/models/TimestampsPlugin'
 
+interface StateModel extends IState {}
+
 class StateModel extends Model<IState, CreateType<IState>> {}
 
 TimestampsPlugin(
