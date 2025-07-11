@@ -2,6 +2,7 @@ import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
 import Deposit from './Deposit'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import TransactionModel from '../transaction/TransactionModel'
+import { getAttributes } from '../../libs/models/Attribute'
 
 const DepositRoutes: IControllerRoute = {
   baseUrl: '/deposit',
@@ -9,6 +10,9 @@ const DepositRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(TransactionModel),
+      },
       metadata: {
         summary: 'Create deposit',
       },

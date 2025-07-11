@@ -2,6 +2,8 @@ import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
 import Investment from './Investment'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import InvestmentModel from './InvestmentModel'
+import { get } from 'http'
+import { getAttributes } from '../../../libs/models/Attribute'
 
 const InvestmentRoutes: IControllerRoute = {
   tag: 'Investment',
@@ -11,7 +13,15 @@ const InvestmentRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for Investments',
+            example: 'Investment in agriculture',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Investment.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -28,6 +38,15 @@ const InvestmentRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the Investment to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get Investment by id',
@@ -37,6 +56,27 @@ const InvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: {
+          investmentType: {
+            type: 'string',
+            description: 'Type of investment (e.g., crop, animal, farm)',
+            example: 'crop',
+          },
+          investmentId: {
+            type: 'string',
+            description: 'ID of the investment entity (e.g., crop ID)',
+            example: 'crop12345',
+          },
+          unit: {
+            type: 'number',
+            description: 'Number of units invested',
+            default: 10,
+            min: 10,
+            example: 10,
+          },
+        },
+      },
       metadata: {
         summary: 'Create Investment',
       },
@@ -52,6 +92,9 @@ const InvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(InvestmentModel),
+      },
       metadata: {
         summary: 'Update Investment',
       },
@@ -63,6 +106,15 @@ const InvestmentRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the Investment to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

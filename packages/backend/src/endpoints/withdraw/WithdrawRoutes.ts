@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
+import { getAttributes } from '../../libs/models/Attribute'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import TransactionModel from '../transaction/TransactionModel'
 import Withdraw from './Withdraw'
@@ -8,6 +9,9 @@ const WithdrawRoutes: IControllerRoute = {
   routes: [
     {
       path: '',
+      fields: {
+        body: getAttributes(TransactionModel),
+      },
       method: RequestMethods.POST,
       metadata: {
         summary: 'Create withdrawal',

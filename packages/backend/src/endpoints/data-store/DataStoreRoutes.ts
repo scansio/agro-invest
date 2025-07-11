@@ -21,12 +21,35 @@ const DataStoreRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          store: {
+            type: 'string',
+            description: 'Name of the data store',
+            example: 'User',
+          },
+        },
+      },
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
       path: '/sum/:field/:store',
       controllerMemberFunctionIdentifier: DataStore.prototype.sum,
       method: RequestMethods.GET,
+      fields: {
+        param: {
+          field: {
+            type: 'string',
+            description: 'Field to sum in the data store',
+            example: 'age',
+          },
+          store: {
+            type: 'string',
+            description: 'Name of the data store',
+            example: 'User',
+          },
+        },
+      },
       metadata: {
         summary: 'Get sum of a field in data store',
       },

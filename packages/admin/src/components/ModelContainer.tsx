@@ -17,7 +17,7 @@ function ModelContainer() {
       ></script>
 
       {Array.from(models).map(([key, model]) => (
-        <Model model={{ model, tag: key }} />
+        <Model key={key} model={{ model, tag: key }} />
       ))}
     </div>
   );

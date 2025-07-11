@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
+import { getAttributes } from '../../../libs/models/Attribute'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import LandInvestment from './LandInvestment'
 import LandInvestmentModel from './LandInvestmentModel'
@@ -11,7 +12,15 @@ const LandInvestmentRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for LandInvestments',
+            example: 'Investment in land development',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: LandInvestment.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -27,6 +36,15 @@ const LandInvestmentRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the LandInvestment to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get LandInvestment by id',
@@ -35,6 +53,9 @@ const LandInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(LandInvestmentModel),
+      },
       metadata: {
         summary: 'Create LandInvestment',
       },
@@ -43,6 +64,9 @@ const LandInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(LandInvestmentModel),
+      },
       metadata: {
         summary: 'Update LandInvestment',
       },
@@ -54,6 +78,15 @@ const LandInvestmentRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the LandInvestment to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

@@ -24,16 +24,12 @@ function Model({ model }: any) {
         <div class="model-box">
           <span class="model">
             <span class="">
-              <Link
-                href={`${(window as any).REBLEND_BASE_PATHNAME}/${hashTag}`}
-              >
+              <Link href={`${window.REBLEND_BASE_PATHNAME}/${hashTag}`}>
                 <span class="model-title">
                   <span class="model-title__text">{model.tag}</span>
                 </span>
               </Link>
-              <Link
-                href={`${(window as any).REBLEND_BASE_PATHNAME}/${hashTag}`}
-              >
+              <Link href={`${window.REBLEND_BASE_PATHNAME}/${hashTag}`}>
                 <span
                   class={`model-toggle ${!showModel ? "collapsed" : ""}`}
                 ></span>

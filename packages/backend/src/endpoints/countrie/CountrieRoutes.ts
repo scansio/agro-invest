@@ -2,6 +2,7 @@ import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
 import Countrie from './Countrie'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import CountrieModel from './CountrieModel'
+import { getAttributes } from '../../libs/models/Attribute'
 
 const CountrieRoutes: IControllerRoute = {
   tag: 'Countrie',
@@ -11,7 +12,15 @@ const CountrieRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for countries',
+            example: 'United States',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Countrie.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -27,6 +36,15 @@ const CountrieRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the country to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get countrie by id',
@@ -38,11 +56,15 @@ const CountrieRoutes: IControllerRoute = {
       metadata: {
         summary: 'Create country',
       },
+      fields: {
+        body: getAttributes(CountrieModel),
+      },
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
       path: '/',
       method: RequestMethods.PATCH,
+      fields: { body: getAttributes(CountrieModel) },
       metadata: {
         summary: 'Update country',
       },
@@ -54,6 +76,15 @@ const CountrieRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the country to retrieve',
+            example: '1234567890abcdef12345678',
           },
         },
       },

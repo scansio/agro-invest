@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
+import { getAttributes } from '../../../libs/models/Attribute'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import AnimalInvestment from './AnimalInvestment'
 import AnimalInvestmentModel from './AnimalInvestmentModel'
@@ -11,7 +12,15 @@ const AnimalInvestmentRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for AnimalInvestments',
+            example: 'Investment in cattle',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: AnimalInvestment.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -27,6 +36,15 @@ const AnimalInvestmentRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the AnimalInvestment to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get AnimalInvestment by id',
@@ -35,6 +53,9 @@ const AnimalInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(AnimalInvestmentModel),
+      },
       metadata: {
         summary: 'Create AnimalInvestment',
       },
@@ -43,6 +64,7 @@ const AnimalInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: { body: getAttributes(AnimalInvestmentModel) },
       metadata: {
         summary: 'Update AnimalInvestment',
       },
@@ -54,6 +76,15 @@ const AnimalInvestmentRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the AnimalInvestment to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

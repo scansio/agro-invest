@@ -2,6 +2,7 @@ import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
 import FAQ from './FAQ'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import FAQModel from './FAQModel'
+import { getAttributes } from '../../libs/models/Attribute'
 
 const FAQRoutes: IControllerRoute = {
   tag: 'FAQ',
@@ -11,6 +12,15 @@ const FAQRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for FAQs',
+            example: 'How to invest in agriculture?',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: FAQ.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -26,6 +36,15 @@ const FAQRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the FAQ to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get FAQ by id',
@@ -34,6 +53,9 @@ const FAQRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(FAQModel),
+      },
       metadata: {
         summary: 'Create FAQ',
       },
@@ -42,6 +64,9 @@ const FAQRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(FAQModel),
+      },
       metadata: {
         summary: 'Update FAQ',
       },
@@ -53,6 +78,15 @@ const FAQRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the FAQ to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

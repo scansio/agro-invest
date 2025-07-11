@@ -5,18 +5,10 @@ import ModalBox from "../../general/Modal";
 import { toast } from "react-toastify";
 import UserForm from "./user_tab_components/UserForm";
 import { FaTrash } from "react-icons/fa";
-import {
-  ADMIN,
-  BARTENDER,
-  DEVELOPER,
-  KITCHEN,
-  RECEPTIONIST,
-  STORE_KEEPER,
-  RESTAURANT_ATTENDANT,
-  USER,
-} from "../../../scripts/config/contants";
 import { ALL_USER, CREATE_USER } from "../../../utils/RestEndpoints";
 import fetcher from "../../../utils/SharedFetcher";
+
+(FaTrash as any).props = { reactcomponent: true };
 
 function UserTab() {
   const [reload, setReload] = useState(false);

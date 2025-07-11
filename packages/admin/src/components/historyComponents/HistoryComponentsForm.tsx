@@ -142,7 +142,7 @@ async function HistoryComponentsForm({
       })
       .finally(() => {
         setSubmitting(false);
-      });;
+      });
   };
 
   let [changeData, setChangeData] = useState<{
@@ -164,9 +164,9 @@ async function HistoryComponentsForm({
         <Row>
           {keys?.map(({ key, type }) => {
             return key === "status" ? (
-              <Col xs="12" lg="6" className="p-1" key={key}>
+              <Col xs="12" lg="6" className="p-2" key={key}>
                 <InputGroup>
-                  <InputGroup.Text
+                  <label
                     className="fw-bold"
                     style={{ textTransform: "capitalize" }}
                   >
@@ -177,18 +177,18 @@ async function HistoryComponentsForm({
                         setChangeData({ key, value: data[key] ? 0 : 1 });
                       }}
                     ></Form.Switch>
-                  </InputGroup.Text>
+                  </label>
                 </InputGroup>
               </Col>
             ) : (
-              <Col xs="12" className="p-1" key={key}>
+              <Col xs="12" className="p-2" key={key}>
                 <InputGroup>
-                  <InputGroup.Text
+                  <label
                     className="fw-bold"
                     style={{ textTransform: "capitalize" }}
                   >
                     {key}
-                  </InputGroup.Text>
+                  </label>
                   <Form.Control
                     type={type}
                     value={data[key]}
@@ -201,7 +201,7 @@ async function HistoryComponentsForm({
             );
           })}
 
-          <Col xs="12" className="p-1">
+          <Col xs="12" className="p-2">
             <Spinner
               loading={submitting}
               loadingText={`${isUpdate ? "Updating user" : "Creating user"}`}

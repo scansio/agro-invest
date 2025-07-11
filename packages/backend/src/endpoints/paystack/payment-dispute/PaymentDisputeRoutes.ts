@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
+import { getAttributes } from '../../../libs/models/Attribute'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import PaymentDispute from './PaymentDispute'
 import PaymentDisputeModel from './PaymentDisputeModel'
@@ -11,7 +12,15 @@ const PaymentDisputeRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for payment disputes',
+            example: 'Dispute over payment for service',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: PaymentDispute.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -28,6 +37,15 @@ const PaymentDisputeRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the payment-dispute to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get payment-dispute by id',
@@ -37,6 +55,9 @@ const PaymentDisputeRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(PaymentDisputeModel),
+      },
       metadata: {
         summary: 'Create payment-dispute',
       },
@@ -45,6 +66,9 @@ const PaymentDisputeRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(PaymentDisputeModel),
+      },
       metadata: {
         summary: 'Update payment-dispute',
       },
@@ -56,6 +80,15 @@ const PaymentDisputeRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the payment-dispute to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

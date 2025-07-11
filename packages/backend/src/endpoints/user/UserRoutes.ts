@@ -1,13 +1,24 @@
 import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
+import { getAttributes } from '../../libs/models/Attribute'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import User from './User'
 import UserModel from './UserModel'
+import UserProfileModel from './UserProfileModel'
 
 const UserRoutes: IControllerRoute = {
   baseUrl: '/user',
   routes: [
     {
       path: '/send-verification-mail/:email',
+      fields: {
+        param: {
+          email: {
+            type: 'string',
+            description: 'Email address to send verification code',
+            example: 'example@gmail.com',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.sendVerificationMail,
       method: RequestMethods.GET,
       metadata: {
@@ -24,6 +35,15 @@ const UserRoutes: IControllerRoute = {
 
     {
       path: '/send-forget-password-mail/:email',
+      fields: {
+        param: {
+          email: {
+            type: 'string',
+            description: 'Email address to send forget password code',
+            example: '',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.sendForgetPasswordMail,
       method: RequestMethods.GET,
       metadata: {
@@ -42,6 +62,15 @@ const UserRoutes: IControllerRoute = {
       path: '/send-otp-mail/:email',
       controllerMemberFunctionIdentifier: User.prototype.sendOtpMail,
       method: RequestMethods.GET,
+      fields: {
+        param: {
+          email: {
+            type: 'string',
+            description: 'Email address to send OTP',
+            example: '',
+          },
+        },
+      },
       metadata: {
         summary: 'Send OTP',
       },
@@ -58,6 +87,7 @@ const UserRoutes: IControllerRoute = {
       path: '/logged',
       controllerMemberFunctionIdentifier: User.prototype.logged,
       method: RequestMethods.GET,
+      fields: {},
       metadata: {
         summary: 'Check if current user is still logged in',
       },
@@ -67,7 +97,15 @@ const UserRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Query string to filter users',
+            example: 'name=John',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -79,7 +117,15 @@ const UserRoutes: IControllerRoute = {
     {
       path: '/user-profile/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Query string to filter user profiles',
+            example: 'name=John',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.profileAll,
       method: RequestMethods.GET,
       metadata: {
@@ -95,6 +141,15 @@ const UserRoutes: IControllerRoute = {
           uid: {
             notEmpty: {},
             isLength: { min: 10, max: 10 },
+          },
+        },
+      },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to get user by Id',
+            example: '1234567890',
           },
         },
       },
@@ -115,6 +170,15 @@ const UserRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to get user profile by Id',
+            example: '1234567890',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.getProfile,
       method: RequestMethods.GET,
       metadata: {
@@ -130,6 +194,15 @@ const UserRoutes: IControllerRoute = {
           uid: {},
         },
       },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to get user details by Id',
+            example: '1234567890',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: User.prototype.getDetails,
       method: RequestMethods.GET,
       metadata: {
@@ -142,6 +215,20 @@ const UserRoutes: IControllerRoute = {
       path: '/login',
       controllerMemberFunctionIdentifier: User.prototype.login,
       method: RequestMethods.POST,
+      fields: {
+        body: {
+          email: {
+            type: 'string',
+            description: 'Email address of the user',
+            example: 'example@gmail.com',
+          },
+          password: {
+            type: 'string',
+            description: 'Password of the user',
+            example: 'password123',
+          },
+        },
+      },
       metadata: {
         summary: 'User login',
       },
@@ -154,6 +241,32 @@ const UserRoutes: IControllerRoute = {
       path: '/verify-mail',
       controllerMemberFunctionIdentifier: User.prototype.verifyEmail,
       method: RequestMethods.POST,
+      fields: {
+        body: {
+          uid: {
+            type: 'number',
+            description: 'User Id',
+            example: '',
+          },
+          email: {
+            type: 'string',
+            description: 'Email address to verify',
+            example: '',
+          },
+          code: {
+            type: 'string',
+            description: 'Verification code sent to the email',
+            example: '123456',
+          },
+        },
+      },
+      validation: {
+        body: {
+          //uid: { notEmpty: {} },
+          email: { notEmpty: {} },
+          code: { notEmpty: {} },
+        },
+      },
       metadata: {
         summary: 'Verify user email',
       },
@@ -173,6 +286,25 @@ const UserRoutes: IControllerRoute = {
           newPassword: { notEmpty: {} },
         },
       },
+      fields: {
+        body: {
+          email: {
+            type: 'string',
+            description: 'Email address to verify',
+            example: '',
+          },
+          code: {
+            type: 'string',
+            description: 'Verification code sent to the email',
+            example: '123456',
+          },
+          newPassword: {
+            type: 'string',
+            description: 'New password for the user',
+            example: 'newpassword123',
+          },
+        },
+      },
     },
 
     {
@@ -188,6 +320,20 @@ const UserRoutes: IControllerRoute = {
           newPassword: { notEmpty: {} },
         },
       },
+      fields: {
+        body: {
+          oldPassword: {
+            type: 'string',
+            description: 'Current password of the user',
+            example: 'oldpassword123',
+          },
+          newPassword: {
+            type: 'string',
+            description: 'New password for the user',
+            example: 'newpassword123',
+          },
+        },
+      },
       requireAuthentication: AuthenticationLevel.END_USER,
     },
 
@@ -195,6 +341,26 @@ const UserRoutes: IControllerRoute = {
       path: '/change-pin',
       controllerMemberFunctionIdentifier: User.prototype.changePin as any,
       method: RequestMethods.POST,
+      fields: {
+        body: {
+          otp: {
+            type: 'number',
+            description: 'OTP to verify the user',
+            example: '123456',
+          },
+          pin: {
+            type: 'string',
+            description: 'New PIN for the user',
+            example: '5678',
+          },
+        },
+      },
+      validation: {
+        body: {
+          otp: { notEmpty: {} },
+          pin: { notEmpty: {} },
+        },
+      },
       metadata: {
         summary: 'Change user PIN',
       },
@@ -217,6 +383,20 @@ const UserRoutes: IControllerRoute = {
           password: true,
         },
       },
+      fields: {
+        body: {
+          pin: {
+            type: 'string',
+            description: 'PIN for the user',
+            example: '1234',
+          },
+          password: {
+            type: 'string',
+            description: 'Password of the user',
+            example: 'password123',
+          },
+        },
+      },
       requireAuthentication: AuthenticationLevel.END_USER,
     },
 
@@ -226,11 +406,17 @@ const UserRoutes: IControllerRoute = {
       metadata: {
         summary: 'Create user',
       },
+      fields: {
+        body: getAttributes(UserModel),
+      },
     },
 
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(UserModel),
+      },
       metadata: {
         summary: 'Update user',
       },
@@ -240,6 +426,9 @@ const UserRoutes: IControllerRoute = {
     {
       path: '/user-profile',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(UserProfileModel),
+      },
       metadata: {
         summary: 'Update user profile',
       },
@@ -252,6 +441,15 @@ const UserRoutes: IControllerRoute = {
         param: {
           uid: {
             isLength: { min: 10, max: 10 },
+          },
+        },
+      },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to delete user by Id',
+            example: '1234567890',
           },
         },
       },
@@ -268,6 +466,15 @@ const UserRoutes: IControllerRoute = {
         param: {
           uid: {
             isLength: { min: 10, max: 10 },
+          },
+        },
+      },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to delete user profile by Id',
+            example: '1234567890',
           },
         },
       },

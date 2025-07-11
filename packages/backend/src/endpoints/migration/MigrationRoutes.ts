@@ -10,7 +10,15 @@ const MigrationRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Query string to filter migrations',
+            example: 'name=UserMigration',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Migration.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -22,6 +30,7 @@ const MigrationRoutes: IControllerRoute = {
       path: '/names',
       controllerMemberFunctionIdentifier: Migration.prototype.names,
       method: RequestMethods.GET,
+      fields: {},
       metadata: {
         summary: 'Get migration names',
       },
@@ -31,6 +40,7 @@ const MigrationRoutes: IControllerRoute = {
       path: '/backup',
       controllerMemberFunctionIdentifier: Migration.prototype.backup,
       method: RequestMethods.GET,
+      fields: {},
       metadata: {
         summary: 'Get migration backup',
       },
@@ -46,6 +56,15 @@ const MigrationRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          modelName: {
+            type: 'string',
+            description: 'Name of the model to get migration data for',
+            example: 'User',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get a model data',
@@ -55,6 +74,7 @@ const MigrationRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {},
       metadata: {
         summary: 'Create migration',
       },
@@ -63,6 +83,7 @@ const MigrationRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {},
       metadata: {
         summary: 'Update migration',
       },
@@ -71,6 +92,17 @@ const MigrationRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.DELETE,
+      fields: {
+        body: {
+          all: { type: 'boolean', description: 'Delete all migrations', default: false },
+          models: {
+            type: 'array',
+            items: { type: 'string', description: 'Model names to delete migrations for' },
+            example: ['User', 'Product'],
+            description: 'List of model names to delete migrations for',
+          },
+        },
+      },
       metadata: {
         summary: 'Delete migration',
       },

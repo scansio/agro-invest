@@ -10,7 +10,6 @@ import {
   Button,
   Tooltip,
   OverlayTrigger,
-  InputGroup,
   Spinner,
   Card,
 } from "react-bootstrap";
@@ -27,7 +26,6 @@ import { objectEquals } from "../../scripts/misc";
 import DoubleClickCopy from "./DoubleClickCopy";
 import TRow from "./TRow";
 import HumanizeTimestamp from "../general/HumanizeTimestamp";
-import React from "react";
 
 export const dateTransform = {
   out: (rowData, type = "createdAt") => {
@@ -369,9 +367,9 @@ async function PaginatedTable(props) {
         <Card.Body className="p-1">
           <Row>
             <Col sm="12" md="6" lg="6" className="pt-1">
-              <InputGroup>
-                <InputGroup.Text>Sort By</InputGroup.Text>
-                <Form.Select
+              <div>
+                <label>Sort By</label>
+                <select
                   onChange={(e) => setSortKey(e.target.value.trim())}
                   value={sortKey}
                 >
@@ -386,13 +384,13 @@ async function PaginatedTable(props) {
                       </option>
                     )
                   )}
-                </Form.Select>
-              </InputGroup>
+                </select>
+              </div>
             </Col>
             <Col sm="12" md="6" lg="6" className="pt-1">
-              <InputGroup>
-                <InputGroup.Text>Sort Order</InputGroup.Text>
-                <Form.Select
+              <div>
+                <label>Sort Order</label>
+                <select
                   onChange={(e) => setSortOrder(e.target.value)}
                   value={sortOrder}
                 >
@@ -401,8 +399,8 @@ async function PaginatedTable(props) {
                       {obj.name}
                     </option>
                   ))}
-                </Form.Select>
-              </InputGroup>
+                </select>
+              </div>
             </Col>
           </Row>
         </Card.Body>
@@ -426,8 +424,12 @@ async function PaginatedTable(props) {
                   lg={isSelectedANumber() ? "8" : "12"}
                   className="p-1"
                 >
-                  <InputGroup>
-                    <Form.Select
+                  <div
+                    style={{
+                      padding: "5px",
+                    }}
+                  >
+                    <select
                       onChange={(e) => setSearchKey(e.target.value.trim())}
                       value={searchKey || props.primaryKey || ""}
                     >
@@ -439,8 +441,13 @@ async function PaginatedTable(props) {
                           </option>
                         )
                       )}
-                    </Form.Select>
-                    <InputGroup.Text>
+                    </select>
+                    <Button
+                      style={{
+                        marginLeft: "2px",
+                        marginRight: "2px",
+                      }}
+                    >
                       {Reblend.reactCompact(OverlayTrigger, {
                         overlay: await Reblend.wrapChildrenToReact(sortTip()),
                         placement: "auto",
@@ -474,18 +481,23 @@ async function PaginatedTable(props) {
                         /* background-color: transparent */
                       }`}
                       </style>
-                    </InputGroup.Text>
-                    <InputGroup.Text>
+                    </Button>
+                    <Button
+                      style={{
+                        marginLeft: "2px",
+                        marginRight: "2px",
+                      }}
+                    >
                       <i
                         className="fas fa-refresh c-pointer"
                         onClick={() => querySetter()}
                       ></i>
-                    </InputGroup.Text>
-                  </InputGroup>
+                    </Button>
+                  </div>
                 </Col>
                 {isSelectedANumber() ? (
                   <Col sm="4" md="4" lg="4" className="p-1">
-                    <Form.Select
+                    <select
                       onChange={(e) =>
                         setNumEqualityValue(e.target.value.trim())
                       }
@@ -496,16 +508,16 @@ async function PaginatedTable(props) {
                           {obj.name}
                         </option>
                       ))}
-                    </Form.Select>
+                    </select>
                   </Col>
                 ) : null}
               </Row>
             </Col>
 
             <Col sm="12" md="6" lg="6" className="p-1">
-              <div className="form-group d-flex">
+              <div className="d-flex" style={{ justifyContent: "flex-end" }}>
                 {fields && fields[searchKey]?.type == Boolean ? (
-                  <Form.Select
+                  <select
                     onChange={(e) => setSearchValue(e.target.value.trim())}
                   >
                     <option key={"false"} value={"false"}>
@@ -514,7 +526,7 @@ async function PaginatedTable(props) {
                     <option key={"true"} value={"true"}>
                       True
                     </option>
-                  </Form.Select>
+                  </select>
                 ) : (
                   <Form.Control
                     value={searchValue}
@@ -534,13 +546,15 @@ async function PaginatedTable(props) {
                   />
                 )}
                 <Button
-                  variant="primary"
-                  type="submit"
+                  //variant="primary"
+                  //type="submit"
                   disabled={loading}
-                  style={{ marginLeft: "-10px", borderRadius: "0 5px 5px 0" }}
+                  style={{ margin: 2 }}
                 >
                   <i className="fas fa-search"></i>
                 </Button>
+
+                {props.addButton}
               </div>
             </Col>
           </Row>

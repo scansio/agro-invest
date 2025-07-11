@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
+import { getAttributes } from '../../../libs/models/Attribute'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import FarmInvestment from './FarmInvestment'
 import FarmInvestmentModel from './FarmInvestmentModel'
@@ -11,7 +12,15 @@ const FarmInvestmentRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for FarmInvestments',
+            example: 'Investment in farming',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: FarmInvestment.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -27,6 +36,15 @@ const FarmInvestmentRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the FarmInvestment to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get FarmInvestment by id',
@@ -35,6 +53,9 @@ const FarmInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(FarmInvestmentModel),
+      },
       metadata: {
         summary: 'Create FarmInvestment',
       },
@@ -43,6 +64,7 @@ const FarmInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: { body: getAttributes(FarmInvestmentModel) },
       metadata: {
         summary: 'Update FarmInvestment',
       },
@@ -54,6 +76,15 @@ const FarmInvestmentRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the FarmInvestment to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

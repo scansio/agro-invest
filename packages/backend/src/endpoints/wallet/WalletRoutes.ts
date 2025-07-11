@@ -8,6 +8,15 @@ const WalletRoutes: IControllerRoute = {
   routes: [
     {
       path: '/confirm-user/:_id',
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'User ID to confirm for transfer',
+            example: '12345678',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Wallet.prototype.confirmUser,
       method: RequestMethods.GET,
       metadata: {
@@ -26,7 +35,15 @@ const WalletRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
-
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Query string to filter wallets',
+            example: 'uid=1234567890',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Wallet.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -53,6 +70,15 @@ const WalletRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to get balance for',
+            example: '1234567890',
+          },
+        },
+      },
       requireAuthentication: AuthenticationLevel.END_USER,
     },
     {
@@ -65,6 +91,15 @@ const WalletRoutes: IControllerRoute = {
       validation: {
         param: {
           uid: {},
+        },
+      },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'User ID to get withdrawable balance for',
+            example: '12345678',
+          },
         },
       },
       requireAuthentication: AuthenticationLevel.END_USER,

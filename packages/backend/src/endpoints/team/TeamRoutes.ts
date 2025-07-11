@@ -1,4 +1,5 @@
 import { AuthenticationLevel, RequestMethods } from '../../configs/constants'
+import { getAttributes } from '../../libs/models/Attribute'
 import { IControllerRoute } from '../../libs/types/IControllerRoute'
 import Team from './Team'
 import TeamModel from './TeamModel'
@@ -11,6 +12,15 @@ const TeamRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for teams',
+            example: 'Development Team',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: Team.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -26,6 +36,15 @@ const TeamRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the team to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get team by id',
@@ -35,6 +54,20 @@ const TeamRoutes: IControllerRoute = {
       path: '/preview/:firstname-:lastname',
       controllerMemberFunctionIdentifier: Team.prototype.getTeamMemberByName,
       method: RequestMethods.GET,
+      fields: {
+        param: {
+          firstname: {
+            type: 'string',
+            description: 'First name of the team member',
+            example: 'John',
+          },
+          lastname: {
+            type: 'string',
+            description: 'Last name of the team member',
+            example: 'Doe',
+          },
+        },
+      },
       metadata: {
         summary: 'Get team member by name',
       },
@@ -48,6 +81,20 @@ const TeamRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: {
+          uid: {
+            type: 'string',
+            description: 'Unique identifier for the team member',
+            example: 'john-doe-123',
+          },
+          title: {
+            type: 'string',
+            description: 'Title of the team member',
+            example: 'Software Engineer',
+          },
+        },
+      },
       metadata: {
         summary: 'Create team',
       },
@@ -62,6 +109,9 @@ const TeamRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: {
+        body: getAttributes(TeamModel),
+      },
       metadata: {
         summary: 'Update team',
       },
@@ -80,6 +130,15 @@ const TeamRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the team to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

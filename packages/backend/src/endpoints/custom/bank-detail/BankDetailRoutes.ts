@@ -2,6 +2,7 @@ import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
 import BankDetail from './BankDetail'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import BankDetailModel from './BankDetailModel'
+import { getAttributes } from '../../../libs/models/Attribute'
 
 const BankDetailRoutes: IControllerRoute = {
   tag: 'BankDetail',
@@ -11,6 +12,15 @@ const BankDetailRoutes: IControllerRoute = {
     {
       path: '/all',
       validation: { query: { q: {} } },
+      fields: {
+        query: {
+          q: {
+            type: 'string',
+            description: 'Search query for bank details',
+            example: 'Bank of America',
+          },
+        },
+      },
       controllerMemberFunctionIdentifier: BankDetail.prototype.all,
       method: RequestMethods.GET,
       metadata: {
@@ -24,6 +34,15 @@ const BankDetailRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the bank detail to retrieve',
+            example: '1234567890abcdef12345678',
           },
         },
       },
@@ -43,6 +62,15 @@ const BankDetailRoutes: IControllerRoute = {
           },
         },
       },
+      fields: {
+        param: {
+          uid: {
+            type: 'string',
+            description: 'Unique identifier for the bank detail',
+            example: '12345678',
+          },
+        },
+      },
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get bank detail by uid',
@@ -52,6 +80,9 @@ const BankDetailRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.POST,
+      fields: {
+        body: getAttributes(BankDetailModel),
+      },
       metadata: {
         summary: 'Create bank detail',
       },
@@ -60,6 +91,7 @@ const BankDetailRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
+      fields: { body: getAttributes(BankDetailModel) },
       metadata: {
         summary: 'Update bank detail',
       },
@@ -71,6 +103,15 @@ const BankDetailRoutes: IControllerRoute = {
         param: {
           _id: {
             notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the bank detail to delete',
+            example: '1234567890abcdef12345678',
           },
         },
       },

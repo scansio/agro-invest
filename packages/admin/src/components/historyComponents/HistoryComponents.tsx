@@ -10,6 +10,8 @@ import PaginatedTable from "../paginating/PaginatedTable";
 import { HistoryCustomComponents } from "../../HistoryCustomComponents";
 import { useHash } from "reblend-router";
 
+(FaTrash as any).props = { reactcomponent: true };
+
 async function HistoryComponents({
   controllerRoute,
 }: {
@@ -88,19 +90,6 @@ async function HistoryComponents({
     );
   };
 
-  const createButton = () => {
-    return (
-      <>
-        <Button
-          onClick={() => setShowCreateForm(true)}
-          style={{ padding: "5px", fontSize: "11px" }}
-        >
-          Add
-        </Button>
-      </>
-    );
-  };
-
   useEffect(() => {
     if (!controllerRoute) {
       return;
@@ -137,7 +126,7 @@ async function HistoryComponents({
       hideFromSearch: true,
     };
     fields["action"] = {
-      name: createButton,
+      name: "Action",
       type: String,
       virtual: true,
       transform: { out },
@@ -191,6 +180,14 @@ async function HistoryComponents({
 
       {url && (
         <PaginatedTable
+          addButton={
+            <Button
+              onClick={() => setShowCreateForm(true)}
+              style={{ margin: 2 }}
+            >
+              Add
+            </Button>
+          }
           url={url}
           dataName={dataName}
           fields={fields}

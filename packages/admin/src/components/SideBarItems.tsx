@@ -29,7 +29,7 @@ const SideBarItems = ({
           <Link
             key={`${tag}-tag`}
             id={`${tag}-tag`}
-            href={`${(window as any).REBLEND_BASE_PATHNAME}/${hashTag}`}
+            href={`${window.REBLEND_BASE_PATHNAME}/${hashTag}`}
             className={`text-ellipsis ${
               hash === hashTag || hash?.split("#")[1] === tag
                 ? "active-sidebutton"

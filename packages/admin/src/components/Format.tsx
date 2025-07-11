@@ -1,6 +1,8 @@
 import Reblend, { useEffect, useState } from "reblendjs";
 import Highlight from "react-highlight";
 
+(Highlight as any).props = { reactcomponent: true };
+
 function Format({
   language,
   code,
