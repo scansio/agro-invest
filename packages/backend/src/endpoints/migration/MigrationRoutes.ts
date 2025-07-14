@@ -97,7 +97,7 @@ const MigrationRoutes: IControllerRoute = {
           all: { type: 'boolean', description: 'Delete all migrations', default: false },
           models: {
             type: 'array',
-            items: { type: 'string', description: 'Model names to delete migrations for' },
+            itemOptions: { type: 'string', description: 'Model names to delete migrations for' },
             example: ['User', 'Product'],
             description: 'List of model names to delete migrations for',
           },

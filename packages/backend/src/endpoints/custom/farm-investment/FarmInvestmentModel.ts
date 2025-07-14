@@ -21,7 +21,7 @@ TimestampsPlugin(
       },
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     pricePerUnit: {
@@ -45,7 +45,7 @@ TimestampsPlugin(
       allowNull: false,
     },
     expenses: JsonField({
-      allowNull: false,
+      allowNull: true,
     }),
     assets: JsonField({
       allowNull: false,

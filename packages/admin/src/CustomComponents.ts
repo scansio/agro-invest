@@ -5,5 +5,5 @@ import User from "./pages/User";
 export const CustomComponents: { [key: string]: (props: any) => Reblend.JSX.Element } = {
   Git,
   Migration,
-  User,
+  //User,
 };

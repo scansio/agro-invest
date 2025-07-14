@@ -12,12 +12,8 @@ import PaginatingModel from '../../../libs/models/PaginatingModel'
 import { getDefinedValuesFrom } from '../../../common'
 import FileStore from '../../../libs/FileStore'
 import { ILandInvestment } from './ILandInvestment'
-import { PENDING_APPROVAL } from '../../../configs/constants'
-import Mailer from '../../../libs/Mailer'
-import SharedConfig from '../../../libs/SharedConfig'
 import BaseController from '../../../libs/controller/BaseController'
 import LandInvestmentModel from './LandInvestmentModel'
-import LandInvestmentRoutes from './LandInvestmentRoutes'
 
 class LandInvestment extends BaseController {
   constructor(req: Request, res: Response, next: NextFunction) {
@@ -48,15 +44,16 @@ class LandInvestment extends BaseController {
     if (this.req.headers['content-type']?.includes('multipart')) {
       assets = ((await filestore.uploadForMultiple('assets')) as string[]) || null
     }
-    const { info, address, city, state, price } = this.req.body as ILandInvestment
+    const { address, city, state, price, expenses, description } = this.req.body as ILandInvestment
 
     const created = await LandInvestmentModel.create({
       uid: this.user._id,
-      info,
       address,
       city,
       state,
       price,
+      expenses,
+      description,
       assets: assets || undefined,
       //status: PENDING_APPROVAL,
     })
@@ -91,18 +88,19 @@ class LandInvestment extends BaseController {
       assets = (await filestore.uploadForMultiple('assets')) || null
     }
 
-    const { _id, info, address, city, state, price, status } = this.req.body as ILandInvestment
+    const { _id, address, city, state, price, expenses, description, status } = this.req.body as ILandInvestment
 
     const definedValues = getDefinedValuesFrom({
-      info,
       address,
       city,
       state,
       price,
+      expenses,
+      description,
       assets: assets || undefined,
       status,
     })
-    const prev = (await LandInvestmentModel.findByPk(_id))
+    const prev = await LandInvestmentModel.findByPk(_id)
     if (!(await this.ownerAndAdminAccess(prev?.uid!, false))) {
       assets?.forEach((asset) => filestore.delete(asset))
       return this.status(false).statusCode(BAD_AUTHORIZATION).message('You do not have access to this resource').send()
@@ -126,7 +124,7 @@ class LandInvestment extends BaseController {
   }
 
   async delete({ _id }: any) {
-    const deleted = (await LandInvestmentModel.findOne({ where: { _id } }))
+    const deleted = await LandInvestmentModel.findOne({ where: { _id } })
     if (!deleted) {
       this.status(false).statusCode(BAD_REQUEST).message('LandInvestment failed to be deleted due to error').send()
     } else {

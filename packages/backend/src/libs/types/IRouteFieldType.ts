@@ -4,6 +4,7 @@ export type IRouteFieldTypes =
   | 'boolean'
   | 'object'
   | 'array'
+  | 'time'
   | 'date'
   | 'file'
   | 'image'
@@ -21,8 +22,8 @@ export type IRouteFieldOption = {
   type: IRouteFieldTypes
   required?: boolean
   default?: any
-  options?: string[] // For select, radio, checkbox
-  items?: IRouteFieldOption // For array of objects
+  options?: { label: string; value: string }[]; // For select, radio, checkbox
+  itemOptions?: IRouteFieldOption // For array of objects
   minLength?: number // For string
   maxLength?: number // For string
   min?: number // For number
@@ -31,6 +32,8 @@ export type IRouteFieldOption = {
   description?: string // For documentation purposes
   example?: any // For documentation purposes
   readOnly?: boolean // For fields that should not be modified
+  multiple?: boolean // For file and radio type
+  accept?: string // For file mime type
 }
 
 export type IRouteFieldOptions = {

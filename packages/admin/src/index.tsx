@@ -5,16 +5,8 @@ import "highlight.js/scss/intellij-light.scss";
 import App from "./App";
 import "./assets/css/scansio-style.css";
 import "react-toastify/dist/ReactToastify.min.css";
-//import "./assets/css/util.css";
-//import "./assets/css/main.css";
+import "./assets/css/main.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-//import "./assets/vendor/js/helpers.js";
-//import "./assets/js/config.js";
-//import "./assets/vendor/libs/popper/popper.js";
-//import "./assets/vendor/js/menu.js";
-//import "./assets/js/main.js";
-//import "./assets/css/custom-style.scss";
-
 import "./assets/vendor/css/core.css";
 import "./assets/vendor/css/theme-default.css";
 

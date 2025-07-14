@@ -7,7 +7,6 @@ import { versionContext, View, viewContext } from "./context";
 import SideBarItems from "./components/SideBarItems";
 import MainPane from "./components/MainPane";
 import Router, { Navigate, Route, useHistory } from "reblend-router";
-import ErrorWrapper from "./pages/ErrorWrapper";
 import Footer from "./layout/Footer";
 import ThemeToggler from "./layout/layout_components/ThemeToggler";
 import {
@@ -19,6 +18,8 @@ import { ToastContainer } from "react-toastify";
 import SharedConfig from "./scripts/SharedConfig";
 import Refresh from "./pages/Refresh";
 import { BASE } from "./utils/RestEndpoints";
+
+(ToastContainer as any).props = { reactcomponent: true };
 
 function App() {
   const [currentApiVersion] = useContext(versionContext);
@@ -109,14 +110,23 @@ function App() {
 
   return (
     <div className="swagger-ui" style={styles}>
-      {Reblend.reactCompact(ToastContainer, {
-        newestOnTop: true,
-        toastStyle: { borderRadius: 20, padding: 5 },
-      })}
-      <Router />
-      <Route path="*" element={<></>} />
-      <Route path="/refresh" Component={Refresh} />
-      {refresh ? <Navigate to="/refresh" /> : null}
+      <ToastContainer
+        newestOnTop={true}
+        toastStyle={{ borderRadius: 20, padding: 5 }}
+      />
+      <Router
+        routes={{
+          refresh: {
+            path: "/refresh",
+
+            Component: Refresh,
+          },
+          "*": {
+            path: "*",
+            element: <></>,
+          },
+        }}
+      />
       <SVGDefinition />
       <InfoContainer versions={versions} info={currentApi?.info} />
       <div

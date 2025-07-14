@@ -54,7 +54,25 @@ const LandInvestmentRoutes: IControllerRoute = {
       path: '',
       method: RequestMethods.POST,
       fields: {
-        body: getAttributes(LandInvestmentModel),
+        body: getAttributes(
+          LandInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: 'array',
+              required: true,
+              itemOptions: {
+                type: 'string',
+              },
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
       },
       metadata: {
         summary: 'Create LandInvestment',
@@ -65,7 +83,25 @@ const LandInvestmentRoutes: IControllerRoute = {
       path: '',
       method: RequestMethods.PATCH,
       fields: {
-        body: getAttributes(LandInvestmentModel),
+        body: getAttributes(
+          LandInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: 'array',
+              required: true,
+              itemOptions: {
+                type: 'string',
+              },
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
       },
       metadata: {
         summary: 'Update LandInvestment',

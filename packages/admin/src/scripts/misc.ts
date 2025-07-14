@@ -4,8 +4,12 @@ import { toast } from "react-toastify";
 import SharedConfig from "./SharedConfig";
 import fetcher from "../utils/SharedFetcher";
 import Fetcher from "../utils/Fetcher";
+import { IAny } from "reblendjs";
 
-export const isActivePath = (routeName: string, location: URL | null | undefined) => {
+export const isActivePath = (
+  routeName: string,
+  location: URL | null | undefined
+) => {
   if (location) {
     const path = location.pathname;
     const splitted = path.split("/");
@@ -47,7 +51,10 @@ export function redirect(url: any) {
   }
 }
 
-export function objectEquals(obj1: { [x: string]: any; } | null, obj2: { [x: string]: any; } | null) {
+export function objectEquals(
+  obj1: { [x: string]: any } | null,
+  obj2: { [x: string]: any } | null
+) {
   // Check if both object are strictly equal
   if (obj1 === obj2) {
     return true;
@@ -185,3 +192,40 @@ export const mongooseModelQueryObjectForDateRange = (
   const query = { [path]: { $lte: high, $gte: low } };
   return query;
 };
+
+export function buildFormData(
+  formData: FormData,
+  headers: IAny,
+  data: Record<string, any>,
+  parentKey = ""
+): void {
+  for (const key in data) {
+    const value = data[key];
+    if (value === undefined || value === null) continue;
+
+    const formKey =
+      value instanceof File
+        ? parentKey || key
+        : parentKey
+        ? `${parentKey}[${key}]`
+        : key;
+
+    if (value instanceof File) {
+      formData.append(formKey, value);
+      headers["Content-Type"] = "multipart/formdata";
+    } else if (value instanceof FileList) {
+      for (const file of value) {
+        formData.append(formKey, file);
+      }
+      headers["Content-Type"] = "multipart/formdata";
+    } else if (Array.isArray(value)) {
+      value.forEach((item, i) =>
+        buildFormData(formData, headers, { [i]: item }, formKey)
+      );
+    } else if (typeof value === "object") {
+      buildFormData(formData, headers, value, formKey);
+    } else {
+      formData.append(formKey, value);
+    }
+  }
+}

@@ -275,8 +275,10 @@ class User extends BaseController {
           verifiedDriver,
         }
       : {}
-    const { uid, firstname, lastname, email, expoToken, role, bio, country, state, phone, type, status }: any =
+    const { _id, firstname, lastname, email, expoToken, role, bio, country, state, phone, type, status }: any =
       this.req.body
+
+    const uid = _id || this.req.body.uid
     const theUser = await this.isValidUser(uid)
     await this.ownerAndAdminAccess(uid)
     const definedValues = getDefinedValuesFrom({

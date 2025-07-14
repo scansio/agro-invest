@@ -54,7 +54,25 @@ const FarmInvestmentRoutes: IControllerRoute = {
       path: '',
       method: RequestMethods.POST,
       fields: {
-        body: getAttributes(FarmInvestmentModel),
+        body: getAttributes(
+          FarmInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
       },
       metadata: {
         summary: 'Create FarmInvestment',
@@ -64,7 +82,27 @@ const FarmInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
-      fields: { body: getAttributes(FarmInvestmentModel) },
+      fields: {
+        body: getAttributes(
+          FarmInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
+      },
       metadata: {
         summary: 'Update FarmInvestment',
       },

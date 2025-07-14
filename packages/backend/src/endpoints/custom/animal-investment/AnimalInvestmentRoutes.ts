@@ -54,7 +54,25 @@ const AnimalInvestmentRoutes: IControllerRoute = {
       path: '',
       method: RequestMethods.POST,
       fields: {
-        body: getAttributes(AnimalInvestmentModel),
+        body: getAttributes(
+          AnimalInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
       },
       metadata: {
         summary: 'Create AnimalInvestment',
@@ -64,7 +82,27 @@ const AnimalInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
-      fields: { body: getAttributes(AnimalInvestmentModel) },
+      fields: {
+        body: getAttributes(
+          AnimalInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
+      },
       metadata: {
         summary: 'Update AnimalInvestment',
       },

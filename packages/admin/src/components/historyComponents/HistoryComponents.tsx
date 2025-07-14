@@ -28,6 +28,49 @@ async function HistoryComponents({
 
   const hash = useHash();
 
+  useEffect(() => {
+    if (!controllerRoute) {
+      return;
+    }
+    const ignore: IAny = {};
+    const fields: any = {};
+    fields["_id"] = { name: "Id", type: String };
+    for (const key of Object.keys(controllerRoute?.schema! || {})) {
+      if (!ignore[key]) {
+        fields[key] = {
+          name: key,
+          type: String,
+          transform: {
+            out: (rowData: any) => {
+              const dat = rowData[key];
+
+              return typeof dat === "object" ? JSON.stringify(dat) : dat;
+            },
+          },
+        };
+      }
+    }
+    fields["status"] = { name: "Status", type: String };
+    fields["createdAt.date"] = { name: "Created", type: Date };
+    fields["updatedAt.date"] = {
+      name: "Updated",
+      type: Date,
+      hideFromSearch: true,
+    };
+    fields["action"] = {
+      name: "Action",
+      type: String,
+      virtual: true,
+      transform: { out },
+    };
+    const dataName = `${controllerRoute?.tag}s`.toLowerCase();
+    const url = `${controllerRoute?.baseUrl}/all`;
+
+    setfields(fields);
+    setdataName(dataName);
+    seturl(url);
+  }, [controllerRoute]);
+
   const deleteUser = async (userId: string) => {
     const fetchData = {
       url: controllerRoute?.baseUrl + "/" + userId,
@@ -90,93 +133,39 @@ async function HistoryComponents({
     );
   };
 
-  useEffect(() => {
-    if (!controllerRoute) {
-      return;
-    }
-    const ignore: IAny = {
-      _id: 1,
-      __v: 1,
-      status: 1,
-      createdAt: 1,
-      updatedAt: 1,
-    };
-    const fields: any = {};
-    fields["_id"] = { name: "Id", type: String };
-    for (const key of Object.keys(controllerRoute?.schema! || {})) {
-      if (!ignore[key]) {
-        fields[key] = {
-          name: key,
-          type: String,
-          transform: {
-            out: (rowData: any) => {
-              const dat = rowData[key];
-
-              return typeof dat === "object" ? JSON.stringify(dat) : dat;
-            },
-          },
-        };
-      }
-    }
-    fields["status"] = { name: "Status", type: String };
-    fields["createdAt.date"] = { name: "Created", type: Date };
-    fields["updatedAt.date"] = {
-      name: "Updated",
-      type: Date,
-      hideFromSearch: true,
-    };
-    fields["action"] = {
-      name: "Action",
-      type: String,
-      virtual: true,
-      transform: { out },
-    };
-    const dataName = `${controllerRoute?.tag}s`.toLowerCase();
-    const url = `${controllerRoute?.baseUrl}/all`;
-
-    setfields(fields);
-    setdataName(dataName);
-    seturl(url);
-  }, [controllerRoute]);
-
   return (
     <>
-      {!showConfirmDeletion ? null : (
-        <ModalBox
-          show={showConfirmDeletion}
-          onCancel={() => setShowConfirmDeletion(false)}
-          onAccept={() => deleteUser(itemId)}
-          header={<h1 className="text-center">Confirm Deletion</h1>}
-          type="danger"
-          backdrop
-        >
-          <span>Are Sure you want to delete this user</span>
-        </ModalBox>
-      )}
+      <ModalBox
+        show={showConfirmDeletion}
+        onCancel={() => setShowConfirmDeletion(false)}
+        onAccept={() => deleteUser(itemId)}
+        header={<h1 className="text-center">Confirm Deletion</h1>}
+        type="danger"
+        backdrop
+      >
+        <span>Are Sure you want to delete this user</span>
+      </ModalBox>
 
-      {!showCreateForm ? null : (
-        <ModalBox
-          show={showCreateForm}
-          onCancel={() => {
-            setShowCreateForm(false);
-            setUpdatingData(null);
-          }}
-          control={false}
-          header={
-            <h2 className="text-center">{`${
-              updatingData ? "Update" : "Create"
-            } ${controllerRoute?.tag}`}</h2>
-          }
-          backdrop
-        >
-          <HistoryComponentsForm
-            setReload={() => setReload(!reload)}
-            updates={updatingData as any}
-            fields={fields}
-            url={controllerRoute?.baseUrl!}
-          />
-        </ModalBox>
-      )}
+      <ModalBox
+        show={showCreateForm}
+        onCancel={() => {
+          setShowCreateForm(false);
+          setUpdatingData(null);
+        }}
+        control={false}
+        header={
+          <h2 className="text-center">{`${updatingData ? "Update" : "Create"} ${
+            controllerRoute?.tag
+          }`}</h2>
+        }
+        backdrop
+      >
+        <HistoryComponentsForm
+          setReload={() => setReload(!reload)}
+          updates={updatingData as any}
+          controllerRoute={controllerRoute!}
+        />
+      </ModalBox>
 
       {url && (
         <PaginatedTable

@@ -11,44 +11,51 @@ const excludes = {
   updatedAt: true,
 }
 
-export const getAttributes = <I extends {}, T extends Model<I, CreateType<I>>, E>(
+export const getAttributes = <I extends {}, T extends Model<I, CreateType<I>>>(
   model: ModelStatic<T>,
-  omit?: E,
-  overrides?: { [K in keyof I]: IRouteFieldOption },
-): Omit<Attributes<T>, keyof typeof excludes | keyof E> => {
+  omit?: Partial<{ [K in keyof InferAttributes<T>]: boolean }>,
+  overrides?: Partial<Attributes<T>>,
+): Omit<Attributes<T>, keyof typeof excludes | keyof typeof omit> => {
   const tobeExcluded = { ...excludes, ...omit }
   const attrs = model.getAttributes()
   const result = {} as Attributes<T>
   for (const key in attrs) {
     let type: IRouteFieldOption['type'] = 'string'
 
-    switch (attrs[key].type) {
-      case DataTypes.NUMBER:
-      case DataTypes.INTEGER:
-      case DataTypes.DOUBLE:
-      case DataTypes.FLOAT:
+    switch (attrs[key].type.constructor.name) {
+      case DataTypes.NUMBER.name:
+      case DataTypes.INTEGER.name:
+      case DataTypes.DOUBLE.name:
+      case DataTypes.FLOAT.name:
         type = 'number'
         break
 
-      case DataTypes.JSON:
-        type = 'number'
+      case DataTypes.JSON.name:
+      case DataTypes.TEXT.name:
+        type = 'textarea'
         break
 
-      case DataTypes.BOOLEAN:
+      case DataTypes.BOOLEAN.name:
         type = 'checkbox'
         break
 
-      case DataTypes.DATE:
+      case DataTypes.DATE.name:
         type = 'date'
         break
 
+      case DataTypes.TIME.name:
+        type = 'time'
+        break
+
+      case DataTypes.STRING.name:
+      case DataTypes.CHAR.name:
       default:
-        type = 'string'
+        type = 'text'
         break
     }
 
     if (key === 'status') {
-      type = 'checkbox'
+      type = 'switch'
     }
 
     if (!tobeExcluded[key as any]) {
@@ -58,7 +65,8 @@ export const getAttributes = <I extends {}, T extends Model<I, CreateType<I>>, E
         description: attrs[key].comment,
         max: attrs[key].validate?.max as number,
         min: attrs[key].validate?.min as number,
-        ...overrides,
+        ...(attrs[key].allowNull !== undefined ? { required: !attrs[key].allowNull } : {}),
+        ...(overrides || {})[key as any],
       }
     }
   }

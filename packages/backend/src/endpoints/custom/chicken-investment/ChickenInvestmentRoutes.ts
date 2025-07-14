@@ -55,7 +55,25 @@ const ChickenInvestmentRoutes: IControllerRoute = {
       path: '',
       method: RequestMethods.POST,
       fields: {
-        body: getAttributes(ChickenInvestmentModel),
+        body: getAttributes(
+          ChickenInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
       },
       metadata: {
         summary: 'Create ChickenInvestment',
@@ -65,7 +83,27 @@ const ChickenInvestmentRoutes: IControllerRoute = {
     {
       path: '',
       method: RequestMethods.PATCH,
-      fields: { body: getAttributes(ChickenInvestmentModel) },
+      fields: {
+        body: getAttributes(
+          ChickenInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
+      },
       metadata: {
         summary: 'Update ChickenInvestment',
       },

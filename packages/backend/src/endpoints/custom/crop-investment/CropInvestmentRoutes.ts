@@ -53,7 +53,27 @@ const CropInvestmentRoutes: IControllerRoute = {
     {
       path: '/',
       method: RequestMethods.POST,
-      fields: { body: getAttributes(CropInvestmentModel) },
+      fields: {
+        body: getAttributes(
+          CropInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
+      },
       metadata: {
         summary: 'Create CropInvestment',
       },
@@ -62,7 +82,27 @@ const CropInvestmentRoutes: IControllerRoute = {
     {
       path: '/',
       method: RequestMethods.PATCH,
-      fields: { body: getAttributes(CropInvestmentModel) },
+      fields: {
+        body: getAttributes(
+          CropInvestmentModel,
+          { uid: true },
+          {
+            expenses: {
+              type: "array",
+              required: true,
+              itemOptions: {
+                type: "string",
+              }
+            },
+            assets: {
+              type: 'image',
+              multiple: true,
+              required: true,
+              accept: '.jpg,.jpeg,.png',
+            },
+          },
+        ),
+      },
       metadata: {
         summary: 'Update CropInvestment',
       },

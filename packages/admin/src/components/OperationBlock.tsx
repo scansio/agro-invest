@@ -78,7 +78,7 @@ function OperationBlock({
                           <a
                             class="nostyle"
                             href={`/#${controllerRoute?.tag}-tag`}
-                            onclick={setShowAction}
+                            onclick={setShowAction as any}
                           >
                             <p>{controllerRoute?.description}</p>
                           </a>

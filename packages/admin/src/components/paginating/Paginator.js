@@ -247,15 +247,17 @@ function Paginator(props) {
           size="sm"
         />
       ) : null}
-      <div
-        className="d-flex justify-content-between align-items-end"
-        style={{
-          overflowX: "scroll",
-          display: props.hidden ? "none" : "initial",
-        }}
-      >
-        {metadata?.totalPages > 1 ? renderer : null}
-      </div>
+      {metadata?.totalPages > 1 ? (
+        <div
+          className="d-flex justify-content-between align-items-end"
+          style={{
+            overflowX: "scroll",
+            display: props.hidden ? "none" : "initial",
+          }}
+        >
+          {renderer}
+        </div>
+      ) : null}
     </>
   );
 }

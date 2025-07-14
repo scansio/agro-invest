@@ -34,7 +34,7 @@ const ModalBox = async (props) => {
         ) : null}
       </Modal.Header>
       <Modal.Body className={`${props.className || ""}`} style={props.style}>
-        {props.children || props.body}
+        {props.show ? props.children || props.body : null}
       </Modal.Body>
       {!props.noControl ? (
         <Modal.Footer style={{ ...(props.style || {}), margin: "1px" }}>

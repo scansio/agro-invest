@@ -4,10 +4,11 @@ import IUser from '../../user/IUser'
 
 export interface ILandInvestment extends ITimestamp {
   uid: IUser['_id']
-  info: string
+  description: string
   address: string
   city: string
   state: IState['_id']
   price: number
+  expenses: string[]
   assets: string[]
 }

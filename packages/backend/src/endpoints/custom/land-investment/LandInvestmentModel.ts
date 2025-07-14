@@ -4,7 +4,6 @@ import { ILandInvestment } from './ILandInvestment'
 import { CreateType } from '../../../libs/types/ITimestamp'
 import TimestampsPlugin from '../../../libs/models/TimestampsPlugin'
 import { JsonField } from '../../../common'
-import StateModel from '../../state/StateModel'
 
 interface LandInvestmentModel extends ILandInvestment {}
 
@@ -21,17 +20,13 @@ TimestampsPlugin(
         key: '_id',
       },
     },
-    info: {
-      type: DataTypes.STRING,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: StateModel,
-        key: '_id',
-      },
     },
     city: {
       type: DataTypes.STRING,
@@ -48,6 +43,9 @@ TimestampsPlugin(
         min: 1,
       },
     },
+    expenses: JsonField({
+      allowNull: false,
+    }),
     assets: JsonField({
       allowNull: false,
     }),
