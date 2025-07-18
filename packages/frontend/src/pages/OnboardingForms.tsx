@@ -42,7 +42,7 @@ export const OnboardingForms: FC = () => {
             <Input
               placeholder="Your legal first name"
               value={firstName}
-              onInput={(e) =>
+              onchange={(e) =>
                 setFirstName((e.target as HTMLInputElement).value)
               }
               required
@@ -51,14 +51,14 @@ export const OnboardingForms: FC = () => {
             <Input
               placeholder="Your legal last name"
               value={lastName}
-              onInput={(e) => setLastName((e.target as HTMLInputElement).value)}
+              onchange={(e) => setLastName((e.target as HTMLInputElement).value)}
               required
               type="text"
             />
             <Input
               placeholder="Date of birth"
               value={dob}
-              onInput={(e) => setDob((e.target as HTMLInputElement).value)}
+              onchange={(e) => setDob((e.target as HTMLInputElement).value)}
               required
               type="date"
             />
@@ -106,7 +106,7 @@ export const OnboardingForms: FC = () => {
               class="bg-white border border-warning-400 rounded-2xl px-4 py-3 text-lg outline-none w-40"
               placeholder="907 123 4567"
               value={phone}
-              onInput={(e) => setPhone((e.target as HTMLInputElement).value)}
+              onchange={(e) => setPhone((e.target as HTMLInputElement).value)}
               required
               type="tel"
             />
@@ -148,7 +148,7 @@ export const OnboardingForms: FC = () => {
                 } bg-neutral-50`}
                 maxLength={1}
                 value={val}
-                onInput={(e) =>
+                onchange={(e) =>
                   handleCodeChange(i, (e.target as HTMLInputElement).value)
                 }
                 type="text"
@@ -207,7 +207,7 @@ export const OnboardingForms: FC = () => {
             <Input
               placeholder="Enter account number"
               value={accountNumber}
-              onInput={(e) =>
+              onchange={(e) =>
                 setAccountNumber((e.target as HTMLInputElement).value)
               }
               required
@@ -216,7 +216,7 @@ export const OnboardingForms: FC = () => {
             <Input
               placeholder="Account Name"
               value={accountName}
-              onInput={(e) =>
+              onchange={(e) =>
                 setAccountName((e.target as HTMLInputElement).value)
               }
               required

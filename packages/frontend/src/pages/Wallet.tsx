@@ -98,7 +98,7 @@ export const Wallet: FC = () => {
           <Input
             placeholder="Enter amount (₦)"
             value={amount}
-            onInput={(e) => setAmount((e.target as HTMLInputElement).value)}
+            onchange={(e) => setAmount((e.target as HTMLInputElement).value)}
             type="number"
           />
           <div class="w-full text-lg font-semibold text-neutral-700">
@@ -165,7 +165,7 @@ export const Wallet: FC = () => {
           <Input
             placeholder="Enter amount (₦)"
             value={withdrawAmount}
-            onInput={(e) =>
+            onchange={(e) =>
               setWithdrawAmount((e.target as HTMLInputElement).value)
             }
             type="number"
@@ -173,13 +173,13 @@ export const Wallet: FC = () => {
           <Input
             placeholder="Password"
             value={password}
-            onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+            onchange={(e) => setPassword((e.target as HTMLInputElement).value)}
             type="password"
           />
           <Input
             placeholder="SMS 2FA"
             value={sms2fa}
-            onInput={(e) => setSms2fa((e.target as HTMLInputElement).value)}
+            onchange={(e) => setSms2fa((e.target as HTMLInputElement).value)}
             type="text"
           />
           <Button variant="support" className="text-xs">

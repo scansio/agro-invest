@@ -34,7 +34,6 @@ export type Routes = {
   transactions: RouteProp;
   deposit: RouteProp;
   withdraw: RouteProp;
-  bankdetail: RouteProp;
   team: RouteProp;
   teamPreview: RouteProp;
   teamPreview1: RouteProp;
@@ -173,6 +172,59 @@ export const routes: Routes = {
     icon: <FontAwesomeIcon icon={faUserCog} />,
     showOnNav: true,
     Component: () => import("../pages/Team").then((m) => m.Team),
+  },
+
+  signup: {
+    tag: "Sign up",
+    path: "/sign-up",
+    redirectUri: "/sign-up",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () =>
+      import("../pages/authentication/Signup").then((m) => m.Signup),
+  },
+
+  login: {
+    tag: "Log in",
+    path: "/login",
+    redirectUri: "/login",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () => import("../pages/authentication/Login").then((m) => m.Login),
+  },
+
+  verifymail: {
+    tag: "Verify Mail",
+    path: "/verify-mail",
+    redirectUri: "/verify-mail",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () =>
+      import("../pages/authentication/verify-email").then((m) => m.VerifyEmail),
+  },
+
+  resetpassword: {
+    tag: "Reset Password",
+    path: "/reset-password",
+    redirectUri: "/reset-password",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () =>
+      import("../pages/authentication/reset-password").then(
+        (m) => m.ResetPassword
+      ),
+  },
+
+  emailresetpassword: {
+    tag: "Email Reset Password",
+    path: "/email-reset-password",
+    redirectUri: "/email-reset-password",
+    icon: <FontAwesomeIcon icon={faUserCog} />,
+    showOnNav: true,
+    Component: () =>
+      import("../pages/authentication/email-reset-password").then(
+        (m) => m.EmailResetPassword
+      ),
   },
 
   teamPreview: {

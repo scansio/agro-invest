@@ -35,7 +35,6 @@ export const ComponentsSample: FC = () => {
 
   return (
     <div class="container mx-auto p-6">
-      <AlertContainer />
       <h1 class="text-3xl font-bold mb-4">Component Sample</h1>
 
       <hr class="py-10 " />

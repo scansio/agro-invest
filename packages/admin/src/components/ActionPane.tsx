@@ -225,7 +225,7 @@ function ActionPane({
                                         value={
                                           (parameter[param] || {})[name] || ""
                                         }
-                                        oninput={(e: any) =>
+                                        onchange={(e: any) =>
                                           setParameter({
                                             param,
                                             ident: name,
@@ -241,7 +241,7 @@ function ActionPane({
                                         value={
                                           (parameter[param] || {})[name] || ""
                                         }
-                                        onInput={(e: any) =>
+                                        onchange={(e: any) =>
                                           setParameter({
                                             param,
                                             ident: name,
@@ -338,7 +338,7 @@ function ActionPane({
                 <div class="examples-select">
                   <span class="examples-select__section-label">Examples: </span>
                   <select
-                    onInput={(e: any) =>
+                    onchange={(e: any) =>
                       setSelectedSampleRequest(e.target.value)
                     }
                     value={selectedSampleRequest}

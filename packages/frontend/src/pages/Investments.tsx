@@ -93,7 +93,7 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
               leftIcon={<FontAwesomeIcon icon={faSearch} />}
               placeholder="Search"
               value={search}
-              onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
+              onchange={(e) => setSearch((e.target as HTMLInputElement).value)}
             />
           </div>
           {/* Tabs for All/Active/Completed or All/Owned */}

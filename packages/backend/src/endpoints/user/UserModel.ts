@@ -31,11 +31,11 @@ TimestampsPlugin({ UserModel } as any, {
   },
   firstname: {
     type: DataTypes.STRING,
-    allowNull: false,
+    //allowNull: false,
   },
   lastname: {
     type: DataTypes.STRING,
-    allowNull: false,
+    //allowNull: false,
   },
   email: {
     type: DataTypes.STRING,

@@ -38,7 +38,7 @@ export const Profile: FC = () => {
           <Label>Your legal first name</Label>
           <Input
             value={firstName}
-            onInput={(e) => setFirstName((e.target as HTMLInputElement).value)}
+            onchange={(e) => setFirstName((e.target as HTMLInputElement).value)}
             placeholder="First name"
             type="text"
           />
@@ -47,7 +47,7 @@ export const Profile: FC = () => {
           <Label>Your legal last name</Label>
           <Input
             value={lastName}
-            onInput={(e) => setLastName((e.target as HTMLInputElement).value)}
+            onchange={(e) => setLastName((e.target as HTMLInputElement).value)}
             placeholder="Last name"
             type="text"
           />
@@ -56,7 +56,7 @@ export const Profile: FC = () => {
           <Label>Date of birth</Label>
           <Input
             value={dob}
-            onInput={(e) => setDob((e.target as HTMLInputElement).value)}
+            onchange={(e) => setDob((e.target as HTMLInputElement).value)}
             placeholder="Date of birth"
             type="date"
           />
@@ -75,7 +75,7 @@ export const Profile: FC = () => {
         <div>
           <Input
             value={address}
-            onInput={(e) => setAddress((e.target as HTMLInputElement).value)}
+            onchange={(e) => setAddress((e.target as HTMLInputElement).value)}
             placeholder="Address"
             type="text"
           />
