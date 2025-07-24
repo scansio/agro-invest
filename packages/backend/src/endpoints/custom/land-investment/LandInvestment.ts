@@ -44,16 +44,21 @@ class LandInvestment extends BaseController {
     if (this.req.headers['content-type']?.includes('multipart')) {
       assets = ((await filestore.uploadForMultiple('assets')) as string[]) || null
     }
-    const { address, city, state, price, expenses, description } = this.req.body as ILandInvestment
+    const { address, city, state, remainingUnits, pricePerUnit, expenses, name, description, units, featureNo } = this
+      .req.body as ILandInvestment
 
     const created = await LandInvestmentModel.create({
       uid: this.user._id,
       address,
       city,
       state,
-      price,
+      remainingUnits: remainingUnits || units,
+      pricePerUnit,
       expenses,
+      name,
       description,
+      units,
+      featureNo,
       assets: assets || undefined,
       //status: PENDING_APPROVAL,
     })
@@ -88,15 +93,32 @@ class LandInvestment extends BaseController {
       assets = (await filestore.uploadForMultiple('assets')) || null
     }
 
-    const { _id, address, city, state, price, expenses, description, status } = this.req.body as ILandInvestment
+    const {
+      _id,
+      address,
+      city,
+      state,
+      remainingUnits,
+      pricePerUnit,
+      expenses,
+      name,
+      description,
+      units,
+      featureNo,
+      status,
+    } = this.req.body as ILandInvestment
 
     const definedValues = getDefinedValuesFrom({
       address,
       city,
       state,
-      price,
+      remainingUnits,
+      pricePerUnit,
       expenses,
+      name,
       description,
+      units,
+      featureNo,
       assets: assets || undefined,
       status,
     })

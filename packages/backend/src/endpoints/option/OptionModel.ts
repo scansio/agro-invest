@@ -8,23 +8,20 @@ interface OptionModel extends IOption {}
 
 class OptionModel extends Model<IOption, CreateType<IOption>> {}
 
-TimestampsPlugin(
-  { OptionModel },
-  {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    value: JsonField(),
-    description: {
-      type: DataTypes.STRING,
-    },
-    isPublic: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
+TimestampsPlugin(OptionModel, {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
   },
-)
+  value: JsonField(),
+  description: {
+    type: DataTypes.STRING,
+  },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+})
 
 export default OptionModel

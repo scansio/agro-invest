@@ -1,5 +1,6 @@
 import Reblend, { FC, useState } from "reblendjs";
 import { Tab } from "../components/basics/Tab";
+import { useAllowAthenticated } from "../lib/hooks";
 
 const sampleTransactions = [
   {
@@ -37,6 +38,8 @@ const sampleTransactions = [
 ];
 
 export const Transactions: FC = () => {
+  useAllowAthenticated();
+
   const [tab, setTab] = useState("all");
   const filtered =
     tab === "all"

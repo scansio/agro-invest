@@ -26,12 +26,12 @@ export const Main: FC = () => {
           }}
         >
           <Router routes={routes} />
-          <Nav
+          {/* <Nav
             items={[
               { label: "Theme Definition Sample", href: "/theme-definition" },
               { label: "Components Sammple ", href: "/" },
             ]}
-          />
+          /> */}
         </div>
       </main>
       <Footer isMobile={isMobileHook.isMobile} />

@@ -4,12 +4,43 @@ export const API_VERSION = "v1";
 const isDev =
   String(process?.env.REBLEND_APP_ENVIRONMENT).toLowerCase() != "production";
 
-export const BASE = isDev
-  ? process?.env.REBLEND_APP_BASE_DEV
-  : process?.env.REBLEND_APP_BASE;
-export const WS_BASE = isDev
-  ? process?.env.REBLEND_APP_WS_BASE_DEV
-  : process?.env.REBLEND_APP_WS_BASE;
+export const BASE = new URL(window.location.origin);
+
+if (isDev) {
+  if (!process?.env.REBLEND_APP_BASE_DEV_PORT) {
+    throw new Error("Please setup your environment: REBLEND_APP_BASE_DEV_PORT");
+  }
+
+  BASE.port = process?.env.REBLEND_APP_BASE_DEV_PORT;
+}
+
+if (!process?.env.REBLEND_APP_BASE) {
+  throw new Error("Please setup your enviroment: REBLEND_APP_BASE");
+}
+
+BASE.pathname = process?.env.REBLEND_APP_BASE;
+
+export const WS_BASE = new URL(window.location.origin);
+if (WS_BASE.protocol.includes("s")) {
+  WS_BASE.protocol = "wss";
+} else {
+  WS_BASE.protocol = "ws";
+}
+if (isDev) {
+  if (!process?.env.REBLEND_APP_WS_BASE_DEV_PORT) {
+    throw new Error(
+      "Please setup your environment: REBLEND_APP_WS_BASE_DEV_PORT"
+    );
+  }
+
+  WS_BASE.port = process?.env.REBLEND_APP_WS_BASE_DEV_PORT;
+}
+
+if (!process?.env.REBLEND_APP_WS_BASE) {
+  throw new Error("Please setup your enviroment: REBLEND_APP_WS_BASE");
+}
+
+WS_BASE.pathname = process?.env.REBLEND_APP_WS_BASE;
 
 export const IMAGE_BASE = BASE + "/..";
 export const LOGIN = "/user/login";
@@ -83,23 +114,6 @@ export const MIGRATION_NAMES = "/migration/names";
 export const CREATE_MIGRATION = "/migration";
 export const ALL_MIGRATION = "/migration/all";
 
-//List endpoints
-export const ADVERT = "/advert/";
-export const CREATE_ADVERT = "/advert";
-export const ALL_ADVERT = "/advert/all";
-
-export const BUSINESS = "/business/";
-export const CREATE_BUSINESS = "/business";
-export const ALL_BUSINESS = "/business/all";
-
-export const SOCIAL_ADVERT = "/social-advert/";
-export const CREATE_SOCIAL_ADVERT = "/social-advert";
-export const ALL_SOCIAL_ADVERT = "/social-advert/all";
-
-export const SOCIAL = "/social/";
-export const CREATE_SOCIAL = "/social";
-export const ALL_SOCIAL = "/social/all";
-
 export const TEAM = "/team/";
 export const CREATE_TEAM = "/team";
 export const ALL_TEAM = "/team/all";
@@ -116,3 +130,31 @@ export const ALL_TESTIMONIAL = "/testimonial/all";
 export const FAQ = "/faq/";
 export const CREATE_FAQ = "/faq";
 export const ALL_FAQ = "/faq/all";
+
+//Custom endpoints
+
+export const INVESTMENT = "/investment/";
+export const CREATE_INVESTMENT = "/investment";
+export const ALL_INVESTMENT = "/investment/all";
+
+export const ANIMAL_INVESTMENT = "/animal-investment/";
+export const CREATE_ANIMAL_INVESTMENT = "/animal-investment";
+export const ALL_ANIMAL_INVESTMENT = "/animal-investment/all";
+
+export const CROP_INVESTMENT = "/crop-investment/";
+export const CREATE_CROP_INVESTMENT = "/crop-investment";
+export const ALL_CROP_INVESTMENT = "/crop-investment/all";
+
+export const CHICKEN_INVESTMENT = "/chicken-investment/";
+export const CREATE_CHICKEN_INVESTMENT = "/chicken-investment";
+export const ALL_CHICKEN_INVESTMENT = "/chicken-investment/all";
+
+export const FARM_INVESTMENT = "/farm-investment/";
+export const CREATE_FARM_INVESTMENT = "/farm-investment";
+export const ALL_FARM_INVESTMENT = "/farm-investment/all";
+
+export const LAND_INVESTMENT = "/land-investment/";
+export const CREATE_LAND_INVESTMENT = "/land-investment";
+export const ALL_LAND_INVESTMENT = "/land-investment/all";
+
+export const HOT_INVESTMENT = "/hot-investment";

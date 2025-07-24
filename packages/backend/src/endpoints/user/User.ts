@@ -180,7 +180,7 @@ class User extends BaseController {
     else this.status(true).statusCode(GET_SUCCESS).setData(userProfiles).send()
   }
 
-  async create({ firstname, lastname, email, password, type, refID }: any) {
+  async create({ firstname, lastname, email, password, dob, gender, address, refID }: any) {
     if (refID) {
       const referredBy = await UserModel.findOne({ where: { _id: refID } })
       if (!referredBy) {
@@ -205,7 +205,9 @@ class User extends BaseController {
         lastname,
         email,
         password,
-        type,
+        dob,
+        gender,
+        address,
         refID,
         status: INACTIVE,
       })
@@ -275,20 +277,39 @@ class User extends BaseController {
           verifiedDriver,
         }
       : {}
-    const { _id, firstname, lastname, email, expoToken, role, bio, country, state, phone, type, status }: any =
-      this.req.body
+    const {
+      _id,
+      firstname,
+      lastname,
+      email,
+      expoToken,
+      role,
+      bio,
+      country,
+      state,
+      phone,
+      dob,
+      gender,
+      address,
+      password,
+      status,
+    }: any = this.req.body
 
     const uid = _id || this.req.body.uid
     const theUser = await this.isValidUser(uid)
     await this.ownerAndAdminAccess(uid)
+    const isAdmin = await this.adminAccess(false)
     const definedValues = getDefinedValuesFrom({
       firstname,
       lastname,
       email,
       expoToken,
       avatar,
-      type,
-      role: (await this.adminAccess(false))
+      dob,
+      gender,
+      address,
+      password: isAdmin ? password === "****" ? undefined : password : '',
+      role: isAdmin
         ? role === AuthenticationLevel.DEVELOPER
           ? (await this.developerAccess(false))
             ? AuthenticationLevel.DEVELOPER
@@ -297,7 +318,7 @@ class User extends BaseController {
           ? AuthenticationLevel.ADMIN
           : AuthenticationLevel.END_USER
         : AuthenticationLevel.END_USER,
-      status: (await this.adminAccess(false)) ? status : ACTIVE,
+      status: isAdmin ? status : ACTIVE,
       ...adminUpdate,
     })
 

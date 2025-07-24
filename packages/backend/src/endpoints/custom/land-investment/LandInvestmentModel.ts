@@ -9,47 +9,62 @@ interface LandInvestmentModel extends ILandInvestment {}
 
 class LandInvestmentModel extends Model<ILandInvestment, CreateType<ILandInvestment>> {}
 
-TimestampsPlugin(
-  { LandInvestmentModel },
-  {
-    uid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: UserModel,
-        key: '_id',
-      },
+TimestampsPlugin(LandInvestmentModel, {
+  uid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: UserModel,
+      key: '_id',
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    state: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    city: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      validate: {
-        min: 1,
-      },
-    },
-    expenses: JsonField({
-      allowNull: false,
-    }),
-    assets: JsonField({
-      allowNull: false,
-    }),
   },
-)
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  featureNo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  remainingUnits: {
+    type: DataTypes.INTEGER,
+  },
+  state: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  pricePerUnit: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    validate: {
+      min: 1,
+    },
+  },
+  units: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 1,
+    },
+  },
+  expenses: JsonField({
+    allowNull: false,
+  }),
+  assets: JsonField({
+    allowNull: false,
+  }),
+})
 
 export default LandInvestmentModel

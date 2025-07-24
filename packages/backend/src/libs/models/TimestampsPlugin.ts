@@ -1,6 +1,8 @@
 import {
   BelongsToOptions,
+  DataType,
   DataTypes,
+  InferAttributes,
   Model,
   ModelAttributeColumnOptions,
   ModelAttributeColumnReferencesOptions,
@@ -10,16 +12,21 @@ import {
 import { ACTIVE } from '../../configs/constants'
 import sequelize from '../../configs/database'
 import { getApplicationDateFormat, JsonField } from '../../common'
+import ITimestamp, { CreateType } from '../types/ITimestamp'
 
-const TimestampsPlugin = <T extends Model<any, any>>(
-  option: { [model: string]: ModelStatic<T> },
-  modelAttributes: ModelAttributes<any, any>,
+export type Attributes<M extends Model> = {
+  [K in keyof InferAttributes<M>]: DataType | ModelAttributeColumnOptions<M>
+}
+
+const TimestampsPlugin = <I extends {}, T extends Model<I, CreateType<I>>>(
+  model: ModelStatic<T>,
+  modelAttributes: Omit<Attributes<T>, keyof ITimestamp>,
   associations?: {
     model: ModelStatic<Model<any, any>>
     option: BelongsToOptions
   }[],
 ): void => {
-  const [modelName, model] = Object.entries(option).pop() || []
+  const modelName = model.tableName || model.name
 
   if (!model) {
     return
@@ -71,7 +78,7 @@ const TimestampsPlugin = <T extends Model<any, any>>(
       }),
       updatedAt: JsonField({}),
       ...modelAttributes,
-    },
+    } as any,
     {
       sequelize: sequelize,
       modelName: modelName?.split('Model')[0] || modelName,
@@ -81,7 +88,7 @@ const TimestampsPlugin = <T extends Model<any, any>>(
 
   // Add a hook to update `updatedAt` before updating a record
   model.beforeUpdate((instance) => {
-    instance.setDataValue('updatedAt', getApplicationDateFormat())
+    instance.setDataValue('updatedAt' as any, getApplicationDateFormat())
   })
 
   if (associations?.length) {

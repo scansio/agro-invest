@@ -10,12 +10,14 @@ interface IUser extends ITimestamp {
   role: AuthenticationLevel
   type: UserType
   dob: Date
+  gender: string
+  address: string
   refID: number
   pin?: string
   oauth: boolean
-  verifiedUser: boolean;
-  verifiedDriver: boolean;
-  expoToken: String;
+  verifiedUser: boolean
+  verifiedDriver: boolean
+  expoToken: String
   phone: number
   rating: number
   avatar: string

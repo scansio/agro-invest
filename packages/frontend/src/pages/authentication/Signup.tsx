@@ -37,6 +37,9 @@ export const Signup: FC = () => {
 
   const create = async (e: Reblend.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      return alertError("Password mismatch");
+    }
     setLoading(true);
     const authData = {
       url: USER_BASE,
@@ -69,7 +72,7 @@ export const Signup: FC = () => {
       {/* Avatar */}
       <div class="flex flex-col items-center mt-2 mb-4">
         <img
-          src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+          src="/logo192.png"
           alt="Avatar"
           class="inline-flex items-center justify-center bg-neutral-100 rounded-2xl h-20 w-20 mb-2 object-cover"
         />

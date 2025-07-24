@@ -9,7 +9,7 @@ interface BankDetailModel extends IBankDetail {}
 class BankDetailModel extends Model<IBankDetail, CreateType<IBankDetail>> {}
 
 TimestampsPlugin(
-  { BankDetailModel },
+  BankDetailModel,
   {
     uid: {
       type: DataTypes.STRING,

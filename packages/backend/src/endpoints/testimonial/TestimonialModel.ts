@@ -7,26 +7,23 @@ interface TestimonialModel extends ITestimonial {}
 
 class TestimonialModel extends Model<ITestimonial, CreateType<ITestimonial>> {}
 
-TimestampsPlugin(
-  { TestimonialModel },
-  {
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    personName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    occupationOrPosition: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    personAvatar: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+TimestampsPlugin(TestimonialModel, {
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-)
+  personName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  occupationOrPosition: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  personAvatar: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+})
 
 export default TestimonialModel

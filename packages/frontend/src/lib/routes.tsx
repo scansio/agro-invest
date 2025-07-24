@@ -32,22 +32,14 @@ export type Routes = {
   index: RouteProp;
   home: RouteProp;
   transactions: RouteProp;
-  deposit: RouteProp;
-  withdraw: RouteProp;
   team: RouteProp;
   teamPreview: RouteProp;
-  teamPreview1: RouteProp;
-  About: RouteProp;
-  location: RouteProp;
-  How_it_works: RouteProp;
-  Contact_us: RouteProp;
   login: RouteProp;
   signup: RouteProp;
   resetpassword: RouteProp;
   testimonial: RouteProp;
   faq: RouteProp;
   emailresetpassword: RouteProp;
-  advertform: RouteProp;
   verifymail: RouteProp;
   profile: RouteProp;
 

@@ -25,7 +25,7 @@ export async function Team({ size }: { size?: number }) {
 
   async function chooseOption(team: ITeam) {
     await teamPreviewContext.update(team);
-    const url = routes.teamPreview1.path.replace(":id", team._id);
+    const url = routes.teamPreview.path.replace(":id", team._id);
     redirectTo(url);
   }
 

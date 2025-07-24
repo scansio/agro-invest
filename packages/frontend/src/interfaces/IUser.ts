@@ -10,6 +10,8 @@ interface IUser extends ITimestamp {
   role: AuthenticationLevel
   type: UserType
   dob: Date
+  gender: string
+  address: string
   refID: number
   refIDPopulated?: IUser
   pin?: string

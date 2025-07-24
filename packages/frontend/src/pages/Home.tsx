@@ -1,10 +1,15 @@
-import Reblend, { FC } from "reblendjs";
+import Reblend, { FC, useContext } from "reblendjs";
 import { Button } from "../components/basics/Button";
 import { Link } from "reblend-router";
 import { routes } from "../lib/routes";
 import { IMAGE_BASE } from "../lib/RestEndpoints";
+import { useAllowAthenticated } from "../lib/hooks";
+import { userContext } from "../lib/contexts";
 
 export const Home: FC = () => {
+  useAllowAthenticated();
+  const [user] = useContext(userContext);
+
   const investments = () =>
     import("./Investments").then((m) => <m.Investments onlyFor="hot" />);
 
@@ -12,17 +17,26 @@ export const Home: FC = () => {
     <div class="flex flex-col gap-6">
       {/* Greeting and Add Cash */}
       <div class="flex flex-row items-center justify-between">
-        <div class="flex items-center gap-3">
+        <Link
+          to={routes.profile.redirectUri}
+          className="flex items-center gap-3"
+        >
           <img
-            src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+            src={
+              user?.avatar
+                ? IMAGE_BASE + user?.avatar
+                : "/static/img/profile_picture.jpg"
+            }
             alt="Avatar"
             class="inline-flex items-center justify-center bg-neutral-100 rounded-full h-10 w-10 object-cover"
           />
           <div>
-            <div class="font-bold text-lg text-neutral-900">Hi, Emmanuel</div>
+            <div class="font-bold text-lg text-neutral-900">
+              Hi, {user?.firstname} {user?.lastname}
+            </div>
             <div class="text-neutral-400 text-sm">How are you doing today?</div>
           </div>
-        </div>
+        </Link>
         <div>
           <Button variant="secondary">
             <Link to={routes.wallet.redirectUri}>+ Add Cash</Link>

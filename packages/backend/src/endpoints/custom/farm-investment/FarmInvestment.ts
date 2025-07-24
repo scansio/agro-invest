@@ -46,12 +46,27 @@ class FarmInvestment extends BaseController {
     if (this.req.headers['content-type']?.includes('multipart')) {
       assets = ((await filestore.uploadForMultiple('assets')) as string[]) || null
     }
-    const { description, pricePerUnit, minUnits, roi, closingDate, maturityDate, expenses } = this.req
-      .body as IFarmInvestment
+    const {
+      name,
+      description,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
+      minUnits,
+      roi,
+      closingDate,
+      maturityDate,
+      expenses,
+    } = this.req.body as IFarmInvestment
 
     const created = await FarmInvestmentModel.create({
       uid: this.user._id,
+      name,
       description,
+      units,
+      featureNo,
+      remainingUnits: remainingUnits || units,
       pricePerUnit,
       minUnits,
       roi,
@@ -89,11 +104,28 @@ class FarmInvestment extends BaseController {
       assets = (await filestore.uploadForMultiple('assets')) || null
     }
 
-    const { _id, description, pricePerUnit, minUnits, roi, closingDate, maturityDate, expenses, status } = this.req
-      .body as IFarmInvestment
+    const {
+      _id,
+      name,
+      description,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
+      minUnits,
+      roi,
+      closingDate,
+      maturityDate,
+      expenses,
+      status,
+    } = this.req.body as IFarmInvestment
 
     const definedValues = getDefinedValuesFrom({
+      name,
       description,
+      units,
+      featureNo,
+      remainingUnits,
       pricePerUnit,
       minUnits,
       roi,
@@ -103,7 +135,7 @@ class FarmInvestment extends BaseController {
       assets: assets || undefined,
       status,
     })
-    const prev = (await FarmInvestmentModel.findByPk(_id))
+    const prev = await FarmInvestmentModel.findByPk(_id)
     if (!(await this.ownerAndAdminAccess(prev?.uid!, false))) {
       assets?.forEach((asset) => filestore.delete(asset))
       return this.status(false).statusCode(BAD_AUTHORIZATION).message('You do not have access to this resource').send()
@@ -127,7 +159,7 @@ class FarmInvestment extends BaseController {
   }
 
   async delete({ _id }: any) {
-    const deleted = (await FarmInvestmentModel.findOne({ where: { _id } }))
+    const deleted = await FarmInvestmentModel.findOne({ where: { _id } })
     if (!deleted) {
       this.status(false).statusCode(BAD_REQUEST).message('FarmInvestment failed to be deleted due to error').send()
     } else {

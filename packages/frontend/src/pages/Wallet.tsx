@@ -1,4 +1,4 @@
-import Reblend, { FC, useState } from "reblendjs";
+import Reblend, { FC, useContext, useState } from "reblendjs";
 import { Modal } from "../components/basics/Modal";
 import { Button } from "../components/basics/Button";
 import { Input } from "../components/basics/Input";
@@ -11,8 +11,15 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { IMAGE_BASE } from "../lib/RestEndpoints";
+import { useAllowAthenticated } from "../lib/hooks";
+import { Link } from "reblend-router";
+import { routes } from "../lib/routes";
+import { userContext } from "../lib/contexts";
 
 export const Wallet: FC = () => {
+  useAllowAthenticated();
+  const [user] = useContext(userContext);
+
   const [showAddFunds, setShowAddFunds] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showSaveFunds, setShowSaveFunds] = useState(false);
@@ -27,9 +34,16 @@ export const Wallet: FC = () => {
     <div class="min-h-screen flex flex-col gap-4 bg-neutral-50 pb-4">
       {/* Wallet Header */}
       <div class="flex flex-row items-center justify-between">
-        <div class="flex items-center gap-3">
+        <Link
+          to={routes.profile.redirectUri}
+          className="flex items-center gap-3"
+        >
           <img
-            src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+            src={
+              user?.avatar
+                ? IMAGE_BASE + user?.avatar
+                : "/static/img/profile_picture.jpg"
+            }
             alt="Avatar"
             class="inline-flex items-center justify-center bg-neutral-100 rounded-full h-10 w-10 object-cover"
           />
@@ -37,7 +51,7 @@ export const Wallet: FC = () => {
             <div class="font-bold text-lg text-neutral-900">Hi, Emmanuel</div>
             <div class="text-neutral-400 text-sm">How are you doing today?</div>
           </div>
-        </div>
+        </Link>
         <div>
           <Button variant="secondary" onClick={() => setShowAddFunds(true)}>
             + Add Cash

@@ -316,7 +316,7 @@ const UserRoutes: IControllerRoute = {
       },
       validation: {
         body: {
-          oldPassword: { notEmpty: {} },
+          oldPassword: {},
           newPassword: { notEmpty: {} },
         },
       },

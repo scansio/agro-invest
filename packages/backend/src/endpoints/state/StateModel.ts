@@ -7,31 +7,28 @@ interface StateModel extends IState {}
 
 class StateModel extends Model<IState, CreateType<IState>> {}
 
-TimestampsPlugin(
-  { StateModel },
-  {
-    id: {
-      type: DataTypes.STRING,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    country_id: {
-      type: DataTypes.STRING,
-    },
-    country_code: {
-      type: DataTypes.STRING,
-    },
-    iso2: {
-      type: DataTypes.STRING,
-    },
-    created_at: {
-      type: DataTypes.STRING,
-    },
-    updated_at: {
-      type: DataTypes.STRING,
-    },
+TimestampsPlugin(StateModel, {
+  id: {
+    type: DataTypes.STRING,
   },
-)
+  name: {
+    type: DataTypes.STRING,
+  },
+  country_id: {
+    type: DataTypes.STRING,
+  },
+  country_code: {
+    type: DataTypes.STRING,
+  },
+  iso2: {
+    type: DataTypes.STRING,
+  },
+  created_at: {
+    type: DataTypes.STRING,
+  },
+  updated_at: {
+    type: DataTypes.STRING,
+  },
+})
 
 export default StateModel

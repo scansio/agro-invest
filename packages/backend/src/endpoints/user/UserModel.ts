@@ -10,7 +10,8 @@ interface UserModel extends IUser {}
 
 class UserModel extends Model<IUser, CreateType<IUser>> {}
 
-TimestampsPlugin({ UserModel } as any, {
+TimestampsPlugin(UserModel, {
+  //@ts-ignore
   _id: {
     type: DataTypes.STRING,
     primaryKey: true,
@@ -18,7 +19,7 @@ TimestampsPlugin({ UserModel } as any, {
     unique: true,
     defaultValue: () => {
       return randomInt(1111111111, 9999999999)
-    }
+    },
   },
   refID: {
     type: DataTypes.STRING,
@@ -89,6 +90,12 @@ TimestampsPlugin({ UserModel } as any, {
   },
   dob: {
     type: DataTypes.DATE,
+  },
+  address: {
+    type: DataTypes.STRING,
+  },
+  gender: {
+    type: DataTypes.STRING,
   },
   rating: {
     type: DataTypes.FLOAT,

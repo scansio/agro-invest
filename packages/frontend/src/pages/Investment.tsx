@@ -2,7 +2,7 @@ import Reblend, { FC, useState } from "reblendjs";
 import { Button } from "../components/basics/Button";
 import { Modal } from "../components/basics/Modal";
 import AssetSwitch from "../components/AssetSwitch";
-import { useScroll } from "../lib/hooks";
+import { useAllowAthenticated, useScroll } from "../lib/hooks";
 
 const investment = {
   title: "Luxe Residence",
@@ -18,6 +18,7 @@ const investment = {
 };
 
 export const Investment: FC = () => {
+  useAllowAthenticated();
   useScroll();
   const [buying, setBuying] = useState(false);
   const [shares, setShares] = useState(1);

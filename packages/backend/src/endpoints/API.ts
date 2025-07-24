@@ -34,6 +34,7 @@ import ChickenInvestmentRoutes from './custom/chicken-investment/ChickenInvestme
 import CropInvestmentRoutes from './custom/crop-investment/CropInvestmentRoutes'
 import FarmInvestmentRoutes from './custom/farm-investment/FarmInvestmentRoutes'
 import LandInvestmentRoutes from './custom/land-investment/LandInvestmentRoutes'
+import HotInvestmentRoutes from './custom/hot-investment/HotInvestmentRoutes'
 
 const API: IAPI = [
   {
@@ -77,6 +78,7 @@ const API: IAPI = [
       CropInvestmentRoutes,
       FarmInvestmentRoutes,
       LandInvestmentRoutes,
+      HotInvestmentRoutes,
     ],
     status: APIVersionStatus.ENABLED,
   },

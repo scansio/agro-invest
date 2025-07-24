@@ -12,12 +12,8 @@ import PaginatingModel from '../../../libs/models/PaginatingModel'
 import { getDefinedValuesFrom } from '../../../common'
 import FileStore from '../../../libs/FileStore'
 import { ICropInvestment } from './ICropInvestment'
-import { PENDING_APPROVAL } from '../../../configs/constants'
-import Mailer from '../../../libs/Mailer'
-import SharedConfig from '../../../libs/SharedConfig'
 import BaseController from '../../../libs/controller/BaseController'
 import CropInvestmentModel from './CropInvestmentModel'
-import CropInvestmentRoutes from './CropInvestmentRoutes'
 
 class CropInvestment extends BaseController {
   constructor(req: Request, res: Response, next: NextFunction) {
@@ -51,7 +47,10 @@ class CropInvestment extends BaseController {
     const {
       name,
       description,
-      pricePerUnit: pricePerUnit,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
       minUnits,
       roi,
       closingDate,
@@ -63,6 +62,9 @@ class CropInvestment extends BaseController {
       uid: this.user._id,
       name,
       description,
+      units,
+      featureNo,
+      remainingUnits: remainingUnits || units,
       pricePerUnit,
       minUnits,
       roi,
@@ -104,7 +106,10 @@ class CropInvestment extends BaseController {
       _id,
       name,
       description,
-      pricePerUnit: pricePerUnit,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
       minUnits,
       roi,
       closingDate,
@@ -116,6 +121,9 @@ class CropInvestment extends BaseController {
     const definedValues = getDefinedValuesFrom({
       name,
       description,
+      units,
+      featureNo,
+      remainingUnits,
       pricePerUnit,
       minUnits,
       roi,
@@ -125,7 +133,7 @@ class CropInvestment extends BaseController {
       assets: assets || undefined,
       status,
     })
-    const prev = (await CropInvestmentModel.findByPk(_id))
+    const prev = await CropInvestmentModel.findByPk(_id)
     if (!(await this.ownerAndAdminAccess(prev?.uid!, false))) {
       assets?.forEach((asset) => filestore.delete(asset))
       return this.status(false).statusCode(BAD_AUTHORIZATION).message('You do not have access to this resource').send()
@@ -149,7 +157,7 @@ class CropInvestment extends BaseController {
   }
 
   async delete({ _id }: any) {
-    const deleted = (await CropInvestmentModel.findOne({ where: { _id } }))
+    const deleted = await CropInvestmentModel.findOne({ where: { _id } })
     if (!deleted) {
       this.status(false).statusCode(BAD_REQUEST).message('CropInvestment failed to be deleted due to error').send()
     } else {

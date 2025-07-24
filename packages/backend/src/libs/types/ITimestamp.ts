@@ -1,7 +1,7 @@
 import { Model } from 'sequelize'
 import IDate from './IDate'
 
-interface ITimestamp {
+export interface ITimestamp {
   _id: string | number
   createdAt: IDate
   updatedAt: IDate

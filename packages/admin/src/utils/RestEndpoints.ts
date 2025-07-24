@@ -1,10 +1,46 @@
 /* eslint-disable no-undef */
 export const API_VERSION = "v1";
 
-const isDev = String(process?.env.REBLEND_APP_ENVIRONMENT).toLowerCase() != "production"
+const isDev =
+  String(process?.env.REBLEND_APP_ENVIRONMENT).toLowerCase() != "production";
 
-export const BASE = isDev ? process?.env.REBLEND_APP_BASE_DEV : process?.env.REBLEND_APP_BASE;
-export const WS_BASE = isDev ? process?.env.REBLEND_APP_WS_BASE_DEV : process?.env.REBLEND_APP_WS_BASE;
+export const BASE = new URL(window.location.origin);
+
+if (isDev) {
+  if (!process?.env.REBLEND_APP_BASE_DEV_PORT) {
+    throw new Error("Please setup your environment: REBLEND_APP_BASE_DEV_PORT");
+  }
+
+  BASE.port = process?.env.REBLEND_APP_BASE_DEV_PORT;
+}
+
+if (!process?.env.REBLEND_APP_BASE) {
+  throw new Error("Please setup your enviroment: REBLEND_APP_BASE");
+}
+
+BASE.pathname = process?.env.REBLEND_APP_BASE;
+
+export const WS_BASE = new URL(window.location.origin);
+if (WS_BASE.protocol.includes("s")) {
+  WS_BASE.protocol = "wss";
+} else {
+  WS_BASE.protocol = "ws";
+}
+if (isDev) {
+  if (!process?.env.REBLEND_APP_WS_BASE_DEV_PORT) {
+    throw new Error(
+      "Please setup your environment: REBLEND_APP_WS_BASE_DEV_PORT"
+    );
+  }
+
+  WS_BASE.port = process?.env.REBLEND_APP_WS_BASE_DEV_PORT;
+}
+
+if (!process?.env.REBLEND_APP_WS_BASE) {
+  throw new Error("Please setup your enviroment: REBLEND_APP_WS_BASE");
+}
+
+WS_BASE.pathname = process?.env.REBLEND_APP_WS_BASE;
 
 export const LOGIN = "/user/login";
 export const USER_BASE = "/user";

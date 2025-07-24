@@ -7,25 +7,22 @@ interface PaymentDisputeModel extends IPaymentDispute {}
 
 class PaymentDisputeModel extends Model<IPaymentDispute, CreateType<IPaymentDispute, 'resolved' | 'reminded'>> {}
 
-TimestampsPlugin(
-  { PaymentDisputeModel },
-  {
-    id: {
-      type: DataTypes.STRING,
-    },
-    event: {
-      type: DataTypes.STRING,
-    },
-    raw: {
-      type: DataTypes.STRING,
-    },
-    resolved: {
-      type: DataTypes.STRING,
-    },
-    reminded: {
-      type: DataTypes.INTEGER,
-    },
+TimestampsPlugin(PaymentDisputeModel, {
+  id: {
+    type: DataTypes.STRING,
   },
-)
+  event: {
+    type: DataTypes.STRING,
+  },
+  raw: {
+    type: DataTypes.STRING,
+  },
+  resolved: {
+    type: DataTypes.STRING,
+  },
+  reminded: {
+    type: DataTypes.INTEGER,
+  },
+})
 
 export default PaymentDisputeModel

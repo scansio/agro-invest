@@ -296,7 +296,7 @@ export default function HistoryComponentsForm({
         case "image":
           control = (
             <input
-              required={options.required}
+              required={value ? undefined : options.required}
               readOnly={options.readOnly}
               className="form-control"
               type="file"

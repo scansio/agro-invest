@@ -16,7 +16,12 @@ import {
 } from "../../lib/contexts";
 import { alertError } from "../../lib/misc";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faEye, faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faEye,
+  faEyeSlash,
+  faLock,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Login: FC<{
   onLogin?: (user?: IUser, token?: string) => void;
@@ -24,7 +29,7 @@ export const Login: FC<{
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [auth] = useContext(authTokenContext);
+  const [auth] = useContext(userContext);
   const [loginUrl] = useContext(loginRedirectUrl);
 
   const [loading, setLoading] = useState(false);
@@ -90,7 +95,7 @@ export const Login: FC<{
       {/* Avatar */}
       <div class="flex flex-col items-center mt-2 mb-4">
         <img
-          src={IMAGE_BASE + "/static/img/profile_picture.jpg"}
+          src="/logo192.png"
           alt="Avatar"
           class="inline-flex items-center justify-center bg-neutral-100 rounded-2xl h-20 w-20 mb-2 object-cover"
         />

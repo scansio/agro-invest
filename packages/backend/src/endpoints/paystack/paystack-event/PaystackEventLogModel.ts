@@ -7,13 +7,10 @@ interface PaystackEventLogModel extends IPaystackEventLog {}
 
 class PaystackEventLogModel extends Model<IPaystackEventLog, CreateType<IPaystackEventLog>> {}
 
-TimestampsPlugin(
-  { PaystackEventLogModel },
-  {
-    raw: {
-      type: DataTypes.STRING,
-    },
+TimestampsPlugin(PaystackEventLogModel, {
+  raw: {
+    type: DataTypes.STRING,
   },
-)
+})
 
 export default PaystackEventLogModel

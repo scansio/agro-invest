@@ -44,18 +44,15 @@ class WalletModel extends Model<IWallet, CreateType<IWallet>> {
   }
 }
 
-TimestampsPlugin(
-  { WalletModel },
-  {
-    uid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: UserModel,
-        key: '_id',
-      },
+TimestampsPlugin(WalletModel, {
+  uid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: UserModel,
+      key: '_id',
     },
   },
-)
+})
 
 export default WalletModel

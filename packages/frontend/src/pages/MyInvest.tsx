@@ -1,6 +1,7 @@
 import Reblend, { FC, useState } from "reblendjs";
 import { Tab } from "../components/basics/Tab";
 import { IMAGE_BASE } from "../lib/RestEndpoints";
+import { useAllowAthenticated } from "../lib/hooks";
 
 const myInvestments = [
   {
@@ -24,6 +25,8 @@ const myInvestments = [
 ];
 
 export const MyInvest: FC = () => {
+  useAllowAthenticated();
+
   const [tab, setTab] = useState("active");
   const tabs = [
     {

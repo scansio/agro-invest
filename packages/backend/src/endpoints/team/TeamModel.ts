@@ -9,31 +9,28 @@ interface TeamModel extends ITeam {}
 
 class TeamModel extends Model<ITeam, CreateType<ITeam>> {}
 
-TimestampsPlugin(
-  { TeamModel },
-  {
-    uid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      references: {
-        model: UserModel,
-        key: '_id',
-      },
-    },
-    profileId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: UserProfileModel,
-        key: '_id',
-      },
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
+TimestampsPlugin(TeamModel, {
+  uid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    references: {
+      model: UserModel,
+      key: '_id',
     },
   },
-)
+  profileId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: UserProfileModel,
+      key: '_id',
+    },
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+})
 
 export default TeamModel

@@ -2,7 +2,6 @@ import { AuthenticationLevel, RequestMethods } from '../../../configs/constants'
 import Investment from './Investment'
 import { IControllerRoute } from '../../../libs/types/IControllerRoute'
 import InvestmentModel from './InvestmentModel'
-import { get } from 'http'
 import { getAttributes } from '../../../libs/models/Attribute'
 
 const InvestmentRoutes: IControllerRoute = {

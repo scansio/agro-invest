@@ -12,12 +12,8 @@ import PaginatingModel from '../../../libs/models/PaginatingModel'
 import { getDefinedValuesFrom } from '../../../common'
 import FileStore from '../../../libs/FileStore'
 import { IChickenInvestment } from './IChickenInvestment'
-import { PENDING_APPROVAL } from '../../../configs/constants'
-import Mailer from '../../../libs/Mailer'
-import SharedConfig from '../../../libs/SharedConfig'
 import BaseController from '../../../libs/controller/BaseController'
 import ChickenInvestmentModel from './ChickenInvestmentModel'
-import ChickenInvestmentRoutes from './ChickenInvestmentRoutes'
 
 class ChickenInvestment extends BaseController {
   constructor(req: Request, res: Response, next: NextFunction) {
@@ -48,13 +44,27 @@ class ChickenInvestment extends BaseController {
     if (this.req.headers['content-type']?.includes('multipart')) {
       assets = ((await filestore.uploadForMultiple('assets')) as string[]) || null
     }
-    const { name, description, pricePerUnit, minUnits, roi, closingDate, maturityDate, expenses } = this.req
-      .body as IChickenInvestment
+    const {
+      name,
+      description,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
+      minUnits,
+      roi,
+      closingDate,
+      maturityDate,
+      expenses,
+    } = this.req.body as IChickenInvestment
 
     const created = await ChickenInvestmentModel.create({
       uid: this.user._id,
       name,
       description,
+      units,
+      featureNo,
+      remainingUnits: remainingUnits || units,
       pricePerUnit,
       minUnits,
       roi,
@@ -92,12 +102,28 @@ class ChickenInvestment extends BaseController {
       assets = (await filestore.uploadForMultiple('assets')) || null
     }
 
-    const { _id, name, description, pricePerUnit, minUnits, roi, closingDate, maturityDate, expenses, status } = this
-      .req.body as IChickenInvestment
+    const {
+      _id,
+      name,
+      description,
+      units,
+      featureNo,
+      remainingUnits,
+      pricePerUnit,
+      minUnits,
+      roi,
+      closingDate,
+      maturityDate,
+      expenses,
+      status,
+    } = this.req.body as IChickenInvestment
 
     const definedValues = getDefinedValuesFrom({
       name,
       description,
+      units,
+      featureNo,
+      remainingUnits,
       pricePerUnit,
       minUnits,
       roi,

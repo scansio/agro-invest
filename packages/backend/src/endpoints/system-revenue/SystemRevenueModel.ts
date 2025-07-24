@@ -8,34 +8,31 @@ interface SystemRevenueModel extends ISystemRevenue {}
 
 class SystemRevenueModel extends Model<ISystemRevenue, CreateType<ISystemRevenue>> {}
 
-TimestampsPlugin(
-  { SystemRevenueModel },
-  {
-    admin: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: UserModel,
-        key: '_id',
-      },
-    },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    reference: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    amount: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+TimestampsPlugin(SystemRevenueModel, {
+  admin: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: UserModel,
+      key: '_id',
     },
   },
-)
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  reference: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  amount: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+})
 
 export default SystemRevenueModel

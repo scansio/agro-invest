@@ -1,12 +1,12 @@
-import ITimestamp from '../../../libs/types/ITimestamp'
-import IUser from '../../user/IUser'
+import ITimestamp from "./ITimestamp";
+import IUser from "./IUser";
 
 export interface IAnimalInvestment extends ITimestamp {
   uid: IUser['_id']
   name: string
   description: string
   units: number
-  remainingUnits: number
+remainingUnits: number
   pricePerUnit: number
   minUnits: number
   roi: number

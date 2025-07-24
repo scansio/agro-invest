@@ -106,14 +106,20 @@ export default async () => {
       process.exit()
     })
 
-    server.listen(() => {
-      const port = getPort(server)
-      console.log(serverName, `listening on port ${port} `)
-      //addHtAccessRuleProxy({ port })
-      new CronDefinition().start().catch((error) => {
-        Logger.log('error', error)
-      })
-    })
+    server.listen(
+      //@ts-ignore
+      ...[
+        isProductionEnvironment() ? undefined : 8000,
+        () => {
+          const port = getPort(server)
+          console.log(serverName, `listening on port ${port} `)
+          //addHtAccessRuleProxy({ port })
+          new CronDefinition().start().catch((error) => {
+            Logger.log('error', error)
+          })
+        },
+      ].filter(Boolean),
+    )
 
     onClose(server, async () => {
       await sequelize.close() // Close the Sequelize connection on server shutdown

@@ -9,52 +9,60 @@ interface AnimalInvestmentModel extends IAnimalInvestment {}
 
 class AnimalInvestmentModel extends Model<IAnimalInvestment, CreateType<IAnimalInvestment>> {}
 
-TimestampsPlugin(
-  { AnimalInvestmentModel },
-  {
-    uid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: UserModel,
-        key: '_id',
-      },
+TimestampsPlugin(AnimalInvestmentModel, {
+  uid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: UserModel,
+      key: '_id',
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    pricePerUnit: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    minUnits: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    roi: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    closingDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    maturityDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    expenses: JsonField({
-      allowNull: false,
-    }),
-    assets: JsonField({
-      allowNull: false,
-    }),
   },
-)
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  featureNo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  pricePerUnit: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  units: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  remainingUnits: {
+    type: DataTypes.INTEGER,
+  },
+  minUnits: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  roi: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  closingDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  maturityDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  expenses: JsonField({
+    allowNull: false,
+  }),
+  assets: JsonField({
+    allowNull: false,
+  }),
+})
 
 export default AnimalInvestmentModel
