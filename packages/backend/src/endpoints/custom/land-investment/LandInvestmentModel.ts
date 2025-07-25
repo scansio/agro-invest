@@ -59,6 +59,10 @@ TimestampsPlugin(LandInvestmentModel, {
       min: 1,
     },
   },
+  minUnits: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   expenses: JsonField({
     allowNull: false,
   }),

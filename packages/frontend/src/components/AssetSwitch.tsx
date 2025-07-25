@@ -36,10 +36,7 @@ export default function AssetSwitch({
       prev + 1 >= (assets?.length || 0) ? 0 : prev + 1
     );
 
-  const hasPrevAsset = useMemo(
-    () => currentAssetIndex > assets?.length! - 1,
-    currentAssetIndex
-  );
+  const hasPrevAsset = useMemo(() => currentAssetIndex > 0, currentAssetIndex);
 
   const hasNextAsset = useMemo(
     () => currentAssetIndex < assets?.length! - 1,
@@ -68,7 +65,7 @@ export default function AssetSwitch({
             "align-items-center justify-center w-full border rounded-lg object-cover " +
             imageClass
           }
-          src={IMAGE_BASE + currentSrc}
+          src={currentSrc}
           alt="Loading ..."
         />
         <div
@@ -86,7 +83,7 @@ export default function AssetSwitch({
               paddingTop: "20px",
               paddingBottom: "20px",
             }}
-            onclick={prevAsset}
+            onclick={hasPrevAsset ? prevAsset : ""}
           >
             {"<<"}
           </span>
@@ -101,7 +98,7 @@ export default function AssetSwitch({
               paddingTop: "20px",
               paddingBottom: "20px",
             }}
-            onclick={nextAsset}
+            onclick={hasNextAsset ? nextAsset : ""}
           >
             {">>"}
           </span>
@@ -130,7 +127,7 @@ export default function AssetSwitch({
       <Modal open={showFull} fullScreen onClose={() => setShowFull(false)}>
         <div class="w-full flex justify-center">
           <img
-            src={IMAGE_BASE + currentSrc}
+            src={currentSrc}
             style={showFull ? { width: "90vw" } : {}}
             alt="Loading ..."
           />

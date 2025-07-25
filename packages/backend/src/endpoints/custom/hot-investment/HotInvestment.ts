@@ -19,7 +19,7 @@ class HotInvestment extends BaseController {
     return true
   }
 
-  async get({}: any) {
+  async get({ name }: any) {
     const investments: { [type: string]: ModelStatic<any> } = {
       animal: AnimalInvestmentModel,
       chicken: ChickenInvestmentModel,
@@ -34,18 +34,22 @@ class HotInvestment extends BaseController {
           return (
             await Model.findAll({
               where: {
-                featureNo: {
+                ...(name ? { name } : {}),
+                /* featureNo: {
                   gt: 0,
-                },
+                }, */
               },
+              limit: 5,
             })
           ).map((row) => {
-            row.type = type
-            return row
+            return { ...JSON.parse(JSON.stringify(row)), type }
           })
         }),
       )
-    ).flat()
+    )
+      .flat()
+      .sort((a, b) => b.featureNo - a.featureNo)
+      .filter((investment) => investment.featureNo > 0)
 
     this.status(true).statusCode(GET_SUCCESS).setData(investmentsData).send()
   }

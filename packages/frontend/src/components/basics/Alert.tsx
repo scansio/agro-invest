@@ -101,9 +101,9 @@ export const AlertContainer: FC<{
   useEffectAfter(() => {
     Object.entries(alerts).forEach(([key, option]) => {
       const duration =
-        option.config.autoHide || option.config.autoHideDuration
-          ? option.config.autoHideDuration ?? 3000
-          : 0;
+        option.config.autoHide === false
+          ? 0
+          : option.config.autoHideDuration ?? 3000;
 
       if (duration && duration > 0) {
         setTimeout(() => {

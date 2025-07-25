@@ -1,8 +1,8 @@
-import Reblend, { FC, useEffect, useState } from "reblendjs";
+import Reblend, { FC, useEffect, useProps, useState } from "reblendjs";
 import { Tab } from "../components/basics/Tab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { redirectTo } from "reblend-router";
+import { redirectTo, RouteProps } from "reblend-router";
 import { routes } from "../lib/routes";
 import { IAnimalInvestment } from "../interfaces/IAnimalInvestment";
 import { IChickenInvestment } from "../interfaces/IChickenInvestment";
@@ -23,16 +23,28 @@ import {
 import Paginator from "../components/Paginator";
 import fetcher from "../lib/SharedFetcher";
 import { alertError, paginatingUrl } from "../lib/misc";
+import { Humanize } from "../components/HumanizeTimestamp";
 
-export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
+export const Investments: FC<RouteProps & { onlyFor?: "hot" }> = ({
+  onlyFor,
+  params,
+}) => {
   useAllowAthenticated();
 
   const [loading, setLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
 
   const [activeTab, setActiveTab] = useState<string | typeof onlyFor>(
-    onlyFor || "hot"
+    onlyFor || params?.tab || "hot"
   );
+
+  useProps(() => {
+    if (params?.tab) {
+      setActiveTab(params?.tab);
+    } else if (!onlyFor) {
+      redirectTo(routes.investments.redirectUri + "/hot");
+    }
+  });
 
   const [hotInvestments, setHotInvestments] = useState<
     | (
@@ -90,14 +102,9 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
     },
   ];
 
-  useEffect(
-    ({ previous: [_onlyFor, _search] }) => {
-      if (!hotInvestments || _search !== search) {
-        fetchHotInvestments();
-      }
-    },
-    [onlyFor, search]
-  );
+  useEffect(() => {
+    fetchHotInvestments();
+  }, [onlyFor, search]);
 
   const fetchHotInvestments = async () => {
     setLoading(true);
@@ -144,7 +151,13 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
           </div>
 
           {/* Tabs for All/Active/Completed or All/Owned */}
-          <Tab active={activeTab!} tabs={tabs} onTab={setActiveTab} />
+          <Tab
+            active={activeTab!}
+            tabs={tabs}
+            onTab={(tb) =>
+              redirectTo(routes.investments.redirectUri + "/" + tb)
+            }
+          />
         </>
       )}
 
@@ -162,269 +175,437 @@ export const Investments: FC<{ onlyFor?: "hot" | "all" }> = ({ onlyFor }) => {
           )}
         </div>
         {/* --------------- Hot Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {activeTab !== "hot"
-            ? null
-            : hotInvestments?.map((investment) => (
+        {activeTab !== "hot" ? null : (
+          <div class="flex flex-col gap-4">
+            {hotInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/${
+                        (investment as any).type
+                      }/${investment._id}`
+                    )
+                  }
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    {/* <div class="text-white text-sm mb-1">{investment.roi}</div> */}
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  <div class="text-white text-sm mb-1">
+                    {(investment as any).roi
+                      ? `${(investment as any).roi}%`
+                      : ""}{" "}
+                    {!(investment as IAnimalInvestment).maturityDate ? (
+                      ""
+                    ) : (
+                      <>
+                        in{" "}
+                        <Humanize
+                          earlierDate={new Date(
+                            (investment as IAnimalInvestment).maturityDate
+                          ).getTime()}
+                          laterDate={new Date(
+                            (investment as IAnimalInvestment).closingDate
+                          ).getTime()}
+                        />
+                      </>
+                    )}{" "}
+                  </div>
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* --------------- Animal Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {activeTab !== "animal"
-            ? null
-            : animalInvestments?.map((investment) => (
+        {activeTab !== "animal" ? null : (
+          <div class="flex flex-col gap-4">
+            {animalInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/animal/${investment._id}`
+                    )
+                  }
+                />
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    <div class="text-white text-sm mb-1">{investment.roi}</div>
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  <div class="text-white text-sm mb-1">
+                    {(investment as any).roi
+                      ? `${(investment as any).roi}%`
+                      : ""}{" "}
+                    {!(investment as IAnimalInvestment).maturityDate ? (
+                      ""
+                    ) : (
+                      <>
+                        in{" "}
+                        <Humanize
+                          earlierDate={new Date(
+                            (investment as IAnimalInvestment).maturityDate
+                          ).getTime()}
+                          laterDate={new Date(
+                            (investment as IAnimalInvestment).closingDate
+                          ).getTime()}
+                        />
+                      </>
+                    )}{" "}
+                  </div>
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-          <Paginator
-            query={{ name: search }}
-            url={ALL_ANIMAL_INVESTMENT}
-            setResults={(result: any) => setAnimalInvestments(result)}
-            size={5}
-            setLoading={setLoading}
-            setLoadingError={setLoadingError}
-          />
-        </div>
+              </div>
+            ))}
+            <Paginator
+              query={{ name: search }}
+              url={ALL_ANIMAL_INVESTMENT}
+              setResults={(result: any) => setAnimalInvestments(result)}
+              size={5}
+              setLoading={setLoading}
+              setLoadingError={setLoadingError}
+            />
+          </div>
+        )}
 
         {/* --------------- Chicken Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {" "}
-          {activeTab !== "chicken"
-            ? null
-            : chickenInvestments?.map((investment) => (
+        {activeTab !== "chicken" ? null : (
+          <div class="flex flex-col gap-4">
+            {" "}
+            {chickenInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/chicken/${investment._id}`
+                    )
+                  }
+                />
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    <div class="text-white text-sm mb-1">{investment.roi}</div>
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  <div class="text-white text-sm mb-1">
+                    {(investment as any).roi
+                      ? `${(investment as any).roi}%`
+                      : ""}{" "}
+                    {!(investment as IAnimalInvestment).maturityDate ? (
+                      ""
+                    ) : (
+                      <>
+                        in{" "}
+                        <Humanize
+                          earlierDate={new Date(
+                            (investment as IAnimalInvestment).maturityDate
+                          ).getTime()}
+                          laterDate={new Date(
+                            (investment as IAnimalInvestment).closingDate
+                          ).getTime()}
+                        />
+                      </>
+                    )}{" "}
+                  </div>
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-          <Paginator
-            query={{ name: search }}
-            url={ALL_CHICKEN_INVESTMENT}
-            setResults={(result: any) => setChickenInvestments(result)}
-            size={5}
-            setLoading={setLoading}
-            setLoadingError={setLoadingError}
-          />
-        </div>
+              </div>
+            ))}
+            <Paginator
+              query={{ name: search }}
+              url={ALL_CHICKEN_INVESTMENT}
+              setResults={(result: any) => setChickenInvestments(result)}
+              size={5}
+              setLoading={setLoading}
+              setLoadingError={setLoadingError}
+            />
+          </div>
+        )}
 
         {/*---------------  Crop Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {activeTab !== "crop"
-            ? null
-            : cropInvestments?.map((investment) => (
+        {activeTab !== "crop" ? null : (
+          <div class="flex flex-col gap-4">
+            {cropInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/crop/${investment._id}`
+                    )
+                  }
+                />
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    <div class="text-white text-sm mb-1">
-                      ROI: {investment.roi}
-                    </div>
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  <div class="text-white text-sm mb-1">
+                    {(investment as any).roi
+                      ? `${(investment as any).roi}%`
+                      : ""}{" "}
+                    {!(investment as IAnimalInvestment).maturityDate ? (
+                      ""
+                    ) : (
+                      <>
+                        in{" "}
+                        <Humanize
+                          earlierDate={new Date(
+                            (investment as IAnimalInvestment).maturityDate
+                          ).getTime()}
+                          laterDate={new Date(
+                            (investment as IAnimalInvestment).closingDate
+                          ).getTime()}
+                        />
+                      </>
+                    )}{" "}
+                  </div>{" "}
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-          <Paginator
-            query={{ name: search }}
-            url={ALL_CROP_INVESTMENT}
-            setResults={(result: any) => setCropInvestments(result)}
-            size={5}
-            setLoading={setLoading}
-            setLoadingError={setLoadingError}
-          />
-        </div>
+              </div>
+            ))}
+            <Paginator
+              query={{ name: search }}
+              url={ALL_CROP_INVESTMENT}
+              setResults={(result: any) => setCropInvestments(result)}
+              size={5}
+              setLoading={setLoading}
+              setLoadingError={setLoadingError}
+            />
+          </div>
+        )}
 
         {/*---------------  Land Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {activeTab !== "land"
-            ? null
-            : landInvestments?.map((investment) => (
+        {activeTab !== "land" ? null : (
+          <div class="flex flex-col gap-4">
+            {landInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/land/${investment._id}`
+                    )
+                  }
+                />
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    {/* <div class="text-white text-sm mb-1">{investment.roi}</div> */}
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  {/* <div class="text-white text-sm mb-1">
+                      {(investment as any).roi
+                        ? `${(investment as any).roi}%`
+                        : ""}{" "}
+                      {!(investment as IAnimalInvestment).maturityDate ? (
+                        ""
+                      ) : (
+                        <>
+                          in{" "}
+                          <Humanize
+                            earlierDate={new Date(
+                              (investment as IAnimalInvestment).maturityDate
+                            ).getTime()}
+                            laterDate={new Date(
+                              (investment as IAnimalInvestment).closingDate
+                            ).getTime()}
+                          />
+                        </>
+                      )}{" "}
+                    </div> */}
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-          <Paginator
-            query={{ name: search }}
-            url={ALL_LAND_INVESTMENT}
-            setResults={(result: any) => setLandInvestments(result)}
-            size={5}
-            setLoading={setLoading}
-            setLoadingError={setLoadingError}
-          />
-        </div>
+              </div>
+            ))}
+            <Paginator
+              query={{ name: search }}
+              url={ALL_LAND_INVESTMENT}
+              setResults={(result: any) => setLandInvestments(result)}
+              size={5}
+              setLoading={setLoading}
+              setLoadingError={setLoadingError}
+            />
+          </div>
+        )}
 
         {/*---------------  Farm Investments ----------------- */}
-        <div class="flex flex-col gap-4">
-          {activeTab !== "farm"
-            ? null
-            : farmInvestments?.map((investment) => (
+        {activeTab !== "farm" ? null : (
+          <div class="flex flex-col gap-4">
+            {farmInvestments?.map((investment) => (
+              <div
+                key={investment._id}
+                class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
+              >
+                <img
+                  src={IMAGE_BASE + investment.assets[0]}
+                  alt={""}
+                  class="w-full h-32 object-cover"
+                />
+                {!investment.featureNo ? null : (
+                  <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
+                    🔥
+                  </span>
+                )}
+                <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
+                  {investment.remainingUnits || 0}/{investment.units} Slots
+                </div>
                 <div
-                  key={investment._id}
-                  class="relative w-full min-h-[220px] max-h-[260px] rounded-2xl overflow-hidden shadow bg-white"
-                >
-                  <img
-                    src={IMAGE_BASE + investment.assets[0]}
-                    alt={""}
-                    class="w-full h-32 object-cover"
-                  />
-                  {!investment.featureNo ? null : (
-                    <span class="absolute top-2 right-2 bg-warning-100 text-warning-600 rounded-full px-2 py-1 text-xs font-bold">
-                      🔥
-                    </span>
-                  )}
-                  <div class="absolute top-2 left-2 text-xs text-white font-bold bg-black/30 px-2 py-1 rounded">
-                    {investment.units}
+                  class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover:m-1 hover:rounded-lg hover:border hover:border-brand"
+                  onclick={() =>
+                    redirectTo(
+                      `${routes.investment.redirectUri}/farm/${investment._id}`
+                    )
+                  }
+                />
+                <div class="absolute bottom-4 left-4 z-10">
+                  <div class="text-lg font-bold text-white mb-1">
+                    {investment.name}
                   </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent cursor-pointer hover border border-brand"
-                    onclick={() => redirectTo(routes.investment.redirectUri)}
-                  />
-                  <div class="absolute bottom-4 left-4 z-10">
-                    <div class="text-lg font-bold text-white mb-1">{""}</div>
-                    <div class="text-white text-sm mb-1">{investment.roi}</div>
-                    <div class="text-white font-bold">
-                      {investment.pricePerUnit}
-                    </div>
+                  <div class="text-white text-sm mb-1">
+                    {(investment as any).roi
+                      ? `${(investment as any).roi}%`
+                      : ""}{" "}
+                    {!(investment as IAnimalInvestment).maturityDate ? (
+                      ""
+                    ) : (
+                      <>
+                        in{" "}
+                        <Humanize
+                          earlierDate={new Date(
+                            (investment as IAnimalInvestment).maturityDate
+                          ).getTime()}
+                          laterDate={new Date(
+                            (investment as IAnimalInvestment).closingDate
+                          ).getTime()}
+                        />
+                      </>
+                    )}{" "}
+                  </div>
+                  <div class="text-white font-bold">
+                    {new Intl.NumberFormat("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    }).format(investment.pricePerUnit)}
                   </div>
                 </div>
-              ))}
-          <Paginator
-            query={{ name: search }}
-            url={ALL_FARM_INVESTMENT}
-            setResults={(result: any) => setFarmInvestments(result)}
-            size={5}
-            setLoading={setLoading}
-            setLoadingError={setLoadingError}
-          />
-        </div>
+              </div>
+            ))}
+            <Paginator
+              query={{ name: search }}
+              url={ALL_FARM_INVESTMENT}
+              setResults={(result: any) => setFarmInvestments(result)}
+              size={5}
+              setLoading={setLoading}
+              setLoadingError={setLoadingError}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

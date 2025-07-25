@@ -5,8 +5,8 @@ export interface IChickenInvestment extends ITimestamp {
   uid: IUser["_id"];
   name: string;
   description: string;
-  units: number
-remainingUnits: number;
+  units: number;
+  remainingUnits: number;
   pricePerUnit: number;
   minUnits: number;
   roi: number;

@@ -44,8 +44,19 @@ class LandInvestment extends BaseController {
     if (this.req.headers['content-type']?.includes('multipart')) {
       assets = ((await filestore.uploadForMultiple('assets')) as string[]) || null
     }
-    const { address, city, state, remainingUnits, pricePerUnit, expenses, name, description, units, featureNo } = this
-      .req.body as ILandInvestment
+    const {
+      address,
+      city,
+      state,
+      remainingUnits,
+      pricePerUnit,
+      expenses,
+      name,
+      minUnits,
+      description,
+      units,
+      featureNo,
+    } = this.req.body as ILandInvestment
 
     const created = await LandInvestmentModel.create({
       uid: this.user._id,
@@ -56,6 +67,7 @@ class LandInvestment extends BaseController {
       pricePerUnit,
       expenses,
       name,
+      minUnits,
       description,
       units,
       featureNo,
@@ -102,6 +114,7 @@ class LandInvestment extends BaseController {
       pricePerUnit,
       expenses,
       name,
+      minUnits,
       description,
       units,
       featureNo,
@@ -116,6 +129,7 @@ class LandInvestment extends BaseController {
       pricePerUnit,
       expenses,
       name,
+      minUnits,
       description,
       units,
       featureNo,
@@ -133,7 +147,7 @@ class LandInvestment extends BaseController {
       returning: true,
     })
 
-    const updated = updatedRows[0]
+    const updated = !!updatedRows
 
     if (updated && assets && prev?.assets) {
       prev.assets.forEach((asset) => filestore.delete(asset))

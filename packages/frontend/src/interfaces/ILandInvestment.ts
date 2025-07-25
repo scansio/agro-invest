@@ -8,9 +8,10 @@ export interface ILandInvestment extends ITimestamp {
   address: string;
   city: string;
   state: string;
-  pricePerUnit: number
-units: number
-remainingUnits: number;
+  pricePerUnit: number;
+  units: number;
+  minUnits: number;
+  remainingUnits: number;
   expenses: string[];
   featureNo: number;
   assets: string[];

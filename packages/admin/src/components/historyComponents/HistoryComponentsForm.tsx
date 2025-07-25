@@ -125,11 +125,11 @@ export default function HistoryComponentsForm({
         case "time":
           control = (
             <input
-              required={options.required}
+              required={value ? undefined : options.required}
               readOnly={options.readOnly}
               className="form-control"
               type={options.type}
-              value={value ?? ""}
+              value={value ? new Date(value).getTime() : ""}
               onChange={(e) => setData({ key, value: e.target.value })}
             />
           );

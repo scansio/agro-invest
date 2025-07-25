@@ -11,7 +11,8 @@ export interface ILandInvestment extends ITimestamp {
   state: IState['_id']
   pricePerUnit: number
   units: number
-remainingUnits: number
+  minUnits: number
+  remainingUnits: number
   expenses: string[]
   featureNo: number
   assets: string[]

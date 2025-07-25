@@ -52,7 +52,7 @@ export const Home: FC = () => {
         <div class="rounded-2xl bg-brand-800 text-white p-5 min-w-[240px] flex-1 relative">
           <div class="flex items-center gap-2 mb-2">
             <i class="fas fa-wallet text-2xl" />
-            <span class="font-semibold">Flexi Wallet</span>
+            <span class="font-semibold">Wallet</span>
           </div>
           <div class="text-2xl font-bold tracking-wide">₦ 0.00</div>
         </div>

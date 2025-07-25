@@ -6,7 +6,7 @@ export interface IChickenInvestment extends ITimestamp {
   name: string
   description: string
   units: number
-remainingUnits: number
+  remainingUnits: number
   pricePerUnit: number
   minUnits: number
   roi: number

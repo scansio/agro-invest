@@ -29,31 +29,7 @@ const BankDetailRoutes: IControllerRoute = {
       requireAuthentication: AuthenticationLevel.ADMIN,
     },
     {
-      path: '/:_id',
-      validation: {
-        param: {
-          _id: {
-            notEmpty: {},
-          },
-        },
-      },
-      fields: {
-        param: {
-          _id: {
-            type: 'string',
-            description: 'ID of the bank detail to retrieve',
-            example: '1234567890abcdef12345678',
-          },
-        },
-      },
-      method: RequestMethods.GET,
-      metadata: {
-        summary: 'Get bank detail by id',
-      },
-      requireAuthentication: AuthenticationLevel.END_USER,
-    },
-    {
-      path: '/:uid([0-9]{8})',
+      path: '/:uid([0-9]{10})',
       controllerMemberFunctionIdentifier: BankDetail.prototype.getBankDetailByUid,
       validation: {
         param: {
@@ -74,6 +50,30 @@ const BankDetailRoutes: IControllerRoute = {
       method: RequestMethods.GET,
       metadata: {
         summary: 'Get bank detail by uid',
+      },
+      requireAuthentication: AuthenticationLevel.END_USER,
+    },
+    {
+      path: '/:_id',
+      validation: {
+        param: {
+          _id: {
+            notEmpty: {},
+          },
+        },
+      },
+      fields: {
+        param: {
+          _id: {
+            type: 'string',
+            description: 'ID of the bank detail to retrieve',
+            example: '1234567890abcdef12345678',
+          },
+        },
+      },
+      method: RequestMethods.GET,
+      metadata: {
+        summary: 'Get bank detail by id',
       },
       requireAuthentication: AuthenticationLevel.END_USER,
     },

@@ -41,16 +41,14 @@ class Investment extends BaseController {
 
   async create({ investmentType, investmentId, unit }) {
     const models = {
-      CropInvestment: CropInvestmentModel,
-      FarmInvestment: FarmInvestmentModel,
-      AnimalInvestment: AnimalInvestmentModel,
-      ChickenInvestment: ChickenInvestmentModel,
-      LandInvestment: LandInvestmentModel,
+      cropInvestment: CropInvestmentModel,
+      farmInvestment: FarmInvestmentModel,
+      animalInvestment: AnimalInvestmentModel,
+      chickenInvestment: ChickenInvestmentModel,
+      landInvestment: LandInvestmentModel,
     }
-
     const investmentModel = `${investmentType}Investment`
-
-    const investmentTypeModel: FarmInvestmentModel = await models[investmentModel].findByPk(investmentId as any)
+    const investmentTypeModel: FarmInvestmentModel = await models[investmentModel]?.findByPk(investmentId as any)
     if (!investmentTypeModel) {
       throw new Error('Invalid type of investment or invalid investmentId')
     }
@@ -70,9 +68,7 @@ class Investment extends BaseController {
       investmentROI = investmentTypeModel.roi
     }
 
-    const amount = isLandInvestment
-      ? (investmentTypeModel as any as LandInvestmentModel).price
-      : investmentTypeModel.pricePerUnit * unit
+    const amount = investmentTypeModel.pricePerUnit * unit
     await this.hasSufficientBalanceWallet(this.user._id, amount)
 
     value = amount
@@ -173,7 +169,7 @@ class Investment extends BaseController {
       returning: true,
     })
 
-    const updated = updatedRows[0]
+    const updated = !!updatedRows
 
     if (!updated) {
       this.status(false).statusCode(BAD_REQUEST).message('Investment failed to update due to error').send()

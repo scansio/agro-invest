@@ -71,7 +71,7 @@ const InvestmentRoutes: IControllerRoute = {
             type: 'number',
             description: 'Number of units invested',
             default: 10,
-            min: 10,
+            //min: 10,
             example: 10,
           },
         },

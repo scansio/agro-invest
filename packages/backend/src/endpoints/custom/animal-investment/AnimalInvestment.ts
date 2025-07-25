@@ -144,7 +144,7 @@ class AnimalInvestment extends BaseController {
       returning: true,
     })
 
-    const updated = updatedRows[0]
+    const updated = !!updatedRows
 
     if (updated && assets && prev?.assets) {
       prev.assets.forEach((asset) => filestore.delete(asset))

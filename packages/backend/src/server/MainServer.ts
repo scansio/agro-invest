@@ -93,7 +93,7 @@ export default async () => {
     console.log('Database connection has been established successfully.')
 
     // Synchronize Sequelize models with the database
-    await sequelize.sync({ alter: true }) // Use `alter: true` to update the schema without dropping tables
+    //await sequelize.sync({ alter: true }) // Use `alter: true` to update the schema without dropping tables
     console.log('Database synchronized successfully.')
 
     const serverName = 'MainServer'

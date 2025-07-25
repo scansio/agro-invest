@@ -98,7 +98,7 @@ export const routes: Routes = {
 
   investments: {
     tag: "Investments",
-    path: "/investments",
+    path: "/investments/:tab?",
     redirectUri: "/investments",
     icon: <FontAwesomeIcon icon={faChartLine} />, // Chart line icon
     showOnDocker: true,
@@ -114,12 +114,12 @@ export const routes: Routes = {
     showOnDocker: true,
     showOnMore: true,
     showOnNav: true,
-    Component: () => import("../pages/Wallet").then((m) => m.Wallet),
+    Component: () => import("../pages/transaction/Wallet").then((m) => m.Wallet),
   },
 
   investment: {
     tag: "Investment",
-    path: "/investment",
+    path: "/investment/:investmentType/:investmentId",
     redirectUri: "/investment",
     icon: <FontAwesomeIcon icon={faChartLine} />, // Chart line icon
     showOnNav: true,
